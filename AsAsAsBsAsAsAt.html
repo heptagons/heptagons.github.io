@@ -4,17 +4,23 @@
 <meta charset="UTF-8">
 <style>
 * { font-family: sans-serif; }
-.A { color:#0d0; }
+.A { color:#0c0; }
 .B { color:#08f; }
 .s { color:#f00; }
 .t { color:#f80; }
+.c { color:#f00; }
+.i { color:#888; }
 img.right {
-	width: 300px;
+	width: 200px;
 	float:right;
 	margin:0 5px 0 0;
 }
 dd { padding: 2px 0 10px; }
 pre { font-family: monospace; }
+i { 
+	margin:0 6px;
+	float:right;
+}
 </style>
 </head>
 <body>
@@ -28,52 +34,139 @@ The heptagon at the right has six equal angles <b class="A">A</b> and a single a
 <b class="t">t</b>.
 <dl>
 <dt>At vertex P1 there are two angles</dt>
-<dd>
-<b>A</b></li> and <b>C = &pi; - A</b>
-</dd>
+<dd><b>A</b></li> and <b>C = &pi; - A</b></dd>
 <dt>At vertex P2 there are two angles</dt>
-<dd>
-<b>C</b></li> and <b>D = A - C</b>
-</dd>
+<dd><b>C</b></li> and <b>D = A - C</b></dd>
 <dt>At vertex P3 there are three angles</dt>
-<dd>
-<b>D</b>, <b>E = &pi; - D</b> and <b>F = A - E</b></li>
-</dd>
+<dd><b>D</b>, <b>E = &pi; - D</b> and <b>F = A - E</b></li></dd>
 <dt>Simplifying, we get</dt>
-<dd>
-<pre>
-D = 2A - &pi;
-F = 3A - 2&pi;
-</pre>
-</dd>
+<dd><pre>
+D = 2A - &pi;     (1)
+F = 3A - 2&pi;    (2)
+</pre></dd>
 <dt>So, the value of seventh side <b class="t">t</b> can be found</dt>
-<dd>
-<pre>
-t = 2s[ cos(A) + cos(D) + cos(F) ]
-  = 2s[ cos(A) + cos(2A - &pi;) + cos(3A - 2&pi;) ]
-</pre>
-</dd>
-<dt>For any heptagon with six angles <b class="A">A</b> and one angle <b class="B">B</b> we have</dt>
-<dd>
-<b> B = 4&pi; - 6A</b>
-</dd>
+<dd><pre>
+t = 2s[ cos(A) + cos(D) + cos(F) ]                (3)
+  = 2s[ cos(A) + cos(2A - &pi;) + cos(3A - 2&pi;) ]     (4)
+</pre></dd>
 </dl>
 </p>
 
 <h3>Iterator</h3>
 <p>
-Define the iterator <b>i</b> = <b class="B">B</b> / <b class="A">A</b> as a real number
-ranging from zero to infinity.
-</p>
+<img src="it.svg" class="right">
+
 <dl>
-<dt>Then, angle <b class="A">A</b> can be described as factor of the iterator:</dt>
+<dt>
+Define the iterator <b>i</b> = <b class="B">B</b> / <b class="A">A</b> as a real number ranging from zero to infinity. Then, angle <b class="A">A</b> can be described as factor of the iterator
+</dt>
 <dd>
 <pre>
-A = 4&pi; / (i + 6)
+i = B / A            (5)
+A = 4&pi; / (i + 6)     (6)
+</pre>
+</dd>
+<dt>
+For any heptagon with six angles <b class="A">A</b> and one angle <b class="B">B</b> we have
+</dt>
+<dd>
+<pre>
+B = 4&pi; - 6A          (7)
 </pre>
 </dd>
 </dl>
 
+<h3>Special cases</h3>
+
+<table>
+<tr>
+<th>Case</th>
+<th>A/&pi;</th><th>B/&pi;</th>
+<th class="i">i</th><th class="t">t</th><th>Description</th>
+</tr>
+
+<tr>
+<td><i class="c">1</i></td>
+<td><i class="A">5 / 4</i></td>
+<td><i class="B">0</i></td>
+<td><i class="i">0</i></td>
+<td><i class="t">-2.7+</i></td><td>?</td>
+</tr>
+
+<tr>
+<td><i class="c">2</i></td>
+<td><i class="A">4 / 5</i></td>
+<td><i class="B">8 / 15</i></td>
+<td><i>2 / 3</i></td>
+<td><i>0</i></td><td>Hexagon</td>
+</tr>
+
+<tr>
+<td><i class="c">3</i></td>
+<td><i class="A">5 / 7</i></td>
+<td><i class="B">5 / 7</i></td>
+<td><i>1</i></td>
+<td><i>1</i></td><td>Regular heptagon {7}</td>
+</tr>
+
+<tr>
+<td><i class="c">4</i></td>
+<td><i class="A">8 / 15</i></td>
+<td><i class="B">4 / 5</i></td>
+<td><i>3 / 2</i></td>
+<td><i>2</i></td><td>Hexagon</td>
+</tr>
+
+<tr>
+<td><i class="c">5</i></td>
+<td><i class="A">1 / 2</i></td>
+<td><i class="B">2</i></td>
+<td><i>4</i></td>
+<td><i>2</i></td><td>Two squares</td>
+</tr>
+
+<tr>
+<td><i class="c">6</i></td>
+<td><i class="A">3 / 7</i></td>
+<td><i class="B">17 / 7</i></td>
+<td><i>17 / 3</i></td>
+<td><i>1</i></td><td>Equilateral heptagram {7/2}</td>
+</tr>
+
+<tr>
+<td><i class="c">7</i></td>
+<td><i class="A">1 / 3</i></td>
+<td><i class="B">3</i></td>
+<td><i>9</i></td>
+<td><i>0</i></td><td>Two triangles</td>
+</tr>
+
+<tr>
+<td><i class="c">8</i></td>
+<td><i class="A">1 / 4</i></td>
+<td><i class="B">7 / 2</i></td>
+<td><i>14</i></td>
+<td><i>0</i></td><td>Skew hexagon</td>
+</tr>
+
+<tr>
+<td><i class="c">9</i></td>
+<td><i class="A">1 / 7</i></td>
+<td><i class="B">29 / 7</i></td>
+<td><i>29</i></td>
+<td><i>1</i></td><td>Equilateral heptagram {7/3}</td>
+</tr>
+
+<tr>
+<td><i class="c">10</i></td>
+<td><i class="A">0</i></td>
+<td><i class="B">5</i></td>
+<td><i>&infin;</i></td>
+<td><i>2</i></td><td>Line</td>
+</tr>
+
+</table>
 </p>
+
 </body>
 </html>
