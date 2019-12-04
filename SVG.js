@@ -31,9 +31,11 @@ module.exports = function()
 		})
 	}
 
-	this.case = (w, h, i)=> {
+	this.case = (i)=> {
+		const w = 200
+		const h = 200
 		svg(w, h, ()=> {
-			case_1(w/4, h/4, i)
+			case_1(w, h, i)
 		})
 	}
 
@@ -51,16 +53,15 @@ module.exports = function()
 		xml("/svg")
 	}
 
-	const case_1 = (x,y,I)=> {
+	const case_1 = (w, h, I)=> {
 		const nd = I.split("/")
 		const num = parseInt(nd[0])
 		const den = parseInt(nd[1] || 1)
 		const i = num / den
-		console.log("i", i)
 		const A = 5*Math.PI / (i + 6)
 		const x1 = Math.cos(1*A)
 		const x2 = Math.cos(2*A - 1*Math.PI)
-		const x3 = Math.cos(3*A)// - 2*Math.PI)
+		const x3 = Math.cos(3*A)
 		const y1 = Math.sin(1*A)
 		const y2 = Math.sin(2*A - 1*Math.PI)
 		const y3 = Math.sin(3*A)
@@ -74,16 +75,29 @@ module.exports = function()
 			{ x:x1+x2+x3+x3+x2   , y:y1       },
 			{ x:x1+x2+x3+x3+x2+x1, y:0        }
 		]
-		const s = parseInt(x*0.7)
-		const points = P.map(P => {
-			return `${s*P.x},${s*P.y}`
+		const X = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
+		const Y = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
+		P.forEach(p => {
+			if (X.min > p.x) X.min = p.x;
+			if (X.max < p.x) X.max = p.x;
+			if (Y.min > p.y) Y.min = p.y;
+			if (Y.max < p.y) Y.max = p.y;
 		})
-		xml("g", { transform:`translate(${x},${y})` })
+		const xm = (X.max + X.min) / 2
+		const ym = (Y.max + Y.min) / 2
+		const diff = Math.max(Math.abs(X.max - X.min), Math.abs(Y.max - Y.min))
+		const S = 0.8 * Math.min(w,h) / diff
+		xml("g", { transform:`translate(${w/2},${h/2})`})
+		xml("g", { transform:`translate(${-S*xm},${+S*ym}) scale(${S} ${-S})` })
 
-		xml("g", { stroke:"#888", "stroke-opacity":0.5, fill:"none", "stroke-width":2 })
-		xml("polyline", { points:points.join(" ") }, true)
+		xml("g", { stroke:"#f00", "stroke-opacity":0.5, "stroke-width":0.05 })
+		for (let i=0; i < 6; i++)
+			xml("line", { x1:P[i].x, y1:P[i].y, x2:P[i+1].x, y2:P[i+1].y }, true)
 		xml("/g")
-
+		xml("g", { stroke:"#f80", "stroke-opacity":0.5, "stroke-width":0.05 })
+		xml("line", { x1:P[6].x, y1:P[6].y, x2:P[0].x, y2:P[0].y }, true)
+		xml("/g")
+		xml("/g")
 		xml("/g")
 	}
 

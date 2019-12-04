@@ -28,24 +28,23 @@ const options =
 		c: print,
 		d: "Print curve points"
 	}, {
-		n:"create_it_svg",
+		n:"it",
 		c: ()=> {
 			const svg = new SVG()
 			svg.it(200, 500)
-			svg.save("it.svg")
+			svg.save("auto/it.svg")
 		},
 		d: "Create it.svg graph file"
 	}, {
-		n:"create_case_svg",
+		n:"case_n_d",
 		c: (p)=> {
 			const svg = new SVG()
-			svg.case(200, 200, p[1])
-			svg.save(`case${""}.svg`)
+			svg.case(p[1])
+			svg.save(`auto/case${""}.svg`)
 		},
-		d: "Create case[x].svg heptagon file"
+		d: "Create case_n_d.svg heptagon file"
 	}
 ]
-
 
 const args = process.argv.slice(2)
 let found = false
@@ -65,7 +64,3 @@ if (!found) {
 	})
 	console.log(use.join("\n"))
 }
-	
-
-
-
