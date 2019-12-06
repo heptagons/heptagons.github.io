@@ -1,3 +1,5 @@
+#! /usr/bin/node
+
 const SVG = require("./SVG")
 
 const heptagonT = (i)=> {
@@ -40,7 +42,8 @@ const options =
 		c: (p)=> {
 			const svg = new SVG()
 			svg.case(p[1])
-			svg.save(`auto/case${""}.svg`)
+			const file = p[1].replace("/","_")
+			svg.save(`auto/case-${file}.svg`)
 		},
 		d: "Create case_n_d.svg heptagon file"
 	}
