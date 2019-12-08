@@ -39,10 +39,6 @@ module.exports = function()
 		})
 	}
 
-	const CASES = [
-		0, 2/3., 1, 3/2., 4, 17/3., 9, 14, 29
-	]
-
 	const svg = (w, h, text)=> {
 		xml("svg", {
 			xmlns:  "http://www.w3.org/2000/svg",
@@ -127,7 +123,7 @@ module.exports = function()
 		xml("g", { stroke:"#f80", "stroke-width":0.5 })
 		X.forEach(x => { xml("line", { x1:DX*x+.5, y1:0, x2:DX*x+.5, y2:600}, true) })
 		xml("/g")
-		xml("g", { "font-size":"12px","text-anchor":"middle", "dominant-baseline":"middle" })
+		xml("g", { "font-size":"10px","text-anchor":"middle", "dominant-baseline":"middle" })
 		xml("text", { x:0, y:-25-7, fill:I, "font-size":"14px" }, true, "i")
 		X.forEach(x => {
 			xml("text", { x: DX*x+.5, y: -7, fill:"#f80" }, true, x)
@@ -142,7 +138,7 @@ module.exports = function()
 		xml("g", { stroke:I, "stroke-width":0.5 })
 		Y.forEach(y => { xml("line", { x1:0, y1:DY*y+.5, x2:150, y2:DY*y+.5}, true) })
 		xml("/g")
-		xml("g", { "font-size":"12px","text-anchor":"end", "dominant-baseline":"middle" })
+		xml("g", { "font-size":"10px","text-anchor":"end", "dominant-baseline":"middle" })
 		xml("text", { x:-25-7, y:0, fill:"#f80", "font-size":"14px" }, true, "t")
 		Y.forEach(y => {
 			xml("text", { x:-7, y:DY*y, fill:I }, true, y)
@@ -163,13 +159,25 @@ module.exports = function()
 
 	const it_special = (DX, DY)=> {
 		xml("g", { 
-			fill:"#f00", "font-size":"12px", 
+			fill:"#07d", "font-size":"10px", 
 			"text-start":"start", "dominant-baseline":"hanging"		
 		})
-		CASES.forEach((i,j) => {
-			const t = heptagonT(i)
-			xml("circle", { cx:t*DX, cy:i*DY, r:4 }, true)
-			xml("text", { x:t*DX+6, y:i*DY+3 }, true, j+1)
+		const CASES = [
+			{ i:0,    B:"0"},
+			{ i:2/3., B:"1/2"},
+			{ i:1,    B:"5/7"},
+			{ i:3/2., B:"1"},
+			{ i:7/3., B:"7/5" },
+			{ i:4,    B:"2"},
+			{ i:17/3., B:"17/7"},
+			{ i:9,     B:"3"},
+			{ i:14,    B:"7/2"},
+			{ i:29,    B:"29/7" }
+		]
+		CASES.forEach(c => {
+			const t = heptagonT(c.i)
+			xml("circle", { cx:t*DX, cy:c.i*DY, r:3 }, true)
+			xml("text", { x:t*DX+3, y:c.i*DY+3 }, true, c.B)
 		})
 		xml("/g")
 	}
