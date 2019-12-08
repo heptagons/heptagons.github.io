@@ -4,20 +4,19 @@
 <meta charset="UTF-8">
 <style>
 * { font-family: sans-serif; }
-.A { color:#0c0; }
-.B { color:#08f; }
+.i { color:#888; font-size:12px; }
+.A { color:#0c0; font-size:14px; }
+.B { color:#08f; font-size:14px; font-weight: bold; }
 .s { color:#f00; }
 .t { color:#f80; }
-.c { color:#f00; }
-.i { color:#888; }
 .c1 { border:3px solid #f00; }
 .c2 { border:3px solid #0c0; }
 .c3 { border:3px solid #08f; }
 
-.c1 > img { width:100px; }
-.c2 > img { width:100px; }
-.c3 > img { width:100px; }
-
+.c > div  { color:#888; font-size:12px; padding-left: 5px; }
+.c > img  { width:100px; display: block; }
+.c > span { color:#0c0; font-size:14px; padding-left: 5px;}
+.c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
 
 img.right {
 	width: 300px;
@@ -28,7 +27,7 @@ dd { padding: 2px 0 10px; }
 pre { font-family: monospace; }
 i { 
 	margin:0 6px;
-	float:right;
+	text-align: right;
 }
 br { clear:both; }
 </style>
@@ -63,8 +62,6 @@ t = 2s[ cos(A) + cos(D) + cos(F) ]                (3)
 </p>
 <br/>
 <h3>Iterator</h3>
-<p>
-<img src="auto/it.svg" class="right">
 
 <dl>
 <dt>
@@ -85,6 +82,90 @@ B/&pi; = 5 - 6A/&pi;          (7)
 </pre>
 </dd>
 </dl>
+
+</p>
+<br/>
+
+<p>
+<img src="auto/it.svg" class="right">
+
+<table>
+<tr>
+<th>C1</th><th></th><th>C3</th><th></th><th>C2</th><th></th><th>C3</th><th></th>
+</tr>
+
+<tr>
+<td class="c1 c"><div>0/10</div><img src="auto/case-0_10.svg"/><span>10/12</span><b>0/12</b></td><td>...</td>
+<td class="c3 c"><div>1/29</div><img src="auto/case-1_29.svg"/><span>29/35</span><b>1/35</b></td><td>...</td>
+<td class="c c2"><div>1/19</div><img src="auto/case-1_19.svg"/><span>19/23</span><b>1/23</b></td><td>...</td>
+<td class="c c3"><div>2/28</div><img src="auto/case-2_28.svg"/><span>28/34</span><b>2/34</b></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><div>1/9</div> <img src="auto/case-1_9.svg"/> <span>9/11 </span><b>1/11</b></td><td>...</td>
+<td class="c c3"><div>4/26</div><img src="auto/case-4_26.svg"/><span>26/32</span><b>4/32</b></td><td>...</td>
+<td class="c c2"><div>3/17</div><img src="auto/case-3_17.svg"/><span>17/21</span><b>3/21</b></td><td>...</td>
+<td class="c c3"><div>5/25</div><img src="auto/case-5_25.svg"/></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><div>2/8</div> <img src="auto/case-2_8.svg"/> <div><i class="A">8/10</i><i class="B">2/10</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-7_23.svg"/><div><i class="i">7/23</i><i class="B"></i></div></td><td>...</td>
+<td class="c c2"><img src="auto/case-5_15.svg"/><div><i class="i">5/15</i><i class="B">5/19</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-8_22.svg"/><div>8/22</div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><div>3/7</div><img src="auto/case-3_7.svg"/>  <div><i class="A">7/9</i><i class="B">3/9</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-10_20.svg"/><div>10/20</div></td><td>...</td>
+<td class="c c2"><img src="auto/case-7_13.svg"/> <div><i class="i">7/13</i><i class="B">7/17</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-11_19.svg"/><div>11/19</div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><div>4/6</div><img src="auto/case-4_6.svg"/>  <div><i class="A">6/8</i><i class="B">4/8</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-13_17.svg"/><div>13/17</div></td><td>...</td>
+<td class="c c2"><img src="auto/case-9_11.svg"/> <div><i class="i">9/11</i><i class="B">9/15</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-14_16.svg"/><div>14/16</div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><div>5/5</div><img src="auto/case-5_5.svg"/>  <div><i class="A">5/7</i><i class="B">5/7</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-16_14.svg"/><div>16/14</div></td><td>...</td>
+<td class="c c2"><img src="auto/case-11_9.svg"/> <div><i class="i">11/9</i> <i class="B">11/13</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-17_13.svg"/><div><i class="i">17/13</i><i class="B">17/19</i></div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><div class="i">6/4</div><img src="auto/case-6_4.svg"/>  <div><i class="A">4/6</i>  <i class="B">6/6</i>  </div></td><td>...</td>
+<td class="c c3"><img src="auto/case-19_11.svg"/><div><i class="i">19/11</i><i class="B">19/17</i></div></td><td>...</td>
+<td class="c c2"><img src="auto/case-13_7.svg"/> <div><i class="i">13/7</i> <i class="B">13/11</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-20_10.svg"/><div><i class="i">20/10</i><i class="B">20/16</i></div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><i class="i">7/3</i><img src="auto/case-7_3.svg"/> <div> <i class="B">7/5</i>  </div></td><td>...</td>
+<td class="c c3"><i class="i">22/8</i><img src="auto/case-22_8.svg"/><div><i class="B">22/14</i></div></td><td>...</td>
+<td class="c c2"><i class="i">15/5</i><img src="auto/case-15_5.svg"/><div><i class="B">15/9</i> </div></td><td>...</td>
+<td class="c c3"><i class="i">23/7</i><img src="auto/case-23_7.svg"/><div><i class="B">23/13</i></div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><img src="auto/case-8_2.svg"/> <div><i class="i">8/2</i> <i class="B">8/4</i>  </div></td><td>...</td>
+<td class="c c3"><img src="auto/case-25_5.svg"/><div><i class="i">25/5</i><i class="B">25/11</i></div></td><td>...</td>
+<td class="c c2"><img src="auto/case-17_3.svg"/><div><i class="i">17/3</i><i class="B">17/7</i> </div></td><td>...</td>
+<td class="c c3"><img src="auto/case-26_4.svg"/><div><i class="i">26/4</i><i class="B">26/10</i></div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><img src="auto/case-9_1.svg"/> <div><i class="i">9/1</i> <i class="B">9/3</i> </div></td><td>...</td>
+<td class="c c3"><img src="auto/case-28_2.svg"/><div><i class="i">28/2</i><i class="B">28/8</i></div></td><td>...</td>
+<td class="c c2"><img src="auto/case-19_1.svg"/><div><i class="i">19/1</i><i class="B">19/5</i></div></td><td>...</td>
+<td class="c c3"><img src="auto/case-29_1.svg"/><div><i class="i">29/1</i><i class="B">29/7</i></div></td><td>...</td>
+</tr>
+<tr>
+<td class="c c1"><img src="auto/case-10_0.001.svg"/><div><i class="i">10/0</i><i class="B">10/2</i></div></td>
+</tr>
+
+
+
+
+</table>
+
+</p>
+<br/>
+
 
 <h3>Special cases</h3>
 
@@ -212,50 +293,6 @@ B/&pi; = 5 - 6A/&pi;          (7)
 </tr>
 
 </table>
-</p>
-<br/>
-
-<table>
-<tr>
-<th>C1</th><th></th><th>C3</th><th></th><th>C2</th><th></th><th>C3</th><th></th>
-</tr>
-
-<tr>
-<td class="c1"><img src="auto/case-0_10.svg"/><div>0/10</div></td><td>...</td>
-<td class="c3"><img src="auto/case-1_29.svg"/><div>1/29</div></td><td>...</td>
-<td class="c2"><img src="auto/case-1_19.svg"/><div>1/19</div></td><td>...</td>
-<td class="c3"><img src="auto/case-2_28.svg"/><div>2/28</div></td><td>...</td>
-</tr>
-<tr>
-<td class="c1"><img src="auto/case-1_9.svg"/><div>1/9</div></td><td>...</td>
-<td class="c3"><img src="auto/case-4_26.svg"/><div>4/26</div></td><td>...</td>
-<td class="c2"><img src="auto/case-3_17.svg"/><div>3/17</div></td><td>...</td>
-<td class="c3"><img src="auto/case-5_25.svg"/><div>5/25</div></td><td>...</td>
-</tr>
-<tr>
-<td class="c1"><img src="auto/case-2_8.svg"/><div>2/8</div></td><td>...</td>
-<td class="c3"><img src="auto/case-7_23.svg"/><div>7/23</div></td><td>...</td>
-<td class="c2"><img src="auto/case-5_15.svg"/><div>5/15</div></td><td>...</td>
-<td class="c3"><img src="auto/case-8_22.svg"/><div>8/22</div></td><td>...</td>
-</tr>
-<tr>
-<td class="c1"><img src="auto/case-3_7.svg"/><div>3/7</div></td><td>...</td>
-<td class="c3"><img src="auto/case-10_20.svg"/><div>10/20</div></td><td>...</td>
-<td class="c2"><img src="auto/case-7_13.svg"/><div>7/13</div></td><td>...</td>
-<td class="c3"><img src="auto/case-11_19.svg"/><div>11/19</div></td><td>...</td>
-</tr>
-<tr>
-<td class="c1"><img src="auto/case-4_6.svg"/><div>4/6</div></td><td>...</td>
-<td class="c3"><img src="auto/case-13_17.svg"/><div>13/17</div></td><td>...</td>
-<td class="c2"><img src="auto/case-9_11.svg"/><div>9/11</div></td><td>...</td>
-<td class="c3"><img src="auto/case-14_16.svg"/><div>14/16</div></td><td>...</td>
-</tr>
-
-
-
-</table>
-
-
 
 </body>
 </html>
