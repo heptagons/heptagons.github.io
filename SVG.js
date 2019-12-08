@@ -1,6 +1,6 @@
-const fs = require("fs")
+"use strict";
 
-module.exports = function()
+const SVG = function()
 {
 	const r = []
 
@@ -17,6 +17,7 @@ module.exports = function()
 	}
 
 	this.save = (filename)=> {
+		const fs = require("fs")
 		fs.writeFile(filename, r.join("\n"), (err)=> {
 		    if (err)
 		        return console.log(err);
@@ -39,6 +40,14 @@ module.exports = function()
 		})
 	}
 
+	this.caseSvg = (w, h, i)=> {
+		r.length = 0
+		svg(w, h, ()=> {
+			case_1(w, h, i)
+		})
+		return r
+	}
+
 	const svg = (w, h, text)=> {
 		xml("svg", {
 			xmlns:  "http://www.w3.org/2000/svg",
@@ -52,7 +61,7 @@ module.exports = function()
 	const case_1 = (w, h, I)=> {
 		const nd = I.split("/")
 		const num = parseInt(nd[0])
-		const den = parseInt(nd[1] || 1)
+		const den = nd.length == 1 ? 1 : parseInt(nd[1]) || 0.001
 		const i = num / den
 		const A = 5*Math.PI / (i + 6)
 		const x1 = Math.cos(1*A)
@@ -93,6 +102,16 @@ module.exports = function()
 		xml("g", { stroke:"#f80", "stroke-opacity":0.5, "stroke-width":0.05 })
 		xml("line", { x1:P[6].x, y1:P[6].y, x2:P[0].x, y2:P[0].y }, true)
 		xml("/g")
+
+		xml("g", { fill:"#0d0", "fill-opacity":0.5 })
+		P.forEach((p,i) => {
+			const attrs = { cx:p.x, cy:p.y, r:0.1 }
+			if (i==3)
+				attrs.fill = "#08f"
+			xml("circle", attrs, true)
+		})
+		xml("/g")
+
 		xml("/g")
 		xml("/g")
 	}
@@ -189,9 +208,13 @@ module.exports = function()
 		const x3 = Math.cos(3*A)// - 2*Math.PI)
 		return 2*(x1 + x2 + x3)
 	}
-
-
 }
 
+if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+    	exports = module.exports = SVG
+    }
+    exports.SVG = SVG
+}
 
 

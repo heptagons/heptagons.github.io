@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript" src="SVG.js"></script>
 <style>
 * { font-family: sans-serif; }
 .i { color:#888; font-size:12px; }
@@ -14,7 +15,7 @@
 .c3 { border:3px solid #08f; }
 
 .c > div  { color:#888; font-size:12px; padding-left: 5px; }
-.c > img  { width:100px; display: block; }
+.c > img  { width:200px; display: block; }
 .c > span { color:#0c0; font-size:14px; padding-left: 5px;}
 .c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
 
@@ -69,8 +70,8 @@ Define the iterator <b>i</b> = <b class="B">B</b> / <b class="A">A</b> as a real
 </dt>
 <dd>
 <pre>
- i   = B / A            (5)
- A/&pi; = 5 / (i + 6)      (6)
+i   = B / A             (5)
+A/&pi; = 5 / (i + 6)       (6)
 </pre>
 </dd>
 <dt>
@@ -89,210 +90,56 @@ B/&pi; = 5 - 6A/&pi;          (7)
 <p>
 <img src="auto/it.svg" class="right">
 
-<table>
-<tr>
-<th>C1</th><th></th><th>C3</th><th></th><th>C2</th><th></th><th>C3</th><th></th>
-</tr>
+<div id="table">
+</div>
+<script>
+let row = []
+const rows = []
+for (let j=0; j <= 60; j++) {
+	const doRow = (div, clazz, end)=> {
+		row.push({ n: j/div, d: (60-j)/div, c:clazz })
+		if (end || j==60) {
+			rows.push(row)
+			row = []
+		}
+	}
+	if (j%6==0) { doRow(6,"c1") } else
+	if (j%6==2) { doRow(2,"c3") } else
+	if (j%6==3) { doRow(3,"c2") } else
+	if (j%6==4) { doRow(2,"c3", true) }
+}
+const trows = []
+const H = ["","C1","","C3","","C2","","C3",""]
+trows.push("<table>")
+trows.push(`<tr>${H.map(m => `<th>${m}</th>`).join("")}</tr>`)
 
-<tr>
-<td class="c1 c"><div>0/10</div><img src="auto/case-0_10.svg"/><span>10/12</span><b>0/12</b></td><td>...</td>
-<td class="c3 c"><div>1/29</div><img src="auto/case-1_29.svg"/><span>29/35</span><b>1/35</b></td><td>...</td>
-<td class="c c2"><div>1/19</div><img src="auto/case-1_19.svg"/><span>19/23</span><b>1/23</b></td><td>...</td>
-<td class="c c3"><div>2/28</div><img src="auto/case-2_28.svg"/><span>28/34</span><b>2/34</b></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><div>1/9</div> <img src="auto/case-1_9.svg"/> <span>9/11 </span><b>1/11</b></td><td>...</td>
-<td class="c c3"><div>4/26</div><img src="auto/case-4_26.svg"/><span>26/32</span><b>4/32</b></td><td>...</td>
-<td class="c c2"><div>3/17</div><img src="auto/case-3_17.svg"/><span>17/21</span><b>3/21</b></td><td>...</td>
-<td class="c c3"><div>5/25</div><img src="auto/case-5_25.svg"/></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><div>2/8</div> <img src="auto/case-2_8.svg"/> <div><i class="A">8/10</i><i class="B">2/10</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-7_23.svg"/><div><i class="i">7/23</i><i class="B"></i></div></td><td>...</td>
-<td class="c c2"><img src="auto/case-5_15.svg"/><div><i class="i">5/15</i><i class="B">5/19</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-8_22.svg"/><div>8/22</div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><div>3/7</div><img src="auto/case-3_7.svg"/>  <div><i class="A">7/9</i><i class="B">3/9</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-10_20.svg"/><div>10/20</div></td><td>...</td>
-<td class="c c2"><img src="auto/case-7_13.svg"/> <div><i class="i">7/13</i><i class="B">7/17</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-11_19.svg"/><div>11/19</div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><div>4/6</div><img src="auto/case-4_6.svg"/>  <div><i class="A">6/8</i><i class="B">4/8</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-13_17.svg"/><div>13/17</div></td><td>...</td>
-<td class="c c2"><img src="auto/case-9_11.svg"/> <div><i class="i">9/11</i><i class="B">9/15</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-14_16.svg"/><div>14/16</div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><div>5/5</div><img src="auto/case-5_5.svg"/>  <div><i class="A">5/7</i><i class="B">5/7</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-16_14.svg"/><div>16/14</div></td><td>...</td>
-<td class="c c2"><img src="auto/case-11_9.svg"/> <div><i class="i">11/9</i> <i class="B">11/13</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-17_13.svg"/><div><i class="i">17/13</i><i class="B">17/19</i></div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><div class="i">6/4</div><img src="auto/case-6_4.svg"/>  <div><i class="A">4/6</i>  <i class="B">6/6</i>  </div></td><td>...</td>
-<td class="c c3"><img src="auto/case-19_11.svg"/><div><i class="i">19/11</i><i class="B">19/17</i></div></td><td>...</td>
-<td class="c c2"><img src="auto/case-13_7.svg"/> <div><i class="i">13/7</i> <i class="B">13/11</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-20_10.svg"/><div><i class="i">20/10</i><i class="B">20/16</i></div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><i class="i">7/3</i><img src="auto/case-7_3.svg"/> <div> <i class="B">7/5</i>  </div></td><td>...</td>
-<td class="c c3"><i class="i">22/8</i><img src="auto/case-22_8.svg"/><div><i class="B">22/14</i></div></td><td>...</td>
-<td class="c c2"><i class="i">15/5</i><img src="auto/case-15_5.svg"/><div><i class="B">15/9</i> </div></td><td>...</td>
-<td class="c c3"><i class="i">23/7</i><img src="auto/case-23_7.svg"/><div><i class="B">23/13</i></div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><img src="auto/case-8_2.svg"/> <div><i class="i">8/2</i> <i class="B">8/4</i>  </div></td><td>...</td>
-<td class="c c3"><img src="auto/case-25_5.svg"/><div><i class="i">25/5</i><i class="B">25/11</i></div></td><td>...</td>
-<td class="c c2"><img src="auto/case-17_3.svg"/><div><i class="i">17/3</i><i class="B">17/7</i> </div></td><td>...</td>
-<td class="c c3"><img src="auto/case-26_4.svg"/><div><i class="i">26/4</i><i class="B">26/10</i></div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><img src="auto/case-9_1.svg"/> <div><i class="i">9/1</i> <i class="B">9/3</i> </div></td><td>...</td>
-<td class="c c3"><img src="auto/case-28_2.svg"/><div><i class="i">28/2</i><i class="B">28/8</i></div></td><td>...</td>
-<td class="c c2"><img src="auto/case-19_1.svg"/><div><i class="i">19/1</i><i class="B">19/5</i></div></td><td>...</td>
-<td class="c c3"><img src="auto/case-29_1.svg"/><div><i class="i">29/1</i><i class="B">29/7</i></div></td><td>...</td>
-</tr>
-<tr>
-<td class="c c1"><img src="auto/case-10_0.001.svg"/><div><i class="i">10/0</i><i class="B">10/2</i></div></td>
-</tr>
+const svg = new SVG()
 
+rows.forEach((row,r) => {
+	trows.push("<tr>")
+	trows.push(`<th>R${r+1}</th>`)
+	row.forEach(col => {
+		trows.push(`<td class="c ${col.c}">`)
+		trows.push(`<div>${col.n}/${col.d}</div>`)
 
+		const svgContent = svg.caseSvg(200, 200, col.n + "/" + col.d)
+		svgContent.push("<br/>")
+		trows.push(svgContent.join("\n"))
 
+		const An = col.d
+		const Ad = (col.n + 6*col.d) / 5
+		trows.push(`<span>${An}/${Ad}</span>`)
+		trows.push(`<b>${col.n}/${Ad}</b>`)
+		trows.push("</td>")
+		if (row.length > 1)
+			trows.push("<td>...</td>")
+	})
+	trows.push("</tr>")
+})
+trows.push("</table>")
 
-</table>
-
-</p>
-<br/>
-
-
-<h3>Special cases</h3>
-
-<table>
-<tr>
-<th>i</th>
-<th>t</th>
-<th>A/&pi;</th>
-<th>B/&pi;</th>
-<th>Description</th>
-</tr>
-
-<tr class="c1">
-<td><i class="i">0</i></td>
-<td><i class="t">-2.7+</i></td>
-<td><i class="A">5/6</i></td>
-<td><i class="B">0</i></td>
-<td>Two dodecagon sections</td>
-</tr>
-
-<tr class="c1">
-<td><i class="i">1/9</i></td>
-<td><i class="t"></i></td>
-<td><i class="A">9/11</i></td>
-<td><i class="B">1/11</i></td>
-<td>Two undecagon sections</td>
-</tr>
-
-
-<tr class="c1">
-<td><i class="i">2/8</i></td>
-<td><i class="t"></i></td>
-<td><i class="A">4/5</i></td>
-<td><i class="B">1/5</i></td>
-<td>Two decagons sections</td>
-</tr>
-
-<tr class="c2">
-<td><i class="i">3/7</i></td>
-<td><i class="t"></i></td>
-<td><i class="A">7/9</i></td>
-<td><i class="B">1/3</i></td>
-<td>Two nonagon sections</td>
-</tr>
-
-<tr class="c3">
-<td><i class="i">4/6</i></td>
-<td><i class="t">0</i></td>
-<td><i class="A">3/4</i></td>
-<td><i class="B">1/2</i></td>
-<td>Two octagon sections</td>
-</tr>
-
-<tr class="first">
-<td><i class="i">5/5</i></td>
-<td><i class="t">1</i></td>
-<td><i class="A">5/7</i></td>
-<td><i class="B">5/7</i></td>
-<td>{7} Regular heptagon</td>
-</tr>
-
-<tr class="first">
-<td><i class="i">6/4</i></td>
-<td><i class="t">2</i></td>
-<td><i class="A">2/3</i></td>
-<td><i class="B">1</i></td>
-<td>Two hexagon sections</td>
-</tr>
-
-<tr class="first">
-<td><i class="i">7/3</i></td>
-<td><i class="t"></i></td>
-<td><i class="A">3/5</i></td>
-<td><i class="B">7/5</i></td>
-<td>Two pentagons sections</td>
-</tr>
-
-
-<tr class="first">
-<td><i class="i">8/2</i></td>
-<td><i class="t">2</i></td>
-<td><i class="A">1/2</i></td>
-<td><i class="B">2</i></td>
-<td>Two squares</td>
-</tr>
-
-<tr>
-<td><i class="i">17/3</i></td>
-<td><i class="t">1</i></td>
-<td><i class="A">3/7</i></td>
-<td><i class="B">17/7</i></td>
-<td>{7/2} Equilateral heptagram</td>
-</tr>
-
-<tr class="first">
-<td><i class="i">9/1</i></td>
-<td><i class="t">0</i></td>
-<td><i class="A">1/3</i></td>
-<td><i class="B">3</i></td>
-<td>Two triangles</td>
-</tr>
-
-<tr>
-<td><i class="i">14</i></td>
-<td><i class="t">0</i></td>
-<td><i class="A">1/4</i></td>
-<td><i class="B">7/2</i></td>
-<td>Skew hexagon</td>
-</tr>
-
-<tr>
-<td><i class="i">29/1</i></td>
-<td><i class="t">1</i></td>
-<td><i class="A">1/7</i></td>
-<td><i class="B">29/7</i></td>
-<td>{7/3} Equilateral heptagram</td>
-</tr>
-
-<tr class="first">
-<td><i class="i">10/0</i></td>
-<td><i class="t">2</i></td>
-<td><i class="A">0</i></td>
-<td><i class="B">5</i></td>
-<td>{7/7} Seven lines</td>
-</tr>
-
-</table>
+document.getElementById("table").innerHTML = trows.join("\n")
+</script>
 
 </body>
 </html>
