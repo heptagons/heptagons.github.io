@@ -15,11 +15,11 @@
 .c3 { border:3px solid #08f; }
 
 .c > div  { color:#888; font-size:12px; padding-left: 5px; }
-.c > img  { width:200px; display: block; }
+.c > img  { width:140px; display: block; }
 .c > span { color:#0c0; font-size:14px; padding-left: 5px;}
 .c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
 
-img.right {
+.right {
 	width: 300px;
 	float:right;
 	margin:0 5px 0 0;
@@ -64,6 +64,7 @@ t = 2s[ cos(A) + cos(D) + cos(F) ]                (3)
 <br/>
 <h3>Iterator</h3>
 
+
 <dl>
 <dt>
 Define the iterator <b>i</b> = <b class="B">B</b> / <b class="A">A</b> as a real number ranging from zero to infinity. Then, angle <b class="A">A</b> can be described as factor of the iterator
@@ -84,15 +85,16 @@ B/&pi; = 5 - 6A/&pi;          (7)
 </dd>
 </dl>
 
-</p>
-<br/>
 
 <p>
-<img src="auto/it.svg" class="right">
-
-<div id="table">
-</div>
+<div id="it" class="right"></div>
+<div id="table"></div>
 <script>
+
+const svg = new SVG()
+const it = svg.it(400, 1600)
+document.getElementById("it").innerHTML = it.join("\n")
+
 let row = []
 const rows = []
 for (let j=0; j <= 60; j++) {
@@ -113,16 +115,13 @@ const H = ["","C1","","C3","","C2","","C3",""]
 trows.push("<table>")
 trows.push(`<tr>${H.map(m => `<th>${m}</th>`).join("")}</tr>`)
 
-const svg = new SVG()
-
 rows.forEach((row,r) => {
 	trows.push("<tr>")
 	trows.push(`<th>R${r+1}</th>`)
 	row.forEach(col => {
 		trows.push(`<td class="c ${col.c}">`)
 		trows.push(`<div>${col.n}/${col.d}</div>`)
-
-		const svgContent = svg.caseSvg(200, 200, col.n + "/" + col.d)
+		const svgContent = svg.caseSvg(100, 100, col.n + "/" + col.d)
 		svgContent.push("<br/>")
 		trows.push(svgContent.join("\n"))
 

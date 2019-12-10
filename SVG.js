@@ -27,9 +27,11 @@ const SVG = function()
 	}
 
 	this.it = (w, h)=> {
+		r.length = 0
 		svg(w, h, ()=> {
 			it_1(50, 50)
 		})
+		return r
 	}
 
 	this.case = (i)=> {
@@ -126,23 +128,23 @@ const SVG = function()
 			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 
 			29, 30, 31, 32, 33, 34, 35, 36, 37
 		]
-		const DY = 12
+		const DY = 40
 		const I = "#888"
-		it_1_x(X, DX, I)
+		it_1_x(X, DX, I, 1600)
 		it_1_y(Y, DY, I)
 		it_curve(DX, DY)
 		it_special(DX, DY)
 		xml("/g")
 	}
 
-	const it_1_x = (X, DX, I)=> {
+	const it_1_x = (X, DX, I, y2)=> {
 		xml("g", { stroke:I, "stroke-width":2 })
-		xml("line", { x1:0, y1:-25, x2:0, y2:600}, true)
+		xml("line", { x1:0, y1:-25, x2:0, y2:y2 }, true)
 		xml("/g")
 		xml("g", { stroke:"#f80", "stroke-width":0.5 })
-		X.forEach(x => { xml("line", { x1:DX*x+.5, y1:0, x2:DX*x+.5, y2:600}, true) })
+		X.forEach(x => { xml("line", { x1:DX*x+.5, y1:0, x2:DX*x+.5, y2:y2 }, true) })
 		xml("/g")
-		xml("g", { "font-size":"10px","text-anchor":"middle", "dominant-baseline":"middle" })
+		xml("g", { "font-size":"15px","text-anchor":"middle", "dominant-baseline":"middle" })
 		xml("text", { x:0, y:-25-7, fill:I, "font-size":"14px" }, true, "i")
 		X.forEach(x => {
 			xml("text", { x: DX*x+.5, y: -7, fill:"#f80" }, true, x)
@@ -157,7 +159,7 @@ const SVG = function()
 		xml("g", { stroke:I, "stroke-width":0.5 })
 		Y.forEach(y => { xml("line", { x1:0, y1:DY*y+.5, x2:150, y2:DY*y+.5}, true) })
 		xml("/g")
-		xml("g", { "font-size":"10px","text-anchor":"end", "dominant-baseline":"middle" })
+		xml("g", { "font-size":"15px","text-anchor":"end", "dominant-baseline":"middle" })
 		xml("text", { x:-25-7, y:0, fill:"#f80", "font-size":"14px" }, true, "t")
 		Y.forEach(y => {
 			xml("text", { x:-7, y:DY*y, fill:I }, true, y)
@@ -178,25 +180,41 @@ const SVG = function()
 
 	const it_special = (DX, DY)=> {
 		xml("g", { 
-			fill:"#07d", "font-size":"10px", 
+			fill:"#07d", "font-size":"15px", 
 			"text-start":"start", "dominant-baseline":"hanging"		
 		})
-		const CASES = [
-			{ i:0,    B:"0"},
-			{ i:2/3., B:"1/2"},
-			{ i:1,    B:"5/7"},
-			{ i:3/2., B:"1"},
-			{ i:7/3., B:"7/5" },
-			{ i:4,    B:"2"},
-			{ i:17/3., B:"17/7"},
-			{ i:9,     B:"3"},
-			{ i:14,    B:"7/2"},
-			{ i:29,    B:"29/7" }
-		]
+
+		const B = { 
+			"4/6" : { B:"4/8", y:-4 },
+			"5/5" : { B:"5/7", y:-4 },
+			"6/4" : { B:"6/6", y:-4 },
+			"8/2" : { B:"8/4"  },
+			"17/3": { B:"17/7" },
+			"9/1" : { B:"9/3"  },
+			"28/2": { B:"28/8" },
+			"19/1": { B:"19/5" },
+			"29/1": { B:"29/7" } 
+		}
+
+		const CASES = []
+		for (let j=0; j <= 60; j++) {
+			const doRow = (div, fill, end)=> {
+				const d = { n: j/div, d: (60-j)/div }
+				const b = B[`${d.n}/${d.d}`]
+				CASES.push({ i:d.n / (d.d || 0.001), b:b, fill:fill } )
+			}
+			if (j%6==0) { doRow(6,"#f00") } else
+			if (j%6==2) { doRow(2,"#08f") } else
+			if (j%6==3) { doRow(3,"#0d0") } else
+			if (j%6==4) { doRow(2,"#08f", true) }
+		}
 		CASES.forEach(c => {
 			const t = heptagonT(c.i)
-			xml("circle", { cx:t*DX, cy:c.i*DY, r:3 }, true)
-			xml("text", { x:t*DX+3, y:c.i*DY+3 }, true, c.B)
+			xml("circle", { cx:t*DX, cy:c.i*DY, r:3, fill:c.fill }, true)
+			if (c.b) {
+				const y = c.b.y || 1
+				xml("text", { x:t*DX+3, y:c.i*DY+y*3 }, true, c.b.B)
+			}
 		})
 		xml("/g")
 	}
