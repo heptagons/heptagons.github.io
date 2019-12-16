@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="SVG.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+
 <style>
 * { font-family: sans-serif; }
 .i { color:#888; font-size:12px; }
@@ -22,69 +29,100 @@
 .right {
 	width: 300px;
 	float:right;
-	margin:0 5px 0 0;
+	margin:0 0 0 5px;
+	background-color: #fff;
 }
 dd { padding: 2px 0 10px; }
-pre { font-family: monospace; }
+pre { font-family: monospace; background-color: #def; }
 i { 
 	margin:0 6px;
 	text-align: right;
 }
-br { clear:both; }
+br { clear:right; }
 </style>
 </head>
 <body>
-<h1>Heptagons families</h1>
-<h2>AsAsAsBsAsAsAt</h2>
+<h1>Heptagons</h1>
+<h2>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h2>
 
-<h3>Formulas</h3>
 <p>
 <img src="inkscape/AsAsAsBsAsAsAt_draft.svg" class="right">
-The heptagon at the right has six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has six equal sides <b class="s">s</b> and a single side 
+The <b>(As)<sub>3</sub>B(sA)<sub>3</sub>t</b> heptagon family or <b>AsAsAsBsAsAsAt</b> family, has six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has six equal sides <b class="s">s</b> and a single side 
 <b class="t">t</b>.
-<dl>
-<dt>At vertex P1 there are two angles</dt>
-<dd><b>A</b></li> and <b>C = &pi; - A</b></dd>
-<dt>At vertex P2 there are two angles</dt>
-<dd><b>C</b></li> and <b>D = A - C</b></dd>
-<dt>At vertex P3 there are three angles</dt>
-<dd><b>D</b>, <b>E = &pi; - D</b> and <b>F = A - E</b></li></dd>
-<dt>Simplifying, we get</dt>
-<dd><pre>
-D = 2A - &pi;     (1)
-F = 3A - 2&pi;    (2)
-</pre></dd>
-<dt>So, the value of seventh side <b class="t">t</b> can be found</dt>
-<dd><pre>
-t = 2s[ cos(A) + cos(D) + cos(F) ]                (3)
-  = 2s[ cos(A) + cos(2A - &pi;) + cos(3A - 2&pi;) ]     (4)
-</pre></dd>
-</dl>
+<div>
+At vertex P1 there is a new angle called C.
+At vertex P2 there is a new angle called D.
+At vertex P3 there are two new angles called E and F:
+\begin{align*}
+C = \pi - A \\
+D = A - C \\
+E = \pi - D \\
+F = A - E
+\end{align*}
+Simplifying, we get:
+\begin{align*}
+D &= 2A - \pi \\
+F &= 3A - 2\pi
+\end{align*}
+So, the value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
+\begin{align*}
+  t &= 2s( \cos(A) + \cos(D) + \cos(F) ) \\
+    &= 2s( \cos(A) + \cos(2A - \pi) + \cos(3A - 2\pi) ) \\
+    &= 2s( \cos(A) + \cos(2A - \pi) + \cos(3A) )       
+\end{align*}
+</div>
 </p>
 <br/>
-<h3>Iterator</h3>
+<h3>Real angles</h3>
+<div>
+For any heptagon with six angles <b class="A">A</b> and one angle <b class="B">B</b> we have:
+\begin{align*}
+6A + B &= 5\pi \\
+\frac{B}{\pi} &= 5 - 6\frac{A}{\pi}
+\end{align*}
 
+Define the generator <b>r</b> = <b class="B">B</b> / <b class="A">A</b>:
+\begin{align*}
+r &\equiv \frac{B}{A} \\
+\frac{A}{\pi} &= \frac{5}{r + 6} \\
+\frac{B}{\pi} &= \frac{5r}{r + 6}
+\end{align*}
 
-<dl>
-<dt>
-Define the iterator <b>i</b> = <b class="B">B</b> / <b class="A">A</b> as a real number ranging from zero to infinity. Then, angle <b class="A">A</b> can be described as factor of the iterator
-</dt>
-<dd>
-<pre>
-i   = B / A             (5)
-A/&pi; = 5 / (i + 6)       (6)
-</pre>
-</dd>
-<dt>
-For any heptagon with six angles <b class="A">A</b> and one angle <b class="B">B</b> we have
-</dt>
-<dd>
-<pre>
-B/&pi; = 5 - 6A/&pi;          (7)
-</pre>
-</dd>
-</dl>
+<h3>Rational angles</h3>
+<div>
+Define two integers \(p\) and \(q\) to force \(r\), \(A/\pi\) and \(B/\pi\) to be rationals:
+\begin{align*}
+\frac{p}{q} &\equiv r \\
+\frac{A}{\pi} &= \frac{5}{r+6} = \frac{q}{(p + 6q)/5} \\
+\frac{B}{\pi} &= rA = \frac{q}{(p + 6q)/5}
+\end{align*}
+</div>
 
+<h3>Rational angles class 1</h3>
+<div>
+Define Class 1 generator of the form:
+\begin{align*}
+r_{1} &= \frac{p_{1}}{q_{1}}, \quad\quad \text{where $p_{1} + q_{1} = 10$}.
+\end{align*}
+So the eleven class 1 generators are:
+\begin{align}
+\frac{0}{10}, \frac{1}{9}, \frac{2}{8}, \frac{3}{7}, \frac{4}{6}, \frac{5}{5},
+\frac{6}{4}, \frac{7}{3}, \frac{8}{2}, \frac{9}{1}, \frac{10}{0}
+\end{align}
+</div>
+
+<h3>Rational angles class 2</h3>
+<div>
+Define Class 2 generator of the form:
+\begin{align*}
+r_{1} &= \frac{p_{1}}{q_{1}}, \quad\quad \text{where $p_{1} + q_{1} = 20$}.
+\end{align*}
+So the ten class 2 generators are:
+\begin{align}
+\frac{1}{19}, \frac{3}{17}, \frac{5}{15}, \frac{7}{13}, \frac{9}{11}, \frac{11}{9},
+\frac{13}{7}, \frac{15}{5}, \frac{17}{3}, \frac{19}{1}
+\end{align}
+</div>
 
 <p>
 <div id="it" class="right"></div>
