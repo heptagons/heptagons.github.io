@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>(As)3B(sA)3t</title>
+<meta charset="UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script type="text/javascript" src="SVG.js"></script>
+<style>
+* { font-family: sans-serif; }
+.t > text {
+	dominant-baseline: middle; text-anchor: middle; font-family: monospace;
+	font-size:12px; fill:#abc;
+}
+.t > line {
+	stroke:#abc; 
+}
+.c > text { 
+	dominant-baseline: middle; text-anchor:end; font-family: monospace; 
+}
+.border > line { stroke-width:2.0; stroke:#ff0; }
+.border > text { dominant-baseline: middle; text-anchor: middle; font-size:11px; fill:#123; }
+line.c  { stroke-width:0.5; }
+
+text.c1, circle.c1 { fill:#800; font-size:12px; }
+text.c2, circle.c2 { fill:#f00; font-size:11px; }
+text.c3, circle.c3 { fill:#f80; font-size:10px; }
+text.c6, circle.c6 { fill:#880; font-size: 9px; }
+text.A { fill:#0a0; font-size:10px; text-anchor:end;}
+text.B { fill:#08f; font-size:10px; text-anchor:start }
+line.c1 { stroke:#800; }
+line.c2 { stroke:#f00; }
+line.c3 { stroke:#f80; }
+line.c6 { stroke:#880; }
+
+dt { color:#08f; }
+span.c  { display:inline-block; margin:3px; }
+span.c1 { border:3px solid #800; }
+span.c2 { border:3px solid #f00; }
+span.c3 { border:3px solid #f80; }
+span.c6 { border:3px solid #880; }
+
+div.r { text-align: center; font-size:14px; color:#abc;}
+
+</style>
+</head>
+
+<body>
+<h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
+<div>Isoceles heptagons classes r1, r2, r3, and r6. Not shown r4 and r5.
+<div id="svg1"></div>
+<div id="groups"></div>
+
+
+</body>
+<script>
+const C = []
+for (let i=0; i <= 60; i++) {
+	if (i % 6 == 0) { C.push({ r: { c:1, p:i/6, q:10-i/6 }}) } else 
+	if (i % 3 == 0) { C.push({ r: { c:2, p:i/3, q:20-i/3 }}) } else
+	if (i % 2 == 0) { C.push({ r: { c:3, p:i/2, q:30-i/2 }}) } else
+	if (i % 1 == 0) { C.push({ r: { c:6, p:i/1, q:60-i/1 }}) }
+}
+const sC = C
+.sort((a,b)=> { return a.r.p/a.r.q - b.r.p/b.r.q })
+.map(c => {
+	const i = c.r.p / c.r.q
+	const A = 5*Math.PI / (i + 6)
+	const x1 = Math.cos(1*A)
+	const x2 = Math.cos(2*A - 1*Math.PI)
+	const x3 = Math.cos(3*A)
+	return {
+		r: c.r,
+		A: { p: c.r.q , q: (c.r.p + 6*c.r.q)/5 },
+		B: { p: c.r.p , q: (c.r.p + 6*c.r.q)/5 },
+		t: 2*(x1+x2+x3)
+	}
+})
+//sC.forEach(c => { console.log(JSON.stringify(c))})
+
+const r = []
+const xml = (e, attrs, end, text)=> {
+	const cols = []
+	cols.push(e)
+	if (attrs)
+		Object.keys(attrs).forEach(k => { cols.push(`${k}="${attrs[k]}"`) })
+	const tail = (!end) ? ">" : (!text) ? "/>" : `>${text}</${e}>`
+	r.push(`<${cols.join(" ")}${tail}`)
+}
+
+const M = 15
+const W1 = 150, W2 = 400, W3 = 30
+const T = 50
+const H = 700
+
+xml("svg", { width:2*M+W1+W2+W3, height:2*M+T+H, xmlns:"http://www.w3.org/2000/svg"})
+xml("g", { transform:"translate(0.5, 0.5)"})
+
+xml("g", { "class":"border" })
+const YB = [ [2,8], [4,6], [6,4], [8,2], [9,1], [28,2], [10,0] ]
+YB.forEach(y=> {
+	const yb = M + T + H*(y[0]/(y[0] + y[1]))
+	xml("line", { x1:W1, y1:yb, x2:W1+W2+W3, y2:yb }, true)
+})
+const YG = [ 
+	[1,9,"complex1"],[3,7,"complex2"],[5,5,"convex"],[7,3,"concave"],
+	[17,3,"complex3"],[55,5,"c4"],[29,1,"c5"]
+]
+YG.forEach(g=> {
+	const x = W1+W2+W3
+	const y = M + T + H*(g[0]/(g[0] + g[1]))
+	xml("text", { x:x, y:y, transform:`rotate(-90, ${x}, ${y})` }, true, g[2])
+})
+xml("/g")
+
+xml("g", { "class":"t" })
+const TX = [ [-3], [-2], [-1], 
+	[0,1,9,"degenerated"], [1,1,9,"equilaterals"], [2,1,9,"degenerated"], 
+	[3] 
+]
+const dt = W2 / (TX.length - 1)
+TX.forEach((t,i) => {
+	const x = W1 + i*dt
+	xml('text', { x:x, y:M+T-10 }, true, `${t[0] || "t=0"}s`)
+	xml("line", { x1:x, y1:M+T, x2:x, y2:M+T+H }, true)
+	if (t.length==4) {
+		const y = M + T + H*(t[1]/(t[1] + t[2]))
+		xml('text', { x:x-8, y:y, transform:`rotate(-90,${x-8},${y})` }, true, `${t[3]}`)
+	}
+})
+xml("/g")
+
+const CS = [ 1, 2, 3, 6 ]
+const CX = { "1":20, "2":30, "3":60, "6":90 }
+
+xml("g", {"class":"c"})
+CS.forEach((c,i)=> {
+	xml("text", { "class":`c c${c}`, x:M+CX[c], y:10+i*10 }, true, `r${c}`)
+})
+xml("text", { "class":`A`, x:M+W1+W2/2 - 10, y:20 }, true, `A/&pi;`)
+xml("text", { "class":`B`, x:M+W1+W2/2 + 10, y:20 }, true, `B/&pi;`)
+sC.forEach(c => {
+	const C = c.r.c
+	const x1 = M + CX[C]
+	const x2 = W1 + M
+	const y = M + T + H*(c.r.p/(c.r.p + c.r.q))
+	const cx = W1 + W2*((c.t)+3)/6
+	xml("text",   { "class":`c c${C}`, x:x1, y:y }, true, `${c.r.p}/${c.r.q}`)
+	xml("line",   { "class":`c c${C}`, x1:x1+3, y1:y, x2:cx-50, y2:y }, true)
+	xml("circle", { "class":`c${C}`, cx:cx, cy:y, r:3 }, true)
+	xml("text",   { "class":"A", x:cx-5, y:y }, true, `${c.A.p}/${c.A.q}`)
+	xml("text",   { "class":"B", x:cx+5, y:y }, true, `${c.B.p}/${c.B.q}`)
+})
+xml("/g")
+xml("/g")
+xml("/svg")
+document.getElementById("svg1").innerHTML = r.join("\n")
+
+
+const groups = [
+	{ r:[0,10],     d:1, P:[3,5], n:"t < 0. Two regular dodecagons sections" },
+	{ r:[0,10,2,8], x:1, s:[2,5], n:"t < 0." },
+	{ r:[2,8],      d:2, P:[2,6], n:"t < 0. Two regular decagons sections" },
+	{ r:[2,8,4,6],  x:2, s:[1,6], n:"t < 0." },
+	{ r:[4,6],      d:3, P:[1,7], n:"t = 0. Two regular octagons sections" },
+	{ r:[4,6,6,4],  convex:true,  n:"0 < t < 2. Contains regular heptagon {7}"},
+	{ r:[6,4],      d:4,          n:"t = 2. Two regular hexagons section" },
+	{ r:[6,4,8,2],  concave:true, n:"t > 2" },
+	{ r:[8,2],      d:5, P:[3,5], n:"t = 2. Two squares", s:[3,4] },
+	
+	{ r:[8,2,9,1],  x:"3", s:[2,5], n:"2 > t > 0" },
+	{ r:[9,1],      d:6, s:[0,0], n:"t = 0. Two triangles" },
+
+	{ r:[9,1,28,2], x:4, s:[0,0], n:"t < 0" },
+	{ r:[28,2],     d:7, s:[0,0], n:"t = 0" },
+	{ r:[28,2,10,0], x:5,         n:"t > 0" },
+	{ r:[10,0],     d:8,          n:"t = 2" }
+]
+
+const $groups = []
+$groups.push("<dl>")
+groups.forEach(g => {
+	const _B = (p,q)=> `${p}/${(p + 6*q)/5}`
+	const A = g.r[0]
+	const B = g.r[1]
+	const min = _B(A,B)
+	switch (g.r.length) {
+		case 2: {
+			$groups.push(`<dt>B/&pi; = ${min}</dt>`)
+			$groups.push("<dd>")
+			const d = `Degenerated case ${g.d}.`
+			const i = []
+			if (g.P) i.push(`P<sub>${g.P[0]}</sub>~P<sub>${g.P[1]}</sub>`)
+			if (g.s) i.push(`s<sub>${g.s[0]}</sub>~s<sub>${g.s[1]}</sub>`)
+			const I = (i.length) ? `Intersection: ${i.join(", ")}.` : ""
+			$groups.push(`<div>${d} ${I} ${g.n}.</div>`)
+			sC.forEach(c => {
+				if (A == c.r.p && B == c.r.q) {
+					$groups.push(`<span class="c c${c.r.c}">`)
+					const svg = new SVG()
+					$groups.push(svg.caseSvg(100, 100, A + "/" + B))
+					$groups.push("</span>")
+				}
+			}) }
+			break
+		case 4:
+			const C = g.r[2]
+			const D = g.r[3]
+			$groups.push(`<dt>${min} < B/&pi; < ${_B(C,D)}</dt>`)
+			$groups.push("<dd>")
+			const d = (g.x) ? `Complex group case ${g.x}.` : 
+				(g.convex) ? `Convex group.` : `Concave group.`
+			const i = (g.s) ? `Intersection: s<sub>${g.s[0]}</sub> ~ s<sub>${g.s[1]}</sub>.` : ""
+			$groups.push(`<div>${d} ${i} ${g.n}</div>`)
+			sC.forEach(c => {
+				const r = c.r.p / c.r.q
+				if (r > A/B && r < C/D) {
+					$groups.push(`<span class="c c${c.r.c}">`)
+					const svg = new SVG()
+					$groups.push(svg.caseSvg(100, 100, c.r.p + "/" + c.r.q))
+					$groups.push("</span>")
+				}
+			})
+			break
+	}
+	$groups.push("</dd>")
+})
+$groups.push("</dl>")
+
+
+
+
+const min = 8 * 2*3*5, max = 10 * 2*3*5
+
+const brs = [ 
+	[ "D5",  240, "C3"],
+	[ "D6",  252, "C4. Includes {7/2}"],
+	[ "D7",  260, "C5"],
+	[ "D8",  270, "C6"],
+	[ "D9",  280, "C7"],
+	[ "D10", 285, "C8"],
+	[ "D11", 287, "C9"],
+	[ "D12", 288, "C10. Includes {7/3}"],
+	[ "D13", 294, "C11"],
+	[ "D14", 300, ""]
+]
+
+const isBr = (x,y)=> {
+	for (let i=0; i < brs.length; i++) {
+		const br = brs[i]
+		if (x == br[1])
+			return br
+	}
+	return null
+}
+
+for (let x=min; x <= max; x++) {
+	const br = isBr(x)
+	if (br)
+		$groups.push(`<div>${br[0]}</div>`)
+	$groups.push(`<span class="c">`)
+	$groups.push("<div>")
+	$groups.push(`<div class="r">${x}/${max - x}</div>`)
+	const svg = new SVG()
+	$groups.push(svg.caseSvg(80, 80, x + "/" + (max - x)))
+	$groups.push("</div>")
+	$groups.push("</span>")
+	if (br)
+		$groups.push(`<div>${br[2]}</div>`)
+}
+
+document.getElementById("groups").innerHTML = $groups.join("\n")
+</script>
+</html>
