@@ -7,31 +7,6 @@
 <meta name="viewport" content="width=device-width">
 <script type="text/javascript" src="SVG.js"></script>
 <style>
-* { font-family: sans-serif; }
-.t > text {
-	dominant-baseline: middle; text-anchor: middle; font-family: monospace;
-	font-size:12px; fill:#abc;
-}
-.t > line {
-	stroke:#abc; 
-}
-.c > text { 
-	dominant-baseline: middle; text-anchor:end; font-family: monospace; 
-}
-.border > line { stroke-width:2.0; stroke:#ff0; }
-.border > text { dominant-baseline: middle; text-anchor: middle; font-size:11px; fill:#123; }
-line.c  { stroke-width:0.5; }
-
-text.c1, circle.c1 { fill:#800; font-size:12px; }
-text.c2, circle.c2 { fill:#f00; font-size:11px; }
-text.c3, circle.c3 { fill:#f80; font-size:10px; }
-text.c6, circle.c6 { fill:#880; font-size: 9px; }
-text.A { fill:#0a0; font-size:10px; text-anchor:end;}
-text.B { fill:#08f; font-size:10px; text-anchor:start }
-line.c1 { stroke:#800; }
-line.c2 { stroke:#f00; }
-line.c3 { stroke:#f80; }
-line.c6 { stroke:#880; }
 
 dt { color:#08f; }
 span.c  { display:inline-block; margin:3px; }
@@ -76,7 +51,6 @@ const sC = C
 		t: 2*(x1+x2+x3)
 	}
 })
-//sC.forEach(c => { console.log(JSON.stringify(c))})
 
 const r = []
 const xml = (e, attrs, end, text)=> {
@@ -93,66 +67,113 @@ const W1 = 150, W2 = 400, W3 = 30
 const T = 50
 const H = 700
 
+const styleBorder = `
+.border > line { stroke-width:4; stroke:#ff0; }
+.border > text { dominant-baseline: middle; text-anchor: middle; font-size:11px; fill:#123; }`
+const xmlBorder = (YB, YG)=> {
+	xml("g", { "class":"border" })
+	YB.forEach(y=> {
+		const yb = M + T + H*(y[0]/(y[0] + y[1]))
+		xml("line", { x1:W1, y1:yb, x2:W1+W2+W3, y2:yb }, true)
+	})
+	YG.forEach(g=> {
+		const x = W1+W2+W3
+		const y = M + T + H*(g[0]/(g[0] + g[1]))
+		xml("text", { x:x, y:y, transform:`rotate(-90, ${x}, ${y})` }, true, g[2])
+	})
+	xml("/g")
+}
+
+const styleSegT = `
+.seg-t > text {
+	dominant-baseline: middle; text-anchor: middle; font-family: monospace;
+	font-size:12px; fill:#abc;
+}
+.seg-t > line { stroke:#abc; }`
+const xmlSegT = (TX)=> {
+	xml("g", { "class":"seg-t" })
+	const dt = W2 / (TX.length - 1)
+	TX.forEach((t,i) => {
+		const x = W1 + i*dt
+		xml('text', { x:x, y:M+T-10 }, true, `${t[0] || "t=0"}s`)
+		xml("line", { x1:x, y1:M+T, x2:x, y2:M+T+H }, true)
+		if (t.length==4) {
+			const y = M + T + H*(t[1]/(t[1] + t[2]))
+			xml('text', { x:x-8, y:y, transform:`rotate(-90,${x-8},${y})` }, true, `${t[3]}`)
+		}
+	})
+	xml("/g")
+}
+
+const styleClasses = `
+.cc > text { dominant-baseline: middle; text-anchor:end; font-family: monospace; }
+.cc > line { stroke-width:0.5; }
+
+text.c1, circle.c1 { fill:#800; font-size:12px; }
+text.c2, circle.c2 { fill:#f00; font-size:11px; }
+text.c3, circle.c3 { fill:#f80; font-size:10px; }
+text.c6, circle.c6 { fill:#880; font-size: 9px; }
+text.A { fill:#0a0; font-size:10px; text-anchor:end;}
+text.B { fill:#08f; font-size:10px; text-anchor:start }
+line.c1 { stroke:#800; }
+line.c2 { stroke:#f00; }
+line.c3 { stroke:#f80; }
+line.c6 { stroke:#880; }`
+
+const xmlClasses = (CS, CX, sC)=> {
+	xml("g", {"class":"cc"})
+	CS.forEach((c,i)=> {
+		xml("text", { "class":`c${c}`, x:M+CX[c], y:10+i*10 }, true, `r${c}`)
+	})
+	xml("text", { "class":`A`, x:M+W1+W2/2 - 10, y:20 }, true, `A/&pi;`)
+	xml("text", { "class":`B`, x:M+W1+W2/2 + 10, y:20 }, true, `B/&pi;`)
+	sC.forEach(c => {
+		const C = c.r.c
+		const x1 = M + CX[C]
+		const x2 = W1 + M
+		const y = M + T + H*(c.r.p/(c.r.p + c.r.q))
+		const cx = W1 + W2*((c.t)+3)/6
+		xml("text",   { "class":`c${C}`, x:x1, y:y }, true, `${c.r.p}/${c.r.q}`)
+		xml("line",   { "class":`c${C}`, x1:x1+3, y1:y, x2:cx-50, y2:y }, true)
+		xml("circle", { "class":`c${C}`, cx:cx, cy:y, r:3 }, true)
+		xml("text",   { "class":"A", x:cx-5, y:y }, true, `${c.A.p}/${c.A.q}`)
+		xml("text",   { "class":"B", x:cx+5, y:y }, true, `${c.B.p}/${c.B.q}`)
+	})
+	xml("/g")
+}
+
 xml("svg", { width:2*M+W1+W2+W3, height:2*M+T+H, xmlns:"http://www.w3.org/2000/svg"})
+xml("defs")
+xml("style", { type:"text/css" }, true, 
+`<![CDATA[
+text { font-family: sans-serif; }
+${styleBorder}
+${styleSegT}
+${styleClasses}
+]]>`)
+xml("/defs")
 xml("g", { transform:"translate(0.5, 0.5)"})
 
-xml("g", { "class":"border" })
-const YB = [ [2,8], [4,6], [6,4], [8,2], [9,1], [28,2], [10,0] ]
-YB.forEach(y=> {
-	const yb = M + T + H*(y[0]/(y[0] + y[1]))
-	xml("line", { x1:W1, y1:yb, x2:W1+W2+W3, y2:yb }, true)
-})
-const YG = [ 
-	[1,9,"complex1"],[3,7,"complex2"],[5,5,"convex"],[7,3,"concave"],
-	[17,3,"complex3"],[55,5,"c4"],[29,1,"c5"]
+const YB = [ [2,8], [4,6], [6,4], [8,2], [9,1], [28,2], [10,0] ] // [ [p,q]... ]
+const YG = [ // [ p, q, text ]
+	[1,9,"Complex1"], [3,7,"Complex2"], [5,5,"Convex"], [7,3,"Concave"],
+	[17,3,"Complex3"], [55,5,"C4"], [29,1,"C5"]
 ]
-YG.forEach(g=> {
-	const x = W1+W2+W3
-	const y = M + T + H*(g[0]/(g[0] + g[1]))
-	xml("text", { x:x, y:y, transform:`rotate(-90, ${x}, ${y})` }, true, g[2])
-})
-xml("/g")
+xmlBorder(YB, YG)
 
-xml("g", { "class":"t" })
-const TX = [ [-3], [-2], [-1], 
-	[0,1,9,"degenerated"], [1,1,9,"equilaterals"], [2,1,9,"degenerated"], 
+const TX = [ // [ t, p, q, text ]
+	[-3], [-2], [-1], 
+	[0,1,9,"Degenerated"], [1,1,9,"Equilaterals"], [2,1,9,"Degenerated"], 
 	[3] 
 ]
-const dt = W2 / (TX.length - 1)
-TX.forEach((t,i) => {
-	const x = W1 + i*dt
-	xml('text', { x:x, y:M+T-10 }, true, `${t[0] || "t=0"}s`)
-	xml("line", { x1:x, y1:M+T, x2:x, y2:M+T+H }, true)
-	if (t.length==4) {
-		const y = M + T + H*(t[1]/(t[1] + t[2]))
-		xml('text', { x:x-8, y:y, transform:`rotate(-90,${x-8},${y})` }, true, `${t[3]}`)
-	}
-})
-xml("/g")
+xmlSegT(TX)
 
 const CS = [ 1, 2, 3, 6 ]
 const CX = { "1":20, "2":30, "3":60, "6":90 }
+xmlClasses(CS, CX, sC)
 
-xml("g", {"class":"c"})
-CS.forEach((c,i)=> {
-	xml("text", { "class":`c c${c}`, x:M+CX[c], y:10+i*10 }, true, `r${c}`)
-})
-xml("text", { "class":`A`, x:M+W1+W2/2 - 10, y:20 }, true, `A/&pi;`)
-xml("text", { "class":`B`, x:M+W1+W2/2 + 10, y:20 }, true, `B/&pi;`)
-sC.forEach(c => {
-	const C = c.r.c
-	const x1 = M + CX[C]
-	const x2 = W1 + M
-	const y = M + T + H*(c.r.p/(c.r.p + c.r.q))
-	const cx = W1 + W2*((c.t)+3)/6
-	xml("text",   { "class":`c c${C}`, x:x1, y:y }, true, `${c.r.p}/${c.r.q}`)
-	xml("line",   { "class":`c c${C}`, x1:x1+3, y1:y, x2:cx-50, y2:y }, true)
-	xml("circle", { "class":`c${C}`, cx:cx, cy:y, r:3 }, true)
-	xml("text",   { "class":"A", x:cx-5, y:y }, true, `${c.A.p}/${c.A.q}`)
-	xml("text",   { "class":"B", x:cx+5, y:y }, true, `${c.B.p}/${c.B.q}`)
-})
-xml("/g")
-xml("/g")
+xml("/g") // translate
+
 xml("/svg")
 document.getElementById("svg1").innerHTML = r.join("\n")
 
