@@ -8,6 +8,7 @@
 <script type="text/javascript" src="SVG.js"></script>
 <style>
 
+body { font-family: sans-serif; }
 dt { color:#08f; }
 span.c  { display:inline-block; margin:3px; }
 span.c1 { border:3px solid #800; }
@@ -15,7 +16,7 @@ span.c2 { border:3px solid #f00; }
 span.c3 { border:3px solid #f80; }
 span.c6 { border:3px solid #880; }
 
-div.r { text-align: center; font-size:14px; color:#abc;}
+div.r { text-align: center; font-size:15px; color:#789;}
 
 </style>
 </head>
@@ -68,7 +69,7 @@ const T = 50
 const H = 700
 
 const styleBorder = `
-.border > line { stroke-width:4; stroke:#ff0; }
+.border > line { stroke-width:2; stroke:#ff0; }
 .border > text { dominant-baseline: middle; text-anchor: middle; font-size:11px; fill:#123; }`
 const xmlBorder = (YB, YG)=> {
 	xml("g", { "class":"border" })
@@ -154,9 +155,34 @@ ${styleClasses}
 xml("/defs")
 xml("g", { transform:"translate(0.5, 0.5)"})
 
-const YB = [ [2,8], [4,6], [6,4], [8,2], [9,1], [28,2], [10,0] ] // [ [p,q]... ]
+const YB = [
+	[  0,10], // D1
+	[  2, 8], // D2
+	[  4, 6], // D3
+	[  6, 4], // D4
+	[  8, 2], // D5
+	[ 42, 8], // D6
+	[ 26, 4], // D7
+	[  9, 1], // D8
+	[ 28, 2], // D9
+	[ 19, 1], // D10
+	[287,13], // D11 (r30?)
+	[ 48, 2], // D12
+	[ 49, 1], // D13
+	[ 10, 0], // D14
+]
+/*const YB = [ 
+	[0,10], 
+	[2,8], 
+	[4,6], 
+	[6,4], 
+	[8,2], 
+	[9,1], 
+	[28,2], 
+	[10,0] 
+] // [ [p,q]... ]*/
 const YG = [ // [ p, q, text ]
-	[1,9,"Complex1"], [3,7,"Complex2"], [5,5,"Convex"], [7,3,"Concave"],
+	[1,9,"NS1"], [3,7,"NS2"], [5,5,"Convex"], [7,3,"Concave"],
 	[17,3,"Complex3"], [55,5,"C4"], [29,1,"C5"]
 ]
 xmlBorder(YB, YG)
@@ -177,7 +203,11 @@ xml("/g") // translate
 xml("/svg")
 document.getElementById("svg1").innerHTML = r.join("\n")
 
+const $groups = []
 
+
+
+/*
 const groups = [
 	{ r:[0,10],     d:1, P:[3,5], n:"t < 0. Two regular dodecagons sections" },
 	{ r:[0,10,2,8], x:1, s:[2,5], n:"t < 0." },
@@ -198,7 +228,6 @@ const groups = [
 	{ r:[10,0],     d:8,          n:"t = 2" }
 ]
 
-const $groups = []
 $groups.push("<dl>")
 groups.forEach(g => {
 	const _B = (p,q)=> `${p}/${(p + 6*q)/5}`
@@ -247,48 +276,76 @@ groups.forEach(g => {
 	$groups.push("</dd>")
 })
 $groups.push("</dl>")
+*/
 
 
-
-
-const min = 8 * 2*3*5, max = 10 * 2*3*5
+const S = 2*3*2*5 // 60
 
 const brs = [ 
-	[ "D5",  240, "C3"],
-	[ "D6",  252, "C4. Includes {7/2}"],
-	[ "D7",  260, "C5"],
-	[ "D8",  270, "C6"],
-	[ "D9",  280, "C7"],
-	[ "D10", 285, "C8"],
-	[ "D11", 287, "C9"],
-	[ "D12", 288, "C10. Includes {7/3}"],
-	[ "D13", 294, "C11"],
-	[ "D14", 300, ""]
+	[  "1", S*(0),         1, "No simples 1." ],
+	[  "2", S*(2),         1, "No simples 2." ],
+	[  "3", S*(4),         1, "Concaves. Includes {7}." ],
+	[  "4", S*(6),         1, "Convexes." ],
+	[  "5", S*(8),         1, "No simples 3" ], // 480
+	[  "6", S*(8 +  2/5 ), 1, "No simples 4. Includes {7/2}." ], // 504
+	[  "7", S*(8 +  2/3 ), 1, "No simples 5." ], // 520
+	[  "8", S*(9),         1, "No simples 6." ], // 540
+	[  "9", S*(9 +  1/3 ), 1, "No simples 7." ], // 560
+	[ "10", S*(9 +  1/2 ), 1, "No simples 8." ],
+	[ "11", S*(9 + 17/30), 1, "No simples 9." ], // r30 = 287/13
+	[ "12", S*(9 +  3/5 ), 1, "No simples 10. Includes {7/3}" ],
+	[ "13", S*(9 +  4/5 ), 1, "No simples 11." ],
+	[ "14", S*(10),        1, "" ]
 ]
 
-const isBr = (x,y)=> {
+const isBr = (p)=> {
 	for (let i=0; i < brs.length; i++) {
 		const br = brs[i]
-		if (x == br[1])
+		if (p == br[1])
 			return br
 	}
 	return null
 }
 
-for (let x=min; x <= max; x++) {
-	const br = isBr(x)
+const data = []
+const min = 0, max = 10 * S
+for (let p=min; p <= max; p++) {
+	const q = max - p
+	let f = 1
+	let c = 0
+	if (p % 60 == 0) { c =  1; f = 60; } else
+	if (p % 30 == 0) { c =  2; f = 30; } else
+	if (p % 20 == 0) { c =  3; f = 20; } else
+	if (p % 15 == 0) { c =  4; f = 15; } else
+	if (p % 12 == 0) { c =  5; f = 12; } else
+	if (p % 10 == 0) { c =  6; f = 10; } else
+	if (p %  6 == 0) { c = 10; f =  6; } else
+	if (p %  5 == 0) { c = 12; f =  5; } else
+	if (p %  4 == 0) { c = 15; f =  4; } else
+	if (p %  3 == 0) { c = 20; f =  3; } else
+	if (p %  2 == 0) { c = 30; f =  2; } else
+	if (p %  1 == 0) { c = 60; f =  1; }
+
+	data.push({ p:p/f, q:q/f, c:c, i:p })
+
+
+	const br = isBr(p)
 	if (br)
-		$groups.push(`<div>${br[0]}</div>`)
+		$groups.push(`<hr/><div>Single degenerated case ${br[0]}.</div>`)
+
 	$groups.push(`<span class="c">`)
 	$groups.push("<div>")
-	$groups.push(`<div class="r">${x}/${max - x}</div>`)
+	$groups.push(`<div class="r">r<sub>${c}</sub> = ${p/f}/${q/f}</div>`)
 	const svg = new SVG()
-	$groups.push(svg.caseSvg(80, 80, x + "/" + (max - x)))
+	$groups.push(svg.caseSvg(80, 80, `${p/f}/${q/f}`))
 	$groups.push("</div>")
 	$groups.push("</span>")
 	if (br)
-		$groups.push(`<div>${br[2]}</div>`)
+		$groups.push(`<hr/><div>Group. ${br[3]}</div>`)
 }
+
+
+data.forEach(d => { console.log(JSON.stringify(d))})
 
 document.getElementById("groups").innerHTML = $groups.join("\n")
 </script>
