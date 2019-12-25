@@ -9,80 +9,229 @@
 <style>
 
 body { font-family: sans-serif; }
-dt { color:#08f; }
+.case { border:1px solid #abc; }
 span.c  { display:inline-block; margin:3px; }
 span.c1 { border:3px solid #800; }
 span.c2 { border:3px solid #f00; }
 span.c3 { border:3px solid #f80; }
 span.c6 { border:3px solid #880; }
 
-div.r { text-align: center; font-size:15px; color:#789;}
+
+.r { text-align: center; font-size:15px; color:#789;}
+.A { text-align: center; color:#0a0; font-size:15px; }
+.B { text-align: center; color:#08f; font-size:15px; }
 
 </style>
 </head>
 
 <body>
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
-<div>Isoceles heptagons classes r1, r2, r3, and r6. Not shown r4 and r5.
+<div>Isoceles heptagons classes r1, r2, r3, r6.
 <div id="svg1"></div>
 <div id="groups"></div>
 
 
 </body>
 <script>
-const C = []
-for (let i=0; i <= 60; i++) {
-	if (i % 6 == 0) { C.push({ r: { c:1, p:i/6, q:10-i/6 }}) } else 
-	if (i % 3 == 0) { C.push({ r: { c:2, p:i/3, q:20-i/3 }}) } else
-	if (i % 2 == 0) { C.push({ r: { c:3, p:i/2, q:30-i/2 }}) } else
-	if (i % 1 == 0) { C.push({ r: { c:6, p:i/1, q:60-i/1 }}) }
-}
-const sC = C
-.sort((a,b)=> { return a.r.p/a.r.q - b.r.p/b.r.q })
-.map(c => {
-	const i = c.r.p / c.r.q
-	const A = 5*Math.PI / (i + 6)
-	const x1 = Math.cos(1*A)
-	const x2 = Math.cos(2*A - 1*Math.PI)
-	const x3 = Math.cos(3*A)
-	return {
-		r: c.r,
-		A: { p: c.r.q , q: (c.r.p + 6*c.r.q)/5 },
-		B: { p: c.r.p , q: (c.r.p + 6*c.r.q)/5 },
-		t: 2*(x1+x2+x3)
-	}
-})
 
-const r = []
-const xml = (e, attrs, end, text)=> {
-	const cols = []
-	cols.push(e)
-	if (attrs)
-		Object.keys(attrs).forEach(k => { cols.push(`${k}="${attrs[k]}"`) })
-	const tail = (!end) ? ">" : (!text) ? "/>" : `>${text}</${e}>`
-	r.push(`<${cols.join(" ")}${tail}`)
+const H60 = function()
+{
+	this.types = [ // 27 types, 14 degenerated, 13 groups
+		[  0,10] /* D1  */, [  1, 9], // NS1
+		[  2, 8] /* D2  */, [  3, 7], // NS2
+		[  4, 6] /* D3  */, [  5, 5], // Convex {7}
+		[  6, 4] /* D4  */, [  7, 3], // Concave
+		[  8, 2] /* D5  */, [ 25, 5], // NS3
+		[ 42, 8] /* D6  */, [ 17, 3], // NS4 {7/2}
+		[ 26, 4] /* D7  */, [ 35, 5], // NS5
+		[  9, 1] /* D8  */, [ 37, 3], // NS6
+		[ 28, 2] /* D9  */, [ 47, 3], // NS7
+		[ 19, 1] /* D10 */, [143, 7], // NS8
+		[287,13] /* D11 */, [115, 5], // NS9
+		[ 48, 2] /* D12 */, [ 29, 1], // NS10 {7/3}
+		[ 49, 1] /* D13 */, [ 59, 1], // NS11
+		[ 10, 0] // D14
+	]
+
+	this.YB = [
+		[  0,10], // D1
+		[  2, 8], // D2
+		[  4, 6], // D3
+		[  6, 4], // D4
+		[  8, 2], // D5
+		[ 42, 8], // D6
+		[ 26, 4], // D7
+		[  9, 1], // D8
+		[ 28, 2], // D9
+		[ 19, 1], // D10
+		[287,13], // D11 (r30?)
+		[ 48, 2], // D12
+		[ 49, 1], // D13
+		[ 10, 0], // D14
+	]
+	this.YG = [
+		{ t:"Non Simple 1",  max:4  }, //  D1- D2
+		{ t:"Non Simple 2",  max:4  }, //  D2- D3
+		{ t:"Convex",        max:5  }, //  D3- D4
+		{ t:"Concave",       max:5  }, //  D4- D5
+		{ t:"Non Simple 3",  max:20 }, //  D5- D6
+		{ t:"Non Simple 4",  max:20 }, //  D6- D7
+		{ t:"Non Simple 5",  max:20 }, //  D7- D8
+		{ t:"Non Simple 6",  max:30 }, //  D8- D9
+		{ t:"Non Simple 7",  max:30 }, //  D9-D10
+		{ t:"Non Simple 8",  max:60 }, // D10-D11
+		{ t:"Non Simple 9",  max:60 }, // D11-D12
+		{ t:"Non Simple 10", max:60 }, // D12-D13
+		{ t:"Non Simple 11", max:60 }, // D13-D14
+	]
+	this.YBreduced = this.YB.filter(f => { return f[0]+f[1] <= 20})
+	this.YGreduced = [
+		[1,9, "NS 1"],     //  D1 -- D2  : 0,10 -  2,8 => 1,9
+		[3,7, "NS 2"],     //  D2 -- D3  : 2,8  -  4,6 => 3,7
+		[5,5, "Convex"],   //  D3 -- D4  : 4,6  -  6,4 => 5,5
+		[7,3, "Concave"],  //  D4 -- D5  : 6,4  -  8,2 => 7,3
+		[17,3,"NS 3-5"],   //  D5 -- D8  : 8,2  -  9,1 => 1,1
+		[37,3,"NS 6-7"],   //  D8 -- D10 : 18,2 - 19,1 => 18.5/1.5
+		[39,1, "NS 8-11"], // D10 -- D14 : 19,1 - 20,0 => 19.5/0.5
+	]
+
+	const S = 2*3*2*5 // 60
+	const array = []
+	const min = 0, max = 10 * S
+	for (let p=min; p <= max; p++) {
+		const q = max - p
+		let f = 1
+		let c = 0
+		if (p % 60 == 0) { c =  1; f = 60; } else
+		if (p % 30 == 0) { c =  2; f = 30; } else
+		if (p % 20 == 0) { c =  3; f = 20; } else
+		if (p % 15 == 0) { c =  4; f = 15; } else
+		if (p % 12 == 0) { c =  5; f = 12; } else
+		if (p % 10 == 0) { c =  6; f = 10; } else
+		if (p %  6 == 0) { c = 10; f =  6; } else
+		if (p %  5 == 0) { c = 12; f =  5; } else
+		if (p %  4 == 0) { c = 15; f =  4; } else
+		if (p %  3 == 0) { c = 20; f =  3; } else
+		if (p %  2 == 0) { c = 30; f =  2; } else
+		if (p %  1 == 0) { c = 60; f =  1; }
+		const P = p/f
+		const Q = q/f
+		const A = { p: Q , q: (P + 6*Q)/5 }
+		const B = { p: P , q: (P + 6*Q)/5 }
+		array.push({ i:p, p:P, q:Q, c:c, A:A, B:B })
+	}
+
+	this.array = ()=> { return array }
+
+	this.single = (p, q)=> {
+		const a = array.filter(d => { return d.p == p && d.q == q })
+		return a.length ? a[0] : {}
+	}
+	this.group = (p1, q1, p2, q2)=> {
+		const first = this.single(p1, q1)
+		const last  = this.single(p2, q2)
+		return array.filter(d => { return d.i > first.i && d.i < last.i })
+	}
 }
+
+const H6 = function()
+{
+	const C = []
+	for (let i=0; i <= 60; i++) {
+		if (i % 6 == 0) { C.push({ r: { c:1, p:i/6, q:10-i/6 }}) } else 
+		if (i % 3 == 0) { C.push({ r: { c:2, p:i/3, q:20-i/3 }}) } else
+		if (i % 2 == 0) { C.push({ r: { c:3, p:i/2, q:30-i/2 }}) } else
+		if (i % 1 == 0) { C.push({ r: { c:6, p:i/1, q:60-i/1 }}) }
+	}
+	const sC = C
+	.sort((a,b)=> { return a.r.p/a.r.q - b.r.p/b.r.q })
+	.map(c => {
+		const i = c.r.p / c.r.q
+		const A = 5*Math.PI / (i + 6)
+		const x1 = Math.cos(1*A)
+		const x2 = Math.cos(2*A - 1*Math.PI)
+		const x3 = Math.cos(3*A)
+		return {
+			r: c.r,
+			A: { p: c.r.q , q: (c.r.p + 6*c.r.q)/5 },
+			B: { p: c.r.p , q: (c.r.p + 6*c.r.q)/5 },
+			t: 2*(x1+x2+x3)
+		}
+	})
+	this.sC = sC
+}
+
+const XML = function()
+{
+	const r = []
+	const $ = (e, clazz, attrs, end, text)=> {
+		const cols = []
+		cols.push(e)
+		if (clazz)
+			cols.push(`class=${clazz}`)
+		if (attrs)
+			Object.keys(attrs).forEach(k => { 
+				cols.push(`${k}="${attrs[k]}"`) 
+			})
+		const tail = (!end) ? ">" : (!text) ? "/>" : `>${text}</${e}>`
+		r.push(`<${cols.join(" ")}${tail}`)
+	}
+	const $$ = (e, c, attrs, C) => { 
+		$(e, c, attrs)
+		C()
+		$(`/${e}`) 
+	}
+	const $$$ = (e, c, attrs, C)=> {  
+		if (typeof C === "function") return $$(e, c, attrs, C);
+		$ (e,   c, attrs, true, C) 
+	}
+	this.id = (id)=> {
+		document.getElementById(id).innerHTML = r.join("\n")
+	}
+	this.circle = (c, attrs)   => {  $("circle", c, attrs, true)    }
+	this.text   = (c, attrs, t)=> {  $("text",   c, attrs, true, t) }
+	this.line   = (c, attrs)   => {  $("line",   c, attrs, true)    }
+	this.style  = (c, attrs, t)=> {  $("style",  c, attrs, true, t) }
+
+	this.g      = (c, attrs, C)=> { $$("g",      c, attrs, C) }
+	this.svg    = (c, attrs, C)=> { $$("svg",    c, attrs, C) }
+	this.defs   = (c, attrs, C)=> { $$("defs",   c, attrs, C) }
+
+	this.b      = (c, attrs, C)=> { $$$("b",    c, attrs, C) }
+	this.span   = (c, attrs, C)=> { $$$("span", c, attrs, C) }
+	this.div    = (c, attrs, C)=> { $$$("div",  c, attrs, C) }
+	this.dl     = (c, attrs, C)=> { $$$("dl",   c, attrs, C) }
+	this.dt     = (c, attrs, C)=> { $$$("dt",   c, attrs, C) }
+	this.dd     = (c, attrs, C)=> { $$$("dd",   c, attrs, C) }
+	this.h2     = (c, attrs, C)=> { $$$("h2",   c, attrs, C) }
+}
+
+
+const h6 = new H6()
+const h60 = new H60()
+
+const xml = new XML()
 
 const M = 15
 const W1 = 150, W2 = 400, W3 = 30
 const T = 50
-const H = 700
+const H = 1000
 
 const styleBorder = `
 .border > line { stroke-width:2; stroke:#ff0; }
 .border > text { dominant-baseline: middle; text-anchor: middle; font-size:11px; fill:#123; }`
 const xmlBorder = (YB, YG)=> {
-	xml("g", { "class":"border" })
-	YB.forEach(y=> {
-		const yb = M + T + H*(y[0]/(y[0] + y[1]))
-		xml("line", { x1:W1, y1:yb, x2:W1+W2+W3, y2:yb }, true)
+	xml.g("border", {}, ()=> {
+		YB.forEach(y=> {
+			const yb = M + T + H*(y[0]/(y[0] + y[1]))
+			xml.line(null, { x1:W1, y1:yb, x2:W1+W2+W3, y2:yb })
+		})
+		YG.forEach(g=> {
+			const x = W1+W2+W3
+			const y = M + T + H*(g[0]/(g[0] + g[1]))
+			xml.text("", { x:x, y:y, transform:`rotate(-90, ${x}, ${y})` }, g[2])
+		})
 	})
-	YG.forEach(g=> {
-		const x = W1+W2+W3
-		const y = M + T + H*(g[0]/(g[0] + g[1]))
-		xml("text", { x:x, y:y, transform:`rotate(-90, ${x}, ${y})` }, true, g[2])
-	})
-	xml("/g")
 }
 
 const styleSegT = `
@@ -92,18 +241,19 @@ const styleSegT = `
 }
 .seg-t > line { stroke:#abc; }`
 const xmlSegT = (TX)=> {
-	xml("g", { "class":"seg-t" })
-	const dt = W2 / (TX.length - 1)
-	TX.forEach((t,i) => {
-		const x = W1 + i*dt
-		xml('text', { x:x, y:M+T-10 }, true, `${t[0] || "t=0"}s`)
-		xml("line", { x1:x, y1:M+T, x2:x, y2:M+T+H }, true)
-		if (t.length==4) {
-			const y = M + T + H*(t[1]/(t[1] + t[2]))
-			xml('text', { x:x-8, y:y, transform:`rotate(-90,${x-8},${y})` }, true, `${t[3]}`)
-		}
+	xml.g("seg-t", {}, ()=> {
+		const dt = W2 / (TX.length - 1)
+		TX.forEach((t,i) => {
+			const x = W1 + i*dt
+			xml.text(null, { x:x, y:M+T-10 }, `${t[0] || "t=0"}s`)
+			xml.line(null, { x1:x, y1:M+T, x2:x, y2:M+T+H })
+			if (t.length==4) {
+				const y = M + T + H*(t[1]/(t[1] + t[2]))
+				const a = { x:x-8, y:y, transform:`rotate(-90,${x-8},${y})` }
+				xml.text(null, a, `${t[3]}`)
+			}
+		})
 	})
-	xml("/g")
 }
 
 const styleClasses = `
@@ -122,231 +272,117 @@ line.c3 { stroke:#f80; }
 line.c6 { stroke:#880; }`
 
 const xmlClasses = (CS, CX, sC)=> {
-	xml("g", {"class":"cc"})
-	CS.forEach((c,i)=> {
-		xml("text", { "class":`c${c}`, x:M+CX[c], y:10+i*10 }, true, `r${c}`)
+	xml.g("cc", {}, ()=> {
+		CS.forEach((c,i)=> {
+			xml.text(`c${c}`, { x:M+CX[c], y:10+i*10 }, `r${c}`)
+		})
+		xml.text(`A`, { x:M+W1+W2/2 - 10, y:20 }, `A/&pi;`)
+		xml.text(`B`, { x:M+W1+W2/2 + 10, y:20 }, `B/&pi;`)
+		sC.forEach(c => {
+			const C = c.r.c
+			const x1 = M + CX[C]
+			const x2 = W1 + M
+			const y = M + T + H*(c.r.p/(c.r.p + c.r.q))
+			const cx = W1 + W2*((c.t)+3)/6
+			xml.text  (`c${C}`, { x:x1, y:y }, `${c.r.p}/${c.r.q}`)
+			xml.line  (`c${C}`, { x1:x1+3, y1:y, x2:cx-50, y2:y })
+			xml.circle(`c${C}`, { cx:cx, cy:y, r:3 })
+			xml.text  ("A",     { x:cx-5, y:y }, `${c.A.p}/${c.A.q}`)
+			xml.text  ("B",     { x:cx+5, y:y }, `${c.B.p}/${c.B.q}`)
+		})
 	})
-	xml("text", { "class":`A`, x:M+W1+W2/2 - 10, y:20 }, true, `A/&pi;`)
-	xml("text", { "class":`B`, x:M+W1+W2/2 + 10, y:20 }, true, `B/&pi;`)
-	sC.forEach(c => {
-		const C = c.r.c
-		const x1 = M + CX[C]
-		const x2 = W1 + M
-		const y = M + T + H*(c.r.p/(c.r.p + c.r.q))
-		const cx = W1 + W2*((c.t)+3)/6
-		xml("text",   { "class":`c${C}`, x:x1, y:y }, true, `${c.r.p}/${c.r.q}`)
-		xml("line",   { "class":`c${C}`, x1:x1+3, y1:y, x2:cx-50, y2:y }, true)
-		xml("circle", { "class":`c${C}`, cx:cx, cy:y, r:3 }, true)
-		xml("text",   { "class":"A", x:cx-5, y:y }, true, `${c.A.p}/${c.A.q}`)
-		xml("text",   { "class":"B", x:cx+5, y:y }, true, `${c.B.p}/${c.B.q}`)
-	})
-	xml("/g")
 }
 
-xml("svg", { width:2*M+W1+W2+W3, height:2*M+T+H, xmlns:"http://www.w3.org/2000/svg"})
-xml("defs")
-xml("style", { type:"text/css" }, true, 
-`<![CDATA[
-text { font-family: sans-serif; }
-${styleBorder}
-${styleSegT}
-${styleClasses}
-]]>`)
-xml("/defs")
-xml("g", { transform:"translate(0.5, 0.5)"})
-
-const YB = [
-	[  0,10], // D1
-	[  2, 8], // D2
-	[  4, 6], // D3
-	[  6, 4], // D4
-	[  8, 2], // D5
-	[ 42, 8], // D6
-	[ 26, 4], // D7
-	[  9, 1], // D8
-	[ 28, 2], // D9
-	[ 19, 1], // D10
-	[287,13], // D11 (r30?)
-	[ 48, 2], // D12
-	[ 49, 1], // D13
-	[ 10, 0], // D14
-]
-/*const YB = [ 
-	[0,10], 
-	[2,8], 
-	[4,6], 
-	[6,4], 
-	[8,2], 
-	[9,1], 
-	[28,2], 
-	[10,0] 
-] // [ [p,q]... ]*/
-const YG = [ // [ p, q, text ]
-	[1,9,"NS1"], [3,7,"NS2"], [5,5,"Convex"], [7,3,"Concave"],
-	[17,3,"Complex3"], [55,5,"C4"], [29,1,"C5"]
-]
-xmlBorder(YB, YG)
-
-const TX = [ // [ t, p, q, text ]
-	[-3], [-2], [-1], 
-	[0,1,9,"Degenerated"], [1,1,9,"Equilaterals"], [2,1,9,"Degenerated"], 
-	[3] 
-]
-xmlSegT(TX)
-
-const CS = [ 1, 2, 3, 6 ]
-const CX = { "1":20, "2":30, "3":60, "6":90 }
-xmlClasses(CS, CX, sC)
-
-xml("/g") // translate
-
-xml("/svg")
-document.getElementById("svg1").innerHTML = r.join("\n")
-
-const $groups = []
-
-
-
-/*
-const groups = [
-	{ r:[0,10],     d:1, P:[3,5], n:"t < 0. Two regular dodecagons sections" },
-	{ r:[0,10,2,8], x:1, s:[2,5], n:"t < 0." },
-	{ r:[2,8],      d:2, P:[2,6], n:"t < 0. Two regular decagons sections" },
-	{ r:[2,8,4,6],  x:2, s:[1,6], n:"t < 0." },
-	{ r:[4,6],      d:3, P:[1,7], n:"t = 0. Two regular octagons sections" },
-	{ r:[4,6,6,4],  convex:true,  n:"0 < t < 2. Contains regular heptagon {7}"},
-	{ r:[6,4],      d:4,          n:"t = 2. Two regular hexagons section" },
-	{ r:[6,4,8,2],  concave:true, n:"t > 2" },
-	{ r:[8,2],      d:5, P:[3,5], n:"t = 2. Two squares", s:[3,4] },
-	
-	{ r:[8,2,9,1],  x:"3", s:[2,5], n:"2 > t > 0" },
-	{ r:[9,1],      d:6, s:[0,0], n:"t = 0. Two triangles" },
-
-	{ r:[9,1,28,2], x:4, s:[0,0], n:"t < 0" },
-	{ r:[28,2],     d:7, s:[0,0], n:"t = 0" },
-	{ r:[28,2,10,0], x:5,         n:"t > 0" },
-	{ r:[10,0],     d:8,          n:"t = 2" }
-]
-
-$groups.push("<dl>")
-groups.forEach(g => {
-	const _B = (p,q)=> `${p}/${(p + 6*q)/5}`
-	const A = g.r[0]
-	const B = g.r[1]
-	const min = _B(A,B)
-	switch (g.r.length) {
-		case 2: {
-			$groups.push(`<dt>B/&pi; = ${min}</dt>`)
-			$groups.push("<dd>")
-			const d = `Degenerated case ${g.d}.`
-			const i = []
-			if (g.P) i.push(`P<sub>${g.P[0]}</sub>~P<sub>${g.P[1]}</sub>`)
-			if (g.s) i.push(`s<sub>${g.s[0]}</sub>~s<sub>${g.s[1]}</sub>`)
-			const I = (i.length) ? `Intersection: ${i.join(", ")}.` : ""
-			$groups.push(`<div>${d} ${I} ${g.n}.</div>`)
-			sC.forEach(c => {
-				if (A == c.r.p && B == c.r.q) {
-					$groups.push(`<span class="c c${c.r.c}">`)
-					const svg = new SVG()
-					$groups.push(svg.caseSvg(100, 100, A + "/" + B))
-					$groups.push("</span>")
-				}
-			}) }
-			break
-		case 4:
-			const C = g.r[2]
-			const D = g.r[3]
-			$groups.push(`<dt>${min} < B/&pi; < ${_B(C,D)}</dt>`)
-			$groups.push("<dd>")
-			const d = (g.x) ? `Complex group case ${g.x}.` : 
-				(g.convex) ? `Convex group.` : `Concave group.`
-			const i = (g.s) ? `Intersection: s<sub>${g.s[0]}</sub> ~ s<sub>${g.s[1]}</sub>.` : ""
-			$groups.push(`<div>${d} ${i} ${g.n}</div>`)
-			sC.forEach(c => {
-				const r = c.r.p / c.r.q
-				if (r > A/B && r < C/D) {
-					$groups.push(`<span class="c c${c.r.c}">`)
-					const svg = new SVG()
-					$groups.push(svg.caseSvg(100, 100, c.r.p + "/" + c.r.q))
-					$groups.push("</span>")
-				}
-			})
-			break
-	}
-	$groups.push("</dd>")
+const sss = { width:2*M+W1+W2+W3, height:2*M+T+H, xmlns:"http://www.w3.org/2000/svg" }
+xml.svg("case", sss, ()=> {
+	xml.defs(null, {}, ()=> {
+		xml.style(null, { type:"text/css" }, 
+			`<![CDATA[
+			text { font-family: sans-serif; }
+			${styleBorder}
+			${styleSegT}
+			${styleClasses}
+			]]>`
+		)
+	})
+	xml.g(null, { transform:"translate(0.5, 0.5)"}, ()=> {
+		xmlBorder(h60.YBreduced, h60.YGreduced)
+		const TX = [ // [ t, p, q, text ]
+			[-3], [-2], [-1], 
+			[0,1,9,"Degenerated"], [1,1,9,"Equilaterals"], [2,1,9,"Degenerated"], 
+			[3] 
+		]
+		xmlSegT(TX)
+		const CS = [ 1, 2, 3, 6 ]
+		const CX = { "1":20, "2":30, "3":60, "6":90 }
+		xmlClasses(CS, CX, h6.sC)
+	})
 })
-$groups.push("</dl>")
-*/
+xml.id("svg1")
 
+const $g = new XML()
 
-const S = 2*3*2*5 // 60
-
-const brs = [ 
-	[  "1", S*(0),         1, "No simples 1." ],
-	[  "2", S*(2),         1, "No simples 2." ],
-	[  "3", S*(4),         1, "Concaves. Includes {7}." ],
-	[  "4", S*(6),         1, "Convexes." ],
-	[  "5", S*(8),         1, "No simples 3" ], // 480
-	[  "6", S*(8 +  2/5 ), 1, "No simples 4. Includes {7/2}." ], // 504
-	[  "7", S*(8 +  2/3 ), 1, "No simples 5." ], // 520
-	[  "8", S*(9),         1, "No simples 6." ], // 540
-	[  "9", S*(9 +  1/3 ), 1, "No simples 7." ], // 560
-	[ "10", S*(9 +  1/2 ), 1, "No simples 8." ],
-	[ "11", S*(9 + 17/30), 1, "No simples 9." ], // r30 = 287/13
-	[ "12", S*(9 +  3/5 ), 1, "No simples 10. Includes {7/3}" ],
-	[ "13", S*(9 +  4/5 ), 1, "No simples 11." ],
-	[ "14", S*(10),        1, "" ]
-]
-
-const isBr = (p)=> {
-	for (let i=0; i < brs.length; i++) {
-		const br = brs[i]
-		if (p == br[1])
-			return br
-	}
-	return null
+const pushSvg = (h, wh, t)=> {
+	$g.span("c", {}, ()=> {
+		$g.div("case", {}, ()=> {
+			if (t)
+				$g.div(null, {}, t)
+			if (h.c)
+				$g.div("r", {}, `r<sub>${h.c}</sub> = ${h.p}/${h.q}`)
+			if (h.A)
+				$g.div("A", {}, `A/&pi; = ${h.A.p}/${h.A.q}`)
+			if (h.B)
+				$g.div("B", {}, `B/&pi; = ${h.B.p}/${h.B.q}`)
+			const svg = new SVG()
+			$g.div(null, {}, svg.caseSvg(wh, wh, `${h.p}/${h.q}`))
+		})
+	})
 }
 
-const data = []
-const min = 0, max = 10 * S
-for (let p=min; p <= max; p++) {
-	const q = max - p
-	let f = 1
-	let c = 0
-	if (p % 60 == 0) { c =  1; f = 60; } else
-	if (p % 30 == 0) { c =  2; f = 30; } else
-	if (p % 20 == 0) { c =  3; f = 20; } else
-	if (p % 15 == 0) { c =  4; f = 15; } else
-	if (p % 12 == 0) { c =  5; f = 12; } else
-	if (p % 10 == 0) { c =  6; f = 10; } else
-	if (p %  6 == 0) { c = 10; f =  6; } else
-	if (p %  5 == 0) { c = 12; f =  5; } else
-	if (p %  4 == 0) { c = 15; f =  4; } else
-	if (p %  3 == 0) { c = 20; f =  3; } else
-	if (p %  2 == 0) { c = 30; f =  2; } else
-	if (p %  1 == 0) { c = 60; f =  1; }
+$g.h2(null, {}, "Types")
+$g.div(null, {}, ()=> {
+	h60.types.forEach((t,i) => {
+		pushSvg({ p:t[0], q:t[1] }, 120, `Type ${i+1}`)
+	})
+})
 
-	data.push({ p:p/f, q:q/f, c:c, i:p })
-
-
-	const br = isBr(p)
-	if (br)
-		$groups.push(`<hr/><div>Single degenerated case ${br[0]}.</div>`)
-
-	$groups.push(`<span class="c">`)
-	$groups.push("<div>")
-	$groups.push(`<div class="r">r<sub>${c}</sub> = ${p/f}/${q/f}</div>`)
-	const svg = new SVG()
-	$groups.push(svg.caseSvg(80, 80, `${p/f}/${q/f}`))
-	$groups.push("</div>")
-	$groups.push("</span>")
-	if (br)
-		$groups.push(`<hr/><div>Group. ${br[3]}</div>`)
+$g.h2(null, {}, "Types details")
+{
+	let t = 1
+	$g.dl(null, {}, ()=> {
+		for (let i=0; i < h60.YB.length; i++) {
+			const yb1 = h60.YB[i]
+			const p = yb1[0]
+			const q = yb1[1]
+			const single = h60.single(p, q)
+			$g.dt(null, {}, ()=> {
+				$g.b(null, {}, `Type ${t++}.`)
+				$g.span(null, {}, `Single degenerated case ${i+1}:`)
+			})
+			$g.dd(null, {}, ()=> {
+				pushSvg(single, 80)
+			})
+			if (i < h60.YB.length - 1) {
+				const yb2 = h60.YB[i+1]
+				const yg = h60.YG[i]
+				$g.dt(null, {}, ()=> {
+					$g.b(null, {}, `Type ${t++}.`)
+					$g.span(null, {}, `Group ${yg.t}. Examples:`)
+				})
+				$g.dd(null, {}, ()=> {
+					const g = h60.group(yb1[0], yb1[1], yb2[0], yb2[1])
+					$g.span(null, {}, "...")
+					g.forEach(g => {
+						if (yg.max >= g.c) {
+							pushSvg(g, 80)
+							$g.span(null, {}, "...")
+						}
+					})
+				})
+			}
+		}
+	})
 }
-
-
-data.forEach(d => { console.log(JSON.stringify(d))})
-
-document.getElementById("groups").innerHTML = $groups.join("\n")
+$g.id("groups")
 </script>
 </html>
