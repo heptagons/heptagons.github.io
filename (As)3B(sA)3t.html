@@ -3,7 +3,6 @@
 <head>
 <title>(As)3B(sA)3t</title>
 <meta charset="UTF-8">
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <script type="text/javascript" src="SVG.js"></script>
 <style>
@@ -25,6 +24,8 @@ span.c6 { border:3px solid #880; }
 </head>
 
 <body>
+
+
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
 <div>Isoceles heptagons classes r1, r2, r3, r6.
 <div id="svg1"></div>
@@ -367,7 +368,8 @@ $g.h2(null, {}, "Types details")
 				const yg = h60.YG[i]
 				$g.dt(null, {}, ()=> {
 					$g.b(null, {}, `Type ${t++}.`)
-					$g.span(null, {}, `Group ${yg.t}. Examples:`)
+					$g.span(null, {}, `Group ${yg.t}`)
+					$g.div(null, {}, `Examples:`)
 				})
 				$g.dd(null, {}, ()=> {
 					const g = h60.group(yb1[0], yb1[1], yb2[0], yb2[1])
