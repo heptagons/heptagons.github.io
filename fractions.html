@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Fractions</title>
+<script type="text/javascript" src="SVG.js"></script>
 <style>
 .rows {
 	padding:5px 20px;
@@ -34,23 +35,27 @@ b.L { right:4px; }
 
 </head>
 <body>
-<div class="rows">
- <div class="row">
- 	<div class="col" style="left:0%" ><b class="L">0</b><b class="C">/</b><b class="R">1</b></div>
- 	<div class="col" style="left:100%"><b class="L">1</b><b class="C">/</b><b class="R">0</b></div>
- </div>
- <div class="row">
- 	<div class="col" style="left:0%"  ><b class="L">0</b><b class="C">/</b><b class="R">2</b></div>
- 	<div class="col" style="left:50%" ><b class="L">1</b><b class="C">/</b><b class="R">1</b></div>
- 	<div class="col" style="left:100%"><b class="L">2</b><b class="C">/</b><b class="R">0</b></div>
- </div>
- <div class="row">
- 	<div class="col" style="left:0%"  ><b class="L">0</b><b class="C">/</b><b class="R">3</b></div>
- 	<div class="col" style="left:33%" ><b class="L">1</b><b class="C">/</b><b class="R">2</b></div>
- 	<div class="col" style="left:66%" ><b class="L">2</b><b class="C">/</b><b class="R">1</b></div>
- 	<div class="col" style="left:100%"><b class="L">3</b><b class="C">/</b><b class="R">0</b></div>
- </div>
+<div id="js">
 </div>
+
+<script type="text/javascript">
+const xml = new XML()
+const xmlFraction = (p, q)=> {
+	xml.b("L", {}, p.toString())
+	xml.b("C", {}, "/")
+	xml.b("R", {}, q.toString())
+}
+const xmlF = (p, q)=> {
+	const left = parseInt(100*p / (p+q))
+	xml.div("col", { style:`left:${left}%`}, ()=> { xmlFraction(p, q) })
+}
+xml.div("rows", {}, ()=> {
+	for (let j=1; j < 15; j++) {
+		xml.div("row", {}, ()=> { const t = j; for (let i=0; i <= t; i++) xmlF(i, t-i); })
+	}
+})
+xml.id("js")
+</script>
 
 
 <pre>

@@ -235,4 +235,50 @@ if (typeof exports !== 'undefined') {
     exports.SVG = SVG
 }
 
+const XML = function()
+{
+	const r = []
+	const $ = (e, clazz, attrs, end, text)=> {
+		const cols = []
+		cols.push(e)
+		if (clazz)
+			cols.push(`class=${clazz}`)
+		if (attrs)
+			Object.keys(attrs).forEach(k => { 
+				cols.push(`${k}="${attrs[k]}"`) 
+			})
+		const tail = (!end) ? ">" : (!text) ? "/>" : `>${text}</${e}>`
+		r.push(`<${cols.join(" ")}${tail}`)
+	}
+	const $$ = (e, c, attrs, C) => { 
+		$(e, c, attrs)
+		C()
+		$(`/${e}`) 
+	}
+	const $$$ = (e, c, attrs, C)=> {  
+		if (typeof C === "function") return $$(e, c, attrs, C);
+		$ (e,   c, attrs, true, C) 
+	}
+	this.id = (id)=> {
+		document.getElementById(id).innerHTML = r.join("\n")
+	}
+	this.circle = (c, attrs)   => {  $("circle", c, attrs, true)    }
+	this.text   = (c, attrs, t)=> {  $("text",   c, attrs, true, t) }
+	this.line   = (c, attrs)   => {  $("line",   c, attrs, true)    }
+	this.style  = (c, attrs, t)=> {  $("style",  c, attrs, true, t) }
+
+	this.g      = (c, attrs, C)=> { $$("g",      c, attrs, C) }
+	this.svg    = (c, attrs, C)=> { $$("svg",    c, attrs, C) }
+	this.defs   = (c, attrs, C)=> { $$("defs",   c, attrs, C) }
+
+	this.b      = (c, attrs, C)=> { $$$("b",    c, attrs, C) }
+	this.span   = (c, attrs, C)=> { $$$("span", c, attrs, C) }
+	this.div    = (c, attrs, C)=> { $$$("div",  c, attrs, C) }
+	this.dl     = (c, attrs, C)=> { $$$("dl",   c, attrs, C) }
+	this.dt     = (c, attrs, C)=> { $$$("dt",   c, attrs, C) }
+	this.dd     = (c, attrs, C)=> { $$$("dd",   c, attrs, C) }
+	this.h2     = (c, attrs, C)=> { $$$("h2",   c, attrs, C) }
+}
+
+
 
