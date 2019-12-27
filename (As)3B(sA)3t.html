@@ -9,6 +9,16 @@
 
 body { font-family: sans-serif; }
 .case { border:1px solid #abc; }
+
+.right {
+	display: inline-block;
+	float:right;
+	margin:5px;
+	background-color: #fff;
+}
+br { clear:right; }
+
+
 span.c  { display:inline-block; margin:3px; }
 span.c1 { border:3px solid #800; }
 span.c2 { border:3px solid #f00; }
@@ -28,7 +38,18 @@ span.c6 { border:3px solid #880; }
 
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
 <div id="svg1"></div>
-<div id="svg2"></div>
+<div>
+<p>
+<h2>Angles</h2>
+<div class="right case" id="angles-svg"></div>
+<script type="text/javascript">
+anglesSvg("angles-svg")
+</script>
+<div>
+The angles, bla, bla, bla...
+</div>
+</p>
+<br/>
 <div id="groups"></div>
 
 
@@ -37,39 +58,25 @@ span.c6 { border:3px solid #880; }
 
 const H60 = function()
 {
-	this.types = [ // 27 types, 14 degenerated, 13 groups
-		[  0,10] /* D1  */, [  1, 9], // NS1
-		[  2, 8] /* D2  */, [  3, 7], // NS2
-		[  4, 6] /* D3  */, [  5, 5], // Convex {7}
-		[  6, 4] /* D4  */, [  7, 3], // Concave
-		[  8, 2] /* D5  */, [ 25, 5], // NS3
-		[ 42, 8] /* D6  */, [ 17, 3], // NS4 {7/2}
-		[ 26, 4] /* D7  */, [ 35, 5], // NS5
-		[  9, 1] /* D8  */, [ 37, 3], // NS6
-		[ 28, 2] /* D9  */, [ 47, 3], // NS7
-		[ 19, 1] /* D10 */, [143, 7], // NS8
-		[287,13] /* D11 */, [115, 5], // NS9
-		[ 48, 2] /* D12 */, [ 29, 1], // NS10 {7/3}
-		[ 49, 1] /* D13 */, [ 59, 1], // NS11
-		[ 10, 0] // D14
+	this.types = [ // 27 types, 14 degenerated [x], 13 groups [x,x+1]
+		// p, q, type                 p, q, type
+		[  0,10, 1] /* D1  */, [  1, 9, "1,2"],  // NS1
+		[  2, 8, 2] /* D2  */, [  3, 7, "2,3"],  // NS2
+		[  4, 6, 3] /* D3  */, [  5, 5, "3,4"],  // Convex {7}
+		[  6, 4, 4] /* D4  */, [  7, 3, "4,5"],  // Concave
+		[  8, 2, 5] /* D5  */, [ 25, 5, "5,6"],  // NS3
+		[ 42, 8, 6] /* D6  */, [ 17, 3, "6,7"],  // NS4 {7/2}
+		[ 26, 4, 7] /* D7  */, [ 35, 5, "7,8"],  // NS5
+		[  9, 1, 8] /* D8  */, [ 37, 3, "8,9"],  // NS6
+		[ 28, 2, 9] /* D9  */, [ 47, 3, "9,10"], // NS7
+		[ 19, 1,10] /* D10 */, [143, 7,"10,11"], // NS8
+		[287,13,11] /* D11 */, [115, 5,"11,12"], // NS9
+		[ 48, 2,12] /* D12 */, [ 29, 1,"12,13"], // NS10 {7/3}
+		[ 49, 1,13] /* D13 */, [ 59, 1,"13,14"], // NS11
+		[ 10, 0,14] // D14
 	]
 
-	this.YB = [
-		[  0,10], // D1
-		[  2, 8], // D2
-		[  4, 6], // D3
-		[  6, 4], // D4
-		[  8, 2], // D5
-		[ 42, 8], // D6
-		[ 26, 4], // D7
-		[  9, 1], // D8
-		[ 28, 2], // D9
-		[ 19, 1], // D10
-		[287,13], // D11 (r30?)
-		[ 48, 2], // D12
-		[ 49, 1], // D13
-		[ 10, 0], // D14
-	]
+	this.YB = this.types.filter((f,i)=> { return i%2==0 })
 	this.YG = [
 		{ t:"Non Simple 1",  max:4  }, //  D1- D2
 		{ t:"Non Simple 2",  max:4  }, //  D2- D3
@@ -283,39 +290,12 @@ xml.svg("case", sss, ()=> {
 	})
 })
 xml.id("svg1")
-{
-	const $x2 = new XML()
-	const M = 20, N = 40, W1=400, H1=500;
-	const sss = { width:3*M+W1, height:3*M+H1, xmlns:"http://w3.org/2000/svg" }
-	const X = [ 0, 1, 2, 3, 4, 5 ]
-	const Y = [ [0,10],[5,5],[17,3],[29,1],[10,0]]
 
-	$x2.h2(null, {}, "Angles")
-	$x2.svg("case", sss, ()=> {
-		$x2.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
-			$x2.g(null, { stroke:"#abc", "stroke-width":1 }, ()=> {
-				X.forEach(x => {
-					const xx = N + W1*x/5
-					$x2.line("", { x1:xx, y1:N, x2:xx, y2:N+H1 })
-				})
-				Y.forEach(y => {
-					const yy = N + H1*(y[0]/(y[0] + y[1]))
-					$x2.line("", { x1:N, y1:yy, x2:N+W1, y2:yy })
-				})
-			})
-			for (let h=0; h <= H1; h += 2) { 
-				const p = h/H1
-				const y = N + h
-				const a = N + (W1*(1.0 - p)/(1.2 - p))/5
-				const b = N + (W1*(p)/(1.2 - p))/5
-				const r = 2
-				$x2.circle("", { cx:a, cy:y, r:r, fill:"#0d0" })
-				$x2.circle("", { cx:b, cy:y, r:r, fill:"#08f" })
-			}
-		})
-	})
-	$x2.id("svg2")
-}
+
+
+
+
+
 
 
 
@@ -345,7 +325,7 @@ const pushSvg = (h, wh, t)=> {
 $g.h2(null, {}, "Types")
 $g.div(null, {}, ()=> {
 	h60.types.forEach((t,i) => {
-		pushSvg({ p:t[0], q:t[1] }, 120, `Type ${i+1}`)
+		pushSvg({ p:t[0], q:t[1] }, 120, `Type [${t[2]}]`)
 	})
 })
 
@@ -359,8 +339,8 @@ $g.h2(null, {}, "Types details")
 			const q = yb1[1]
 			const single = h60.single(p, q)
 			$g.dt(null, {}, ()=> {
-				$g.b(null, {}, `Type ${t++}.`)
-				$g.span(null, {}, `Single degenerated case ${i+1}:`)
+				$g.b(null, {}, `Type [${yb1[2]}].`)
+				$g.span(null, {}, `Single degenerated case:`)
 			})
 			$g.dd(null, {}, ()=> {
 				pushSvg(single, 80)
@@ -369,9 +349,8 @@ $g.h2(null, {}, "Types details")
 				const yb2 = h60.YB[i+1]
 				const yg = h60.YG[i]
 				$g.dt(null, {}, ()=> {
-					$g.b(null, {}, `Type ${t++}.`)
-					$g.span(null, {}, `Group ${yg.t}`)
-					$g.div(null, {}, `Examples:`)
+					$g.b(null, {}, `Type [${yb1[2]},${yb2[2]}].`)
+					$g.span(null, {}, `Group ${yg.t}. Examples:`)
 				})
 				$g.dd(null, {}, ()=> {
 					const g = h60.group(yb1[0], yb1[1], yb2[0], yb2[1])

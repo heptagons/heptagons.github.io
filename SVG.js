@@ -97,7 +97,7 @@ const SVG = function()
 		xml("g", { transform:`translate(${w/2},${h/2})`})
 		xml("g", { transform:`translate(${-S*xm},${+S*ym}) scale(${S} ${-S})` })
 
-		xml("g", { stroke:"#f00", "stroke-opacity":0.5, "stroke-width":0.05 })
+		xml("g", { stroke:"#888", "stroke-opacity":0.5, "stroke-width":0.05 })
 		for (let i=0; i < 6; i++)
 			xml("line", { x1:P[i].x, y1:P[i].y, x2:P[i+1].x, y2:P[i+1].y }, true)
 		xml("/g")
@@ -278,7 +278,159 @@ const XML = function()
 	this.dt     = (c, attrs, C)=> { $$$("dt",   c, attrs, C) }
 	this.dd     = (c, attrs, C)=> { $$$("dd",   c, attrs, C) }
 	this.h2     = (c, attrs, C)=> { $$$("h2",   c, attrs, C) }
+
+	this.Rect   = (x,y,w,h,c,a)=> {	
+		if (!a) a = {};
+		a.x = x; a.y = y; a.width = w; a.height = h
+		$("rect", c, a, true)
+	}
 }
+
+const As3BsA3t = ($g, w, h, p, q)=> {
+	const i = p / (q || 0.001)
+	const A = 5*Math.PI / (i + 6)
+	const A1 = 1*A
+	const A2 = 2*A - 1*Math.PI
+	const A3 = 3*A
+	const a = { x: Math.cos(A1), y: Math.sin(A1) }
+	const b = { x: Math.cos(A2), y: Math.sin(A2) }
+	const c = { x: Math.cos(A3), y: Math.sin(A3) }
+	const P = [
+		{ x:0                    , y:0               },
+		{ x:1*a.x                , y:a.y             },
+		{ x:1*a.x + 1*b.x        , y:a.y + b.y       },
+		{ x:1*a.x + 1*b.x + 1*c.x, y:a.y + b.y + c.y },
+		{ x:1*a.x + 1*b.x + 2*c.x, y:a.y + b.y       },
+		{ x:1*a.x + 2*b.x + 2*c.x, y:a.y             },
+		{ x:2*a.x + 2*b.x + 2*c.x, y:0               }
+	]
+	const X = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
+	const Y = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
+	P.forEach(p => {
+		if (X.min > p.x) X.min = p.x;
+		if (X.max < p.x) X.max = p.x;
+		if (Y.min > p.y) Y.min = p.y;
+		if (Y.max < p.y) Y.max = p.y;
+	})
+	const xm = (X.max + X.min) / 2
+	const ym = (Y.max + Y.min) / 2
+	const diff = Math.max(Math.abs(X.max - X.min), Math.abs(Y.max - Y.min))
+	const S = 0.8 * Math.min(w,h) / diff
+	const g1  = { transform:`translate(${w/2},${h/2})`}
+	const g2  = { transform:`translate(${-S*xm},${+S*ym}) scale(${S} ${-S})` }
+	const g21 = { stroke:"#888", "stroke-opacity":0.5, "stroke-width":0.05 }
+	const g22 = { stroke:"#f80", "stroke-opacity":0.5, "stroke-width":0.05 }
+	const g23 = { fill:"#0d0", "fill-opacity":0.5 }
+	$g.g(null, g1, ()=> {
+		$g.g(null, g2, ()=> {
+			$g.g(null, g21, ()=> {
+				for (let i=0; i < 6; i++)
+					$g.line(null, { x1:P[i].x, y1:P[i].y, x2:P[i+1].x, y2:P[i+1].y })
+			})
+			$g.g(null, g22, ()=> {
+				$g.line(null, { x1:P[6].x, y1:P[6].y, x2:P[0].x, y2:P[0].y })
+			})
+			$g.g(null, g23, ()=> {
+				P.forEach((p,i) => {
+					const attrs = { cx:p.x, cy:p.y, r:0.1 }
+					if (i==3) attrs.fill = "#08f";
+					$g.circle(null, attrs)
+				})
+			})
+		})
+	})
+}
+
+
+const anglesSvg = function(id)
+{
+	const $x2 = new XML()
+	const M = 20, N = 40, W1=400, H1=500;
+	const sss = { width:3*M+W1, height:3*M+H1, xmlns:"http://w3.org/2000/svg" }
+	const A = [ 0, 1, 2, 3, 4, 5 ]
+	const G = [ [0,10],[4,6],[5,5],[6,4],[8,2],[17,3],[29,1],[10,0]]
+
+	const dots = []
+	for (let p=0; p <= 60; p++) {
+		const x = p/60
+		const y = N + x*H1
+		const a = N + (W1*(1.0 - x)/(1.2 - x))/5
+		const b = N + (W1*(x)/(1.2 - x))/5
+		const d = (p==51) ? "2" : (p==58) ? "4" : null
+		dots.push({ y:y, a:a, b:b, d:d })
+	}
+	const lines = { stroke:"#abc", "stroke-width":1, "font-size":"12px", 
+		"dominant-baseline": "middle" }
+
+	const angles = ()=> {
+		const color = "#80f"
+		$x2.g(null, { "text-anchor": "middle", fill:color }, ()=> {
+			A.forEach(x => {
+				const xx = N + W1*x/5
+				$x2.line("", { x1:xx, y1:N, x2:xx, y2:N+H1 })
+				$x2.text("", { x:xx, y:N-8, stroke:"none" }, (x)?`${x}&pi;`:"")
+			})
+		})
+		$x2.g(null, { "stroke-width":3, "text-anchor":"middle"}, ()=> {
+			dots.forEach((d,p)=> {
+				if (d.d) {
+					const L = { x1:d.a, y1:d.y, x2:d.b, y2:d.y, stroke:color }
+					const T = { x:(d.b+d.a)/2, y:d.y-8, stroke:"none", fill:color }
+					$x2.line("", L)
+					$x2.text("", T, `B - A = ${d.d}&pi;`)
+				}
+			})
+		})
+	}
+	const gen = ()=> {
+		$x2.g(null, { "text-anchor": "end", fill:"#123" }, ()=> {
+			$x2.text("", { x:N-8, y:N-15, stroke:"none" }, `r`)
+			G.forEach(y => {
+				const yy = N + H1*(y[0]/(y[0] + y[1]))
+				$x2.line("", { x1:N, y1:yy, x2:N+W1, y2:yy })
+				$x2.text("", { x:N-8, y:yy, stroke:"none" }, `${y[0]}/${y[1]}`)
+			})
+		})
+	}
+	const circles = ()=> {
+		$x2.g(null, { fill:"#0d0"}, ()=> {
+			dots.forEach(d => $x2.circle("", { cx:d.a, cy:d.y, r:3 }))
+		})
+		$x2.g(null, { fill:"#08f"}, ()=> {
+			dots.forEach(d => $x2.circle("", { cx:d.b, cy:d.y, r:3 }))
+		})
+	}
+	const heptagon = (x, y, p, q, c)=> {
+		const T = `translate(${x},${y})`
+		const g = { transform:T, "font-size":"12px", "text-anchor":"middle"}
+		const a = 10*c - p
+		const b = p
+		const d = 12*c - p
+		$x2.g(null, g, ()=> {
+			$x2.Rect(0,0,80,120,null,{ fill:"#fff", stroke:"#888"} )
+			As3BsA3t($x2, 80, 80, p, q)
+			$x2.text(null, { x:40, y: 90, fill:"#888" }, `r = ${p}/${q}`)
+			$x2.text(null, { x:40, y:102, fill:"#0c0" }, `A/&pi; = ${a}/${d}`)
+			$x2.text(null, { x:40, y:114, fill:"#08f" }, `B/&pi; = ${b}/${d}`)
+		})
+	}
+
+	$x2.svg(null, sss, ()=> {
+		$x2.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
+			$x2.g(null, lines, ()=> {
+				gen()
+				angles()
+			})
+			circles()
+			heptagon(140, 190,  5, 5, 1)
+			heptagon(230, 280, 17, 3, 2)
+			heptagon(320, 370, 29, 1, 3)
+		})
+	})
+	$x2.id(id)
+}
+
+
 
 const primes = (n)=> 
 {

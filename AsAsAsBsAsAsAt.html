@@ -27,27 +27,29 @@
 .c > span { color:#0c0; font-size:14px; padding-left: 5px;}
 .c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
 
-.right {
+.draft {
 	width: 300px;
+}
+.right {
 	float:right;
-	margin:0 0 0 5px;
+	margin:5px;
 	background-color: #fff;
 }
+br { clear:right; }
+
 dd { padding: 2px 0 10px; }
 pre { font-family: monospace; background-color: #def; }
 i { 
 	margin:0 6px;
 	text-align: right;
 }
-br { clear:right; }
 </style>
 </head>
 <body>
-<h1>Heptagons</h1>
-<h2>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h2>
+<h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
 
 <p>
-<img src="inkscape/AsAsAsBsAsAsAt_draft.svg" class="right">
+<img src="inkscape/AsAsAsBsAsAsAt_draft.svg" class="right draft">
 The <b>(As)<sub>3</sub>B(sA)<sub>3</sub>t</b> heptagon family or <b>AsAsAsBsAsAsAt</b> family, has six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has six equal sides <b class="s">s</b> and a single side 
 <b class="t">t</b>.
 <div>
@@ -74,9 +76,17 @@ So, the value of seventh side <b class="t">t</b> can be found as function of ang
 </div>
 </p>
 <br/>
-<h3>Angles</h3>
+
+<h3>Only two angles</h3>
+<p>
+<div class="right case" id="angles-svg"></div>
+<script type="text/javascript">
+anglesSvg("angles-svg")
+</script>
+
 <div>
-For any heptagon with six equal angles <b class="A">A</b> and one angle <b class="B">B</b> we have:
+For any heptagon with six equal angles <b class="A">A</b> and one single angle 
+<b class="B">B</b> we have:
 \begin{align*}
 6A + B &= 5\pi \\
 \frac{B}{\pi} &= 5 - 6\frac{A}{\pi}
@@ -109,6 +119,15 @@ r_2 = \frac{1}{19}, \frac{3}{17}, \frac{5}{15}, \frac{7}{13}, \frac{9}{11}, \fra
 \end{align}
 and so on...
 </div>
+</div>
+</p>
+
+
+<h3>Only two sides</h3>
+<p>
+
+</p>
+<br/>
 
 <p>
 <div id="it" class="right"></div>
