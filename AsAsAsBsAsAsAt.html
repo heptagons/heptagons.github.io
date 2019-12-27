@@ -12,10 +12,11 @@
 
 <style>
 * { font-family: sans-serif; }
+.P { color:#f00; font-size:14px; }
 .i { color:#888; font-size:12px; }
 .A { color:#0c0; font-size:14px; }
 .B { color:#08f; font-size:14px; font-weight: bold; }
-.s { color:#f00; }
+.s { color:#888; }
 .t { color:#f80; }
 .c1 { border:3px solid #f00; }
 .c2 { border:3px solid #0c0; }
@@ -50,9 +51,9 @@ br { clear:right; }
 The <b>(As)<sub>3</sub>B(sA)<sub>3</sub>t</b> heptagon family or <b>AsAsAsBsAsAsAt</b> family, has six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has six equal sides <b class="s">s</b> and a single side 
 <b class="t">t</b>.
 <div>
-At vertex P1 there is a new angle called C.
-At vertex P2 there is a new angle called D.
-At vertex P3 there are two new angles called E and F:
+At vertex <span class="P">P<sub>1</sub></span> there is a new angle called C.
+At vertex <span class="P">P<sub>2</sub></span> there is a new angle called D.
+At vertex <span class="P">P<sub>3</sub></span> there are two new angles called E and F:
 \begin{align*}
 C = \pi - A \\
 D = A - C \\
@@ -73,9 +74,9 @@ So, the value of seventh side <b class="t">t</b> can be found as function of ang
 </div>
 </p>
 <br/>
-<h3>Real angles</h3>
+<h3>Angles</h3>
 <div>
-For any heptagon with six angles <b class="A">A</b> and one angle <b class="B">B</b> we have:
+For any heptagon with six equal angles <b class="A">A</b> and one angle <b class="B">B</b> we have:
 \begin{align*}
 6A + B &= 5\pi \\
 \frac{B}{\pi} &= 5 - 6\frac{A}{\pi}
@@ -84,44 +85,29 @@ For any heptagon with six angles <b class="A">A</b> and one angle <b class="B">B
 Define the generator <b>r</b> = <b class="B">B</b> / <b class="A">A</b>:
 \begin{align*}
 r &\equiv \frac{B}{A} \\
-\frac{A}{\pi} &= \frac{5}{r + 6} \\
-\frac{B}{\pi} &= \frac{5r}{r + 6}
+a &\equiv A / \pi = \frac{5}{r + 6} \\
+b &\equiv B / \pi = \frac{5r}{r + 6} \\
 \end{align*}
 
-<h3>Rational angles</h3>
+<h3>Rational angles class c</h3>
 <div>
-Define two integers \(p\) and \(q\) to force \(r\), \(A/\pi\) and \(B/\pi\) to be rationals:
+Define rational generators of class c (1,2,3...) using integers p:
 \begin{align*}
-\frac{p}{q} &\equiv r \\
-\frac{A}{\pi} &= \frac{5}{r+6} = \frac{q}{(p + 6q)/5} \\
-\frac{B}{\pi} &= rA = \frac{q}{(p + 6q)/5}
+r_c &\equiv \frac{p}{10c - p}, \quad\quad \text{where $ 0 \le p \le 10c $} \\
+a_c &= \frac{5}{r_c+6} = \frac{10c - p}{12c - p} \\
+b_c &= \frac{5r_c}{r_c+6} = \frac{p}{12c - p}
 \end{align*}
-</div>
-
-<h3>Rational angles class 1</h3>
-<div>
-Define Class 1 generator of the form:
-\begin{align*}
-r_{1} &= \frac{p_{1}}{q_{1}}, \quad\quad \text{where $p_{1} + q_{1} = 10$}.
-\end{align*}
-So the eleven class 1 generators are:
+Class 1 generators are eleven:
 \begin{align}
-\frac{0}{10}, \frac{1}{9}, \frac{2}{8}, \frac{3}{7}, \frac{4}{6}, \frac{5}{5},
+r_1 = \frac{0}{10}, \frac{1}{9}, \frac{2}{8}, \frac{3}{7}, \frac{4}{6}, \frac{5}{5},
 \frac{6}{4}, \frac{7}{3}, \frac{8}{2}, \frac{9}{1}, \frac{10}{0}
 \end{align}
-</div>
-
-<h3>Rational angles class 2</h3>
-<div>
-Define Class 2 generator of the form:
-\begin{align*}
-r_{1} &= \frac{p_{1}}{q_{1}}, \quad\quad \text{where $p_{1} + q_{1} = 20$}.
-\end{align*}
-So the ten class 2 generators are:
+Class 2 generators are only two (removing values repeated in lower class 1):
 \begin{align}
-\frac{1}{19}, \frac{3}{17}, \frac{5}{15}, \frac{7}{13}, \frac{9}{11}, \frac{11}{9},
+r_2 = \frac{1}{19}, \frac{3}{17}, \frac{5}{15}, \frac{7}{13}, \frac{9}{11}, \frac{11}{9},
 \frac{13}{7}, \frac{15}{5}, \frac{17}{3}, \frac{19}{1}
 \end{align}
+and so on...
 </div>
 
 <p>
@@ -149,13 +135,13 @@ for (let j=0; j <= 60; j++) {
 	if (j%6==4) { doRow(2,"c3", true) }
 }
 const trows = []
-const H = ["","C1","","C3","","C2","","C3",""]
+const H = ["","c=1","","c=3","","c=2","","c=3",""]
 trows.push("<table>")
 trows.push(`<tr>${H.map(m => `<th>${m}</th>`).join("")}</tr>`)
 
 rows.forEach((row,r) => {
 	trows.push("<tr>")
-	trows.push(`<th>R${r+1}</th>`)
+	trows.push(`<th>y${r+1}</th>`)
 	row.forEach(col => {
 		trows.push(`<td class="c ${col.c}">`)
 		trows.push(`<div>${col.n}/${col.d}</div>`)

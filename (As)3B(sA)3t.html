@@ -27,8 +27,8 @@ span.c6 { border:3px solid #880; }
 
 
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
-<div>Isoceles heptagons classes r1, r2, r3, r6.
 <div id="svg1"></div>
+<div id="svg2"></div>
 <div id="groups"></div>
 
 
@@ -164,7 +164,6 @@ const H6 = function()
 
 
 
-const h6 = new H6()
 const h60 = new H60()
 
 const xml = new XML()
@@ -172,7 +171,7 @@ const xml = new XML()
 const M = 15
 const W1 = 150, W2 = 400, W3 = 30
 const T = 50
-const H = 1000
+const H = 800
 
 const styleBorder = `
 .border > line { stroke-width:2; stroke:#ff0; }
@@ -250,7 +249,13 @@ const xmlClasses = (CS, CX, sC)=> {
 	})
 }
 
-const sss = { width:2*M+W1+W2+W3, height:2*M+T+H, xmlns:"http://www.w3.org/2000/svg" }
+xml.h2(null, {}, "Side t")
+const sss = { 
+	width :2*M+W1+W2+W3, 
+	height:2*M+T+H, 
+	xmlns :"http://www.w3.org/2000/svg" 
+}
+const h6 = new H6()
 xml.svg("case", sss, ()=> {
 	xml.defs(null, {}, ()=> {
 		xml.style(null, { type:"text/css" }, 
@@ -266,7 +271,9 @@ xml.svg("case", sss, ()=> {
 		xmlBorder(h60.YBreduced, h60.YGreduced)
 		const TX = [ // [ t, p, q, text ]
 			[-3], [-2], [-1], 
-			[0,1,9,"Degenerated"], [1,1,9,"Equilaterals"], [2,1,9,"Degenerated"], 
+			[0,1,9,"Degenerated"], 
+			[1,1,9,"Equilaterals"], 
+			[2,1,9,"Degenerated"], 
 			[3] 
 		]
 		xmlSegT(TX)
@@ -276,20 +283,59 @@ xml.svg("case", sss, ()=> {
 	})
 })
 xml.id("svg1")
+{
+	const $x2 = new XML()
+	const M = 20, N = 40, W1=400, H1=500;
+	const sss = { width:3*M+W1, height:3*M+H1, xmlns:"http://w3.org/2000/svg" }
+	const X = [ 0, 1, 2, 3, 4, 5 ]
+	const Y = [ [0,10],[5,5],[17,3],[29,1],[10,0]]
+
+	$x2.h2(null, {}, "Angles")
+	$x2.svg("case", sss, ()=> {
+		$x2.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
+			$x2.g(null, { stroke:"#abc", "stroke-width":1 }, ()=> {
+				X.forEach(x => {
+					const xx = N + W1*x/5
+					$x2.line("", { x1:xx, y1:N, x2:xx, y2:N+H1 })
+				})
+				Y.forEach(y => {
+					const yy = N + H1*(y[0]/(y[0] + y[1]))
+					$x2.line("", { x1:N, y1:yy, x2:N+W1, y2:yy })
+				})
+			})
+			for (let h=0; h <= H1; h += 2) { 
+				const p = h/H1
+				const y = N + h
+				const a = N + (W1*(1.0 - p)/(1.2 - p))/5
+				const b = N + (W1*(p)/(1.2 - p))/5
+				const r = 2
+				$x2.circle("", { cx:a, cy:y, r:r, fill:"#0d0" })
+				$x2.circle("", { cx:b, cy:y, r:r, fill:"#08f" })
+			}
+		})
+	})
+	$x2.id("svg2")
+}
+
+
+
+
+
+
+
+
+
+
 
 const $g = new XML()
 
 const pushSvg = (h, wh, t)=> {
 	$g.span("c", {}, ()=> {
 		$g.div("case", {}, ()=> {
-			if (t)
-				$g.div(null, {}, t)
-			if (h.c)
-				$g.div("r", {}, `r<sub>${h.c}</sub> = ${h.p}/${h.q}`)
-			if (h.A)
-				$g.div("A", {}, `A/&pi; = ${h.A.p}/${h.A.q}`)
-			if (h.B)
-				$g.div("B", {}, `B/&pi; = ${h.B.p}/${h.B.q}`)
+			if (t)   $g.div(null, {}, t);
+			if (h.c) $g.div("r", {}, `r<sub>${h.c}</sub> = ${h.p}/${h.q}`);
+			if (h.A) $g.div("A", {}, `A/&pi; = ${h.A.p}/${h.A.q}`);
+			if (h.B) $g.div("B", {}, `B/&pi; = ${h.B.p}/${h.B.q}`);
 			const svg = new SVG()
 			$g.div(null, {}, svg.caseSvg(wh, wh, `${h.p}/${h.q}`))
 		})

@@ -242,7 +242,7 @@ const XML = function()
 		const cols = []
 		cols.push(e)
 		if (clazz)
-			cols.push(`class=${clazz}`)
+			cols.push(`class="${clazz}"`)
 		if (attrs)
 			Object.keys(attrs).forEach(k => { 
 				cols.push(`${k}="${attrs[k]}"`) 
@@ -257,7 +257,7 @@ const XML = function()
 	}
 	const $$$ = (e, c, attrs, C)=> {  
 		if (typeof C === "function") return $$(e, c, attrs, C);
-		$ (e,   c, attrs, true, C) 
+		$ (e, c, attrs, true, C) 
 	}
 	this.id = (id)=> {
 		document.getElementById(id).innerHTML = r.join("\n")
@@ -278,6 +278,52 @@ const XML = function()
 	this.dt     = (c, attrs, C)=> { $$$("dt",   c, attrs, C) }
 	this.dd     = (c, attrs, C)=> { $$$("dd",   c, attrs, C) }
 	this.h2     = (c, attrs, C)=> { $$$("h2",   c, attrs, C) }
+}
+
+const primes = (n)=> 
+{
+    n = Math.abs(n)
+    const factors = [ ]
+    let divisor = 2
+    while (n >= 2) { // stackoverflow was on error (was n > 2)
+        if (n % divisor == 0) {
+            factors.push(divisor)
+            n = n / divisor
+        } else {
+            divisor++
+        }     
+    }
+    return factors
+}
+
+const rational = (p, q)=> {
+    const n = primes(p)
+    const d = primes(q)
+    for (let i=0; i < d.length; i++) {
+        for (let j=0; j < n.length; j++) {
+            if (d[i] == n[j]) {
+                d[i] = 1
+                n[j] = 1
+            }
+        }
+    }
+    const r = {
+        p: n.filter(i => i > 1), 
+        q: d.filter(i => i > 1) 
+    }
+    if (p < 0 ? q >= 0 : q < 0) // xor
+        r.negative = true
+    return r
+}
+
+const rationals = (set, p, q)=> {
+	const r = rational(p, q)
+	let n = 1; r.p.forEach( x => { n *= x })
+	let d = 1; r.q.forEach( x => { d *= x })
+	const simple = set[`${n}/${d}`] == undefined
+	const s = { p:n, q:d, simple:simple }
+	set[`${p}/${q}`] = s
+	return s
 }
 
 
