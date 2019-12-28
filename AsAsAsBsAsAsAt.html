@@ -9,7 +9,9 @@
 <script id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
-
+<script>
+//window.MathJax = { tex: { tags:'ams' }}
+</script>
 
 <style>
 * { font-family: sans-serif; }
@@ -63,27 +65,31 @@ At vertex <span class="P">P<sub>1</sub></span> there is a new angle called C.
 At vertex <span class="P">P<sub>2</sub></span> there is a new angle called D.
 At vertex <span class="P">P<sub>3</sub></span> there are two new angles called E and F:
 \begin{align*}
-C = \pi - A \\
-D = A - C \\
-E = \pi - D \\
-F = A - E
+C = \pi - A  \\
+D = A - C    \\
+E = \pi - D  \\
+F = A - E   
+\label{eq:sample}
 \end{align*}
 Simplifying, we get:
 \begin{align*}
 D &= 2A - \pi \\
 F &= 3A - 2\pi
 \end{align*}
+
+<h2>Seventh side graph</h2>
+
 The value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
 \begin{align*}
+             x &\equiv \cos(A) \\
   \frac{t}{2s} &= \cos(A) + \cos(D) + \cos(F) \\
                &= \cos(A) - \cos(2A) + \cos(3A) \\
-               &= 1 - 2x - 2x^2 + 4x^3 \quad\quad \text{where $ x = \cos(A) $}
+               &= 4x^3 - 2x^2 - 2x + 1 \tag{1} \\
+               & = (x + \frac{1}{\sqrt2})(x - \frac{1}{2})(x - \frac{1}{\sqrt2})
 \end{align*}
 </div>
 </p>
 <br/>
-
-<h2>Seventh side graph</h2>
 
 <div class="right case">
 <div id="sides-svg"></div>
@@ -96,27 +102,31 @@ For any heptagon with six equal angles <b class="A">A</b> and one single angle
 <b class="B">B</b> we have:
 \begin{align*}
 6A + B &= 5\pi \\
-&0 \le A \le 5\pi/6 \\
-&0 \le B \le 5\pi
+0 &\le A \le 5\pi/6 \\
+0 &\le B \le 5\pi
 \end{align*}
-Define the generator <b>r</b> = <b class="B">B</b> / <b class="A">A</b>:
-\begin{align*}
-r &\equiv \frac{B}{A} \\
-&0 \le r \le \infty
-\end{align*}
+
+
 Plot <span class="y">y</span> as the lineal range angles can take:
 \begin{align*}
-y &= \frac{ 6A - 5\pi }{ 5A - 5\pi } \\
-&0 \le y \le 1
+y &= \frac{ 6A/5 - \pi }{ A - \pi } \\
+0 &\le y \le 1 \\
+A &= \frac{1 - y}{1.2 - y}\pi \\
 \end{align*}
 Plot <span class="t">t</span> in x direction:
 \begin{align*}
-A &= \frac{1 - y}{1.2 - y}\pi \\
 t &= \cos(A) - \cos(2A) + \cos(3A) \\
 &-3s \le t \le +3s 
 \end{align*}
 
 
+
+
+Define the generator <b>r</b> = <b class="B">B</b> / <b class="A">A</b>:
+\begin{align*}
+r &\equiv \frac{B}{A} \\
+&0 \le r \le \infty
+\end{align*}
 
 
 Plot side <span class="t">t</span> as x-coordinate and generator <b>r</b>

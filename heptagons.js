@@ -123,10 +123,12 @@ const sidesSvg = function(id)
 	const CT = "#f80"
 	const T = (y)=> {
 		const A = Math.PI*(1 - y)/(1.2 - y)
-		const x1 = Math.cos(1*A)
-		const x2 = -Math.cos(2*A)//Math.cos(2*A - 1*Math.PI)
-		const x3 = Math.cos(3*A)
-		const t = 2*(x1 + x2 + x3)
+		const B = Math.cos(A)
+		//const x1 = Math.cos(1*A)
+		//const x2 = -Math.cos(2*A)//Math.cos(2*A - 1*Math.PI)
+		//const x3 = Math.cos(3*A)
+		//const t = 2*(x1 + x2 + x3)
+		const t = 2*(4*B*B*B - 2*B*B - 2*B + 1)
 		return N + W1*(t + 3) / 6
 	}
 	const Y = (y)=> N + H1*y
