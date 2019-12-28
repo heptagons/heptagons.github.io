@@ -262,10 +262,11 @@ const XML = function()
 	this.id = (id)=> {
 		document.getElementById(id).innerHTML = r.join("\n")
 	}
-	this.circle = (c, attrs)   => {  $("circle", c, attrs, true)    }
-	this.text   = (c, attrs, t)=> {  $("text",   c, attrs, true, t) }
-	this.line   = (c, attrs)   => {  $("line",   c, attrs, true)    }
-	this.style  = (c, attrs, t)=> {  $("style",  c, attrs, true, t) }
+	this.circle   = (c, a)   => {  $("circle",   c, a, true)    }
+	this.text     = (c, a, t)=> {  $("text",     c, a, true, t) }
+	this.line     = (c, a)   => {  $("line",     c, a, true)    }
+	this.polyline = (c, a)   => {  $("polyline", c, a, true)    }
+	this.style    = (c, a, t)=> {  $("style",    c, a, true, t) }
 
 	this.g      = (c, attrs, C)=> { $$("g",      c, attrs, C) }
 	this.svg    = (c, attrs, C)=> { $$("svg",    c, attrs, C) }
@@ -342,93 +343,6 @@ const As3BsA3t = ($g, w, h, p, q)=> {
 }
 
 
-const anglesSvg = function(id)
-{
-	const $x2 = new XML()
-	const M = 20, N = 40, W1=400, H1=500;
-	const sss = { width:3*M+W1, height:3*M+H1, xmlns:"http://w3.org/2000/svg" }
-	const A = [ 0, 1, 2, 3, 4, 5 ]
-	const G = [ [0,10],[4,6],[5,5],[6,4],[8,2],[17,3],[29,1],[10,0]]
-
-	const dots = []
-	for (let p=0; p <= 60; p++) {
-		const x = p/60
-		const y = N + x*H1
-		const a = N + (W1*(1.0 - x)/(1.2 - x))/5
-		const b = N + (W1*(x)/(1.2 - x))/5
-		const d = (p==51) ? "2" : (p==58) ? "4" : null
-		dots.push({ y:y, a:a, b:b, d:d })
-	}
-	const lines = { stroke:"#abc", "stroke-width":1, "font-size":"12px", 
-		"dominant-baseline": "middle" }
-
-	const angles = ()=> {
-		const color = "#80f"
-		$x2.g(null, { "text-anchor": "middle", fill:color }, ()=> {
-			A.forEach(x => {
-				const xx = N + W1*x/5
-				$x2.line("", { x1:xx, y1:N, x2:xx, y2:N+H1 })
-				$x2.text("", { x:xx, y:N-8, stroke:"none" }, (x)?`${x}&pi;`:"")
-			})
-		})
-		$x2.g(null, { "stroke-width":3, "text-anchor":"middle"}, ()=> {
-			dots.forEach((d,p)=> {
-				if (d.d) {
-					const L = { x1:d.a, y1:d.y, x2:d.b, y2:d.y, stroke:color }
-					const T = { x:(d.b+d.a)/2, y:d.y-8, stroke:"none", fill:color }
-					$x2.line("", L)
-					$x2.text("", T, `B - A = ${d.d}&pi;`)
-				}
-			})
-		})
-	}
-	const gen = ()=> {
-		$x2.g(null, { "text-anchor": "end", fill:"#123" }, ()=> {
-			$x2.text("", { x:N-8, y:N-15, stroke:"none" }, `r`)
-			G.forEach(y => {
-				const yy = N + H1*(y[0]/(y[0] + y[1]))
-				$x2.line("", { x1:N, y1:yy, x2:N+W1, y2:yy })
-				$x2.text("", { x:N-8, y:yy, stroke:"none" }, `${y[0]}/${y[1]}`)
-			})
-		})
-	}
-	const circles = ()=> {
-		$x2.g(null, { fill:"#0d0"}, ()=> {
-			dots.forEach(d => $x2.circle("", { cx:d.a, cy:d.y, r:3 }))
-		})
-		$x2.g(null, { fill:"#08f"}, ()=> {
-			dots.forEach(d => $x2.circle("", { cx:d.b, cy:d.y, r:3 }))
-		})
-	}
-	const heptagon = (x, y, p, q, c)=> {
-		const T = `translate(${x},${y})`
-		const g = { transform:T, "font-size":"12px", "text-anchor":"middle"}
-		const a = 10*c - p
-		const b = p
-		const d = 12*c - p
-		$x2.g(null, g, ()=> {
-			$x2.Rect(0,0,80,120,null,{ fill:"#fff", stroke:"#888"} )
-			As3BsA3t($x2, 80, 80, p, q)
-			$x2.text(null, { x:40, y: 90, fill:"#888" }, `r = ${p}/${q}`)
-			$x2.text(null, { x:40, y:102, fill:"#0c0" }, `A/&pi; = ${a}/${d}`)
-			$x2.text(null, { x:40, y:114, fill:"#08f" }, `B/&pi; = ${b}/${d}`)
-		})
-	}
-
-	$x2.svg(null, sss, ()=> {
-		$x2.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
-			$x2.g(null, lines, ()=> {
-				gen()
-				angles()
-			})
-			circles()
-			heptagon(140, 190,  5, 5, 1)
-			heptagon(230, 280, 17, 3, 2)
-			heptagon(320, 370, 29, 1, 3)
-		})
-	})
-	$x2.id(id)
-}
 
 
 

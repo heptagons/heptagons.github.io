@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="SVG.js"></script>
+<script type="text/javascript" src="heptagons.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <script id="MathJax-script" async
@@ -26,6 +27,11 @@
 .c > img  { width:140px; display: block; }
 .c > span { color:#0c0; font-size:14px; padding-left: 5px;}
 .c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
+
+.case { border:1px solid #abc; }
+.r { text-align: center; font-size:15px; color:#000;}
+.y { color:#888; }
+.red { color:#f00; }
 
 .draft {
 	width: 300px;
@@ -67,22 +73,70 @@ Simplifying, we get:
 D &= 2A - \pi \\
 F &= 3A - 2\pi
 \end{align*}
-So, the value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
+The value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
 \begin{align*}
-  t &= 2s( \cos(A) + \cos(D) + \cos(F) ) \\
-    &= 2s( \cos(A) + \cos(2A - \pi) + \cos(3A - 2\pi) ) \\
-    &= 2s( \cos(A) + \cos(2A - \pi) + \cos(3A) )       
+  \frac{t}{2s} &= \cos(A) + \cos(D) + \cos(F) \\
+               &= \cos(A) - \cos(2A) + \cos(3A) \\
+               &= 1 - 2x - 2x^2 + 4x^3 \quad\quad \text{where $ x = \cos(A) $}
 \end{align*}
 </div>
 </p>
 <br/>
 
-<h3>Only two angles</h3>
+<h2>Seventh side graph</h2>
+
+<div class="right case">
+<div id="sides-svg"></div>
+<script>sidesSvg("sides-svg")</script>
+<div class="r">The three <span class="red">equilateral</span> heptagons</div>
+</div>
+
+<div>
+For any heptagon with six equal angles <b class="A">A</b> and one single angle 
+<b class="B">B</b> we have:
+\begin{align*}
+6A + B &= 5\pi \\
+&0 \le A \le 5\pi/6 \\
+&0 \le B \le 5\pi
+\end{align*}
+Define the generator <b>r</b> = <b class="B">B</b> / <b class="A">A</b>:
+\begin{align*}
+r &\equiv \frac{B}{A} \\
+&0 \le r \le \infty
+\end{align*}
+Plot <span class="y">y</span> as the lineal range angles can take:
+\begin{align*}
+y &= \frac{ 6A - 5\pi }{ 5A - 5\pi } \\
+&0 \le y \le 1
+\end{align*}
+Plot <span class="t">t</span> in x direction:
+\begin{align*}
+A &= \frac{1 - y}{1.2 - y}\pi \\
+t &= \cos(A) - \cos(2A) + \cos(3A) \\
+&-3s \le t \le +3s 
+\end{align*}
+
+
+
+
+Plot side <span class="t">t</span> as x-coordinate and generator <b>r</b>
+as coordinate y:
+
+</div>
+
+
+
+<br/>
+
+
+<h2>The two angles</h2>
+
 <p>
-<div class="right case" id="angles-svg"></div>
-<script type="text/javascript">
-anglesSvg("angles-svg")
-</script>
+<div class="right case">
+<div id="angles-svg"></div>
+<script>anglesSvg("angles-svg")</script>
+<div class="r">The three <span class="red">7-symmetry</span> heptagons</div>
+</div>
 
 <div>
 For any heptagon with six equal angles <b class="A">A</b> and one single angle 
@@ -123,11 +177,6 @@ and so on...
 </p>
 
 
-<h3>Only two sides</h3>
-<p>
-
-</p>
-<br/>
 
 <p>
 <div id="it" class="right"></div>

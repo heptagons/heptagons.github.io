@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <script type="text/javascript" src="SVG.js"></script>
+<script type="text/javascript" src="heptagons.js"></script>
 <style>
 
 body { font-family: sans-serif; }
-.case { border:1px solid #abc; }
 
 .right {
 	display: inline-block;
@@ -25,7 +25,7 @@ span.c2 { border:3px solid #f00; }
 span.c3 { border:3px solid #f80; }
 span.c6 { border:3px solid #880; }
 
-
+.case { border:1px solid #abc; }
 .r { text-align: center; font-size:15px; color:#789;}
 .A { text-align: center; color:#0a0; font-size:15px; }
 .B { text-align: center; color:#08f; font-size:15px; }
@@ -35,21 +35,34 @@ span.c6 { border:3px solid #880; }
 
 <body>
 
-
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
+
+<h2>The two angles</h2>
+<p>
+<div class="right case">
+<div id="angles-svg"></div>
+<script>anglesSvg("angles-svg")</script>
+<div class="r">The three 7-symmetry heptagons</div>
+</div>
+<div>...</div>
+</p>
+<br/>
+
+
+<h2>The two sides</h2>
+<p>
+<div class="right case">
+<div id="sides-svg"></div>
+<script>sidesSvg("sides-svg")</script>
+<div class="r">The three equilateral heptagons</div>
+</div>
+<div>...</div>
+</p>
+<br/>
+
 <div id="svg1"></div>
 <div>
 <p>
-<h2>Angles</h2>
-<div class="right case" id="angles-svg"></div>
-<script type="text/javascript">
-anglesSvg("angles-svg")
-</script>
-<div>
-The angles, bla, bla, bla...
-</div>
-</p>
-<br/>
 <div id="groups"></div>
 
 
