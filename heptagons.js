@@ -122,7 +122,7 @@ const sidesSvg = function(id)
 	]
 	const CT = "#f80"
 	const T = (y)=> {
-		const A = Math.PI*(1 - y)/(1.2 - y)
+		const A = Math.PI*(1 - y)/(6/5 - y)
 		const B = Math.cos(A)
 		//const x1 = Math.cos(1*A)
 		//const x2 = -Math.cos(2*A)//Math.cos(2*A - 1*Math.PI)
@@ -145,20 +145,23 @@ const sidesSvg = function(id)
 		})
 	}
 	const sides = (u)=> {
-		const T = [ "", "-2s", "-1s", "t = 0", "+1s", "+2s", ""]
-		verticalLinesSvg($, N, W1, H1, CT, A, T)
+		verticalLinesSvg($, N, W1, H1, CT, A, 
+			[ "", "-2s", "-1s", "t = 0", "+1s", "+2s", ""]
+		)
 	}
-	const heptagon = (x, y, p, q, c)=> {
+	const heptagon = (x, y, p, q, c, stroke, T)=> {
 		const t = `translate(${x},${y})`
 		const g = { transform:t, "font-size":"12px", "text-anchor":"middle"}
 		const a = 10*c - p
 		const b = p
 		const d = 12*c - p
 		$.g(null, g, ()=> {
-			$.Rect(0,0,80,110,null,{ fill:"#fff", stroke:"#f00"} )
+			$.Rect(0,0,80,110,null,{ 
+				fill:"#fff", stroke:stroke, "stroke-width":1.5
+			})
 			As3BsA3t($, 80, 80, p, q)
 			$.text(null, { x:40, y: 90, fill:"#000" }, `r = ${p}/${q}`)
-			$.text(null, { x:40, y:102, fill:CT }, `t = 1s`)
+			$.text(null, { x:40, y:102, fill:CT }, `t = ${T}s`)
 		})
 	}
 	const dots = []
@@ -177,14 +180,35 @@ const sidesSvg = function(id)
 				const p = dots.map(r => `${r.x},${r.y}`)
 				$.polyline(null, { points:p.join(",") })
 			})
-			heptagon(320, 170,  5, 5, 1)
-			heptagon(215, 345, 17, 3, 2)
-			heptagon(120, 420, 29, 1, 3)
+			// t = 0
+			heptagon(185,  60,  4, 6, 1, "#000", "0")
+			heptagon(185, 305,  9, 1, 1, "#000", "0")
+			heptagon( 55, 410, 28, 2, 2, "#000", "0")
+			$.g(null, { fill:"#000"}, ()=> {
+				$.circle(null, { cx:T( 4/10), cy:Y( 4/10), r:4 })
+				$.circle(null, { cx:T( 9/10), cy:Y( 9/10), r:4 })
+				$.circle(null, { cx:T(28/30), cy:Y(28/30), r:4 })
+			})
+
+			// t = 1
+			heptagon(270, 100,  5, 5, 1, "#f00", 1)
+			heptagon(270, 330, 17, 3, 2, "#f00", 1)
+			heptagon(140, 420, 29, 1, 3, "#f00", 1)
 			$.g(null, { fill:"#f00" }, ()=> {
 				$.circle(null, { cx:T( 5/10), cy:Y( 5/10), r:4 })
 				$.circle(null, { cx:T(17/20), cy:Y(17/20), r:4 })
 				$.circle(null, { cx:T(29/30), cy:Y(29/30), r:4 })
 			})
+
+			// t = 2
+			heptagon(355,  90,  6, 4, 1, "#cc0", 1)
+			heptagon(355, 205,  8, 2, 1, "#cc0", 1)
+			$.g(null, { fill:"#cc0" }, ()=> {
+				$.circle(null, { cx:T( 6/10), cy:Y( 6/10), r:4 })
+				$.circle(null, { cx:T( 8/10), cy:Y( 8/10), r:4 })
+				$.circle(null, { cx:T(10/10), cy:Y(10/10), r:4 })
+			})
+
 		})
 	})
 	$.id(id)

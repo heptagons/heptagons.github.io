@@ -31,6 +31,7 @@
 .c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
 
 .case { border:1px solid #abc; }
+.svg { background-color: #fff; margin:5px; border:1px solid #abc;}
 .r { text-align: center; font-size:15px; color:#000;}
 .y { color:#888; }
 .red { color:#f00; }
@@ -41,7 +42,7 @@
 .right {
 	float:right;
 	margin:5px;
-	background-color: #fff;
+	background-color: #eee;
 }
 br { clear:right; }
 
@@ -57,13 +58,16 @@ i {
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
 
 <p>
-<img src="inkscape/AsAsAsBsAsAsAt_draft.svg" class="right draft">
+<div class="right case">
+<img src="inkscape/AsAsAsBsAsAsAt_draft.svg" class="svg draft">
+<div class="r">(As)<sub>3</sub>B(sA)<sub>3</sub>t heptagon</div>
+</div>
 The <b>(As)<sub>3</sub>B(sA)<sub>3</sub>t</b> heptagon family or <b>AsAsAsBsAsAsAt</b> family, has six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has six equal sides <b class="s">s</b> and a single side 
 <b class="t">t</b>.
 <div>
-At vertex <span class="P">P<sub>1</sub></span> there is a new angle called C.
-At vertex <span class="P">P<sub>2</sub></span> there is a new angle called D.
-At vertex <span class="P">P<sub>3</sub></span> there are two new angles called E and F:
+At vertex <span class="P">P<sub>1</sub></span> there is an angle called \( C \).
+At vertex <span class="P">P<sub>2</sub></span> there is an angle called \(D\).
+At vertex <span class="P">P<sub>3</sub></span> there are two angles called \(E\) and \(F\):
 \begin{align*}
 C = \pi - A  \\
 D = A - C    \\
@@ -71,29 +75,30 @@ E = \pi - D  \\
 F = A - E   
 \label{eq:sample}
 \end{align*}
-Simplifying, we get:
+Set \(s_{1...6}\) as 1 and express \(D\) and \(F\) in terms of \(A\):
 \begin{align*}
+s_{1...6} &\equiv 1 \\
+u &= \cos A \\
 D &= 2A - \pi \\
-F &= 3A - 2\pi
+F &= 3A - 2\pi \\
 \end{align*}
 
 <h2>Seventh side graph</h2>
 
 The value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
 \begin{align*}
-             x &\equiv \cos(A) \\
-  \frac{t}{2s} &= \cos(A) + \cos(D) + \cos(F) \\
-               &= \cos(A) - \cos(2A) + \cos(3A) \\
-               &= 4x^3 - 2x^2 - 2x + 1 \tag{1} \\
-               & = (x + \frac{1}{\sqrt2})(x - \frac{1}{2})(x - \frac{1}{\sqrt2})
+  t &= 2(\cos A + \cos D + \cos F) \\
+    &= 2(\cos A - \cos(2A) + \cos(3A)) \\
+    &= 2(\cos A - (2\cos^2 A - 1) + 4\cos^3 A - 3\cos A) \\
+    &= 2(4u^3 - 2u^2 - 2u + 1) \\
+    &= 2(u + \frac{1}{\sqrt2})(u - \frac{1}{2})(u - \frac{1}{\sqrt2})
 \end{align*}
 </div>
 </p>
 <br/>
 
 <div class="right case">
-<div id="sides-svg"></div>
-<script>sidesSvg("sides-svg")</script>
+<div class="svg" id="sides-svg"><script>sidesSvg("sides-svg")</script></div>
 <div class="r">The three <span class="red">equilateral</span> heptagons</div>
 </div>
 
@@ -106,45 +111,34 @@ For any heptagon with six equal angles <b class="A">A</b> and one single angle
 0 &\le B \le 5\pi
 \end{align*}
 
-
-Plot <span class="y">y</span> as the lineal range angles can take:
+Define the generator \(r\) = <b class="B">B</b> / <b class="A">A</b>:
 \begin{align*}
-y &= \frac{ 6A/5 - \pi }{ A - \pi } \\
-0 &\le y \le 1 \\
-A &= \frac{1 - y}{1.2 - y}\pi \\
-\end{align*}
-Plot <span class="t">t</span> in x direction:
-\begin{align*}
-t &= \cos(A) - \cos(2A) + \cos(3A) \\
-&-3s \le t \le +3s 
+r &\equiv \frac{B}{A} \quad\quad \text{$ 0 \le r \le \infty $}  \\
+A &= \frac{5\pi}{6+r}
 \end{align*}
 
 
-
-
-Define the generator <b>r</b> = <b class="B">B</b> / <b class="A">A</b>:
+Plot <span class="y">y</span> from top (\(y=0\)) to bottom (\(y=1\)):
 \begin{align*}
-r &\equiv \frac{B}{A} \\
-&0 \le r \le \infty
+y &= \frac{r}{r+1} \quad\quad \text{$ 0 \le y \le 1 $} \\
+
+A &= \frac{1 + y}{6/5 - y}\pi \\
 \end{align*}
 
-
-Plot side <span class="t">t</span> as x-coordinate and generator <b>r</b>
-as coordinate y:
-
+Plot <span class="t">t</span> from left (\(t = -3\)) to right (\(t = +3\)) with:
+\begin{align*}
+u &= \cos(\frac{1 + y}{6/5 - y}\pi) \\
+\end{align*}
 </div>
-
-
 
 <br/>
 
 
-<h2>The two angles</h2>
+<h2>A, B angles graph</h2>
 
 <p>
 <div class="right case">
-<div id="angles-svg"></div>
-<script>anglesSvg("angles-svg")</script>
+<div class="svg" id="angles-svg"><script>anglesSvg("angles-svg")</script></div>
 <div class="r">The three <span class="red">7-symmetry</span> heptagons</div>
 </div>
 
@@ -192,7 +186,7 @@ and so on...
 <div id="it" class="right"></div>
 <div id="table"></div>
 <script>
-
+/*
 const svg = new SVG()
 const it = svg.it(400, 1600)
 document.getElementById("it").innerHTML = it.join("\n")
@@ -240,6 +234,7 @@ rows.forEach((row,r) => {
 trows.push("</table>")
 
 document.getElementById("table").innerHTML = trows.join("\n")
+*/
 </script>
 
 </body>
