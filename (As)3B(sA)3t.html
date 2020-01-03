@@ -1,384 +1,284 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>(As)3B(sA)3t</title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
 <script type="text/javascript" src="SVG.js"></script>
 <script type="text/javascript" src="heptagons.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<script>
+//window.MathJax = { tex: { tags:'ams' }}
+</script>
+
 <style>
+* { font-family: sans-serif; }
+.P { color:#f00; font-size:14px; }
+.i { color:#888; font-size:12px; }
+.A { color:#0c0; font-size:14px; }
+.B { color:#08f; font-size:14px; font-weight: bold; }
+.s { color:#888; }
+.t { color:#f80; }
+.c1 { border:3px solid #f00; }
+.c2 { border:3px solid #0c0; }
+.c3 { border:3px solid #08f; }
 
-body { font-family: sans-serif; }
+.c > div  { color:#888; font-size:12px; padding-left: 5px; }
+.c > img  { width:140px; display: block; }
+.c > span { color:#0c0; font-size:14px; padding-left: 5px;}
+.c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
 
+.case { border:1px solid #abc; }
+.svg { background-color: #fff; margin:5px; border:1px solid #abc;}
+.r { font-size:15px; color:#000; padding:5px; max-width:480px; }
+.y { color:#888; }
+.red { color:#f00; }
+.brown { color:#840; }
+
+.draft {
+	width: 300px;
+}
 .right {
-	display: inline-block;
+	clear:right;
 	float:right;
-	margin:5px;
-	background-color: #fff;
+	margin:3px 0 5px 5px;
+	background-color: #eee;
+	width: auto;
 }
 br { clear:right; }
 
-
-span.c  { display:inline-block; margin:3px; }
-span.c1 { border:3px solid #800; }
-span.c2 { border:3px solid #f00; }
-span.c3 { border:3px solid #f80; }
-span.c6 { border:3px solid #880; }
-
-.case { border:1px solid #abc; }
-.r { text-align: center; font-size:15px; color:#789;}
-.A { text-align: center; color:#0a0; font-size:15px; }
-.B { text-align: center; color:#08f; font-size:15px; }
-
+dd { padding: 2px 0 10px; }
+pre { font-family: monospace; background-color: #def; }
+i { 
+	margin:0 6px;
+	text-align: right;
+}
 </style>
 </head>
-
 <body>
-
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
 
-<h2>The two angles</h2>
 <p>
+The <b>(As)<sub>3</sub>B(sA)<sub>3</sub>t</b> heptagon has 
+six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has 
+six equal sides <b class="s">s</b> and 
+a single side <b class="t">t</b>.	
 <div class="right case">
-<div id="angles-svg"></div>
-<script>anglesSvg("angles-svg")</script>
-<div class="r">The three 7-symmetry heptagons</div>
+<img src="inkscape/AsAsAsBsAsAsAt_draft.svg" class="svg draft">
+<div class="r">(As)<sub>3</sub>B(sA)<sub>3</sub>t heptagon</div>
 </div>
-<div>...</div>
+<h3>Angles</h3>
+<div>
+ For such an heptagon we have (\( 0 \le A \le 5\pi/6 \)) and 
+ (\( 0 \le B \le 5\pi\)):
+\begin{align*}
+6A + B &= 5\pi
+\end{align*}
+At vertex <span class="P">P<sub>1</sub></span> there is an angle called \( C \).
+At vertex <span class="P">P<sub>2</sub></span> there is an angle called \(D\).
+At vertex <span class="P">P<sub>3</sub></span> there are two angles called \(E\) and \(F\):
+\begin{align*}
+C &= \pi - A  \\
+D &= A - C = 2A - \pi \\
+E &= \pi - D  \\
+F &= A - E = 3A - 2\pi \\ 
+\end{align*}
+</div>
+<h3>Sides</h3>
+Set \(s_{1...6}\) as 1.
+The value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
+\begin{align*}
+s_{1...6} &\equiv 1 \\
+u &= \cos A \\
+  t &= 2(\cos A + \cos D + \cos F) \\
+    &= 2(\cos A + \cos(2A - \pi) + \cos(3A - 2\pi)) \\
+    &= 2(\cos A - \cos(2A) + \cos(3A)) \\
+    &= 2(\cos A - (2\cos^2 A - 1) + 4\cos^3 A - 3\cos A) \\
+    &= 2(4u^3 - 2u^2 - 2u + 1) \\
+\end{align*}
+</div>
+<br/>
+
+<h3>Generators</h3>
+
+<div>
+Define the generators 
+\(r\) = <b class="B">B</b> / <b class="A">A</b>
+and \(y\):
+
+\begin{align*}
+r &\equiv \frac{B}{A}     
+  = \frac{5\pi - 6A}{A}
+  = \frac{y}{1-y}, \quad\quad \text{$ 0 \le r \le \infty $}  \\
+y &\equiv \frac{r}{r+1}
+  = \frac{B}{A + B} = \frac{5\pi - 6A}{5\pi - 5A} 
+  , \quad\quad \text{$ 0 \le y \le 1 $} \\
+A &= \frac{5}{6+r}\pi = \frac{1 + y}{6/5 - y}\pi \\
+\end{align*}
+</div>
+
+</div>
 </p>
+
+<h3>Rational generators</h3>
+<p>
+Define rational generators of class \(c\) (1,2,3...) using integers \(p\):
+\begin{align*}
+y_c &\equiv \frac{p}{10c}, \quad\quad \text{where $ 0 \le p \le 10c $} \\
+r_c &= \frac{p}{10c - p} \\
+A_c/\pi &= \frac{5}{r_c+6} = \frac{10c - p}{12c - p} \\
+B_c/\pi &= \frac{5r_c}{r_c+6} = \frac{p}{12c - p} \\
+r &= \frac{5A_q - 6A_p}{ A_p}, \quad \text{ where $ A \equiv \frac{A_p}{A_q} $}
+\end{align*}
+
+Class 1 generators are eleven:
+\begin{align}
+r_1 = \frac{0}{10}, \frac{1}{9}, \frac{2}{8}, \frac{3}{7}, \frac{4}{6}, \frac{5}{5},
+\frac{6}{4}, \frac{7}{3}, \frac{8}{2}, \frac{9}{1}, \frac{10}{0}
+\end{align}
+
+Class 2 generators are only ten (removing values repeated in lower class 1):
+\begin{align}
+r_2 = \frac{1}{19}, \frac{3}{17}, \frac{5}{15}, \frac{7}{13}, \frac{9}{11}, \frac{11}{9},
+\frac{13}{7}, \frac{15}{5}, \frac{17}{3}, \frac{19}{1}
+\end{align}
+and so on...
+</p>
+
+
+<h2>Side graph</h2>
+
+<div class="right case">
+<div class="svg" id="sides-svg"><script>sidesSvg("sides-svg")</script></div>
+<div class="r">
+Three degenerated heptagons in <b class="black">black</b> dots. 
+Three equilateral heptagons in <b class="red">red</b> dots. 
+Three more degenerated heptagons in <b class="brown">brown</b> dots.
+</div>
+</div>
+<div>
+
+Plot <span class="y">y</span> from top (\(y=0\)) to bottom (\(y=1\)).
+Plot <span class="t">t</span> from left (\(t = -3\)) to right (\(t = +3\)) with:
+\begin{align*}
+u &= \cos(\frac{1 + y}{6/5 - y}\pi) \\
+\end{align*}
+</div>
+<p>
+At \(t = 0 \) we get three degenerated heptagons, actually equilateral hexagons at \( r = \frac{4}{6}, \frac{9}{1}, \frac{28}{2} \)
+by solving \( 8u^3 - 4u^2 - 4u + 2 = 0\):
+\begin{align}
+\arccos(-1/\sqrt{2}) &= 3\pi/4 = A_{r=4/6} \\
+\arccos(1/2) &= \pi/3 = A_{9,1} \\
+\arccos(1/\sqrt{2}) &= \pi/4 = A_{28,2}
+\end{align}
+</p>
+<p>
+At \( t = 1 \) we found three equilateral heptagons at \( r =  \frac{5}{5}, \frac{17}{3}, \frac{29}{1} \) known as {7}, {7/2} and {7/3}
+by solving \( 8u^3 - 4u^2 - 4u + 2 = 1\): 
+\begin{align}
+\arccos(-0.62349) &= 5\pi/7 = A_{5,5} \\
+\arccos(+0.22252) &= 3\pi/7 = A_{17,3} \\
+\arccos(+0.90097) &= \pi/7 = A_{29,1}
+\end{align}
+</p>
+<p>
+At \(t = 2\) we found another three degenerated heptagons at \( r = \frac{6}{4}, \frac{8}{2}, \frac{10}{0}\) by solving \( 8u^3 - 4u^2 - 4u + 2 = 2\): 
+\begin{align}
+\arccos(-1/2) &= 2\pi/3 = A_{6,4} \\
+\arccos(0) &= \pi/2 = A_{8,2} \\
+\arccos(1) &= 0 = A_{10,0}
+\end{align}
+</p>
+
 <br/>
 
 
-<h2>The two sides</h2>
+<h2>Angles graph</h2>
+
 <p>
 <div class="right case">
-<div id="sides-svg"></div>
-<script>sidesSvg("sides-svg")</script>
-<div class="r">The three equilateral heptagons</div>
+<div class="svg" id="angles-svg"><script>anglesSvg("angles-svg")</script></div>
+<div class="r">The three <span class="red">7-symmetry</span> heptagons</div>
 </div>
-<div>...</div>
-</p>
-<br/>
 
-<div id="svg1"></div>
 <div>
 <p>
-<div id="groups"></div>
+Plot <span class="y">y</span> from top (\(y=0\)) to bottom (\(y=1\)).
+Plot <span class="A">A</span> from left (\(0\)) to right (\(\frac{5}{6}\pi\)) and
+<span class="B">B</span> from left (\(0\)) to rigth (\( 5\pi \)).
+</p>
+<p>
+At \(r = \frac{5}{5}\)  A and B curves intersects. All angles are equal and represents the regular heptagon {7}. 
+</p>
+<p>
+At \(r = \frac{17}{3}\) \(B - A = 2\pi \). This is the case of heptagon {7/2}. It seems \(B\) equals \(A\) but is not, exceeds \(A \) by a complete turn, so {7/2} is equilateral but not regular.
+</p>
+<p>
+At \(r = \frac{29}{1}\) \(B - A = 4\pi \). This is case of heptagon {7/3}. It seems \(B\) equals \(A\) but is not, \(B\) exceeds \(A\) by two complete turns so {7/3} is equilateral but not regular.
+</p>
+</div>
 
+</p>
+
+
+
+<p>
+<div id="it" class="right"></div>
+<div id="table"></div>
+<script>
+/*
+const svg = new SVG()
+const it = svg.it(400, 1600)
+document.getElementById("it").innerHTML = it.join("\n")
+
+let row = []
+const rows = []
+for (let j=0; j <= 60; j++) {
+	const doRow = (div, clazz, end)=> {
+		row.push({ n: j/div, d: (60-j)/div, c:clazz })
+		if (end || j==60) {
+			rows.push(row)
+			row = []
+		}
+	}
+	if (j%6==0) { doRow(6,"c1") } else
+	if (j%6==2) { doRow(2,"c3") } else
+	if (j%6==3) { doRow(3,"c2") } else
+	if (j%6==4) { doRow(2,"c3", true) }
+}
+const trows = []
+const H = ["","c=1","","c=3","","c=2","","c=3",""]
+trows.push("<table>")
+trows.push(`<tr>${H.map(m => `<th>${m}</th>`).join("")}</tr>`)
+
+rows.forEach((row,r) => {
+	trows.push("<tr>")
+	trows.push(`<th>y${r+1}</th>`)
+	row.forEach(col => {
+		trows.push(`<td class="c ${col.c}">`)
+		trows.push(`<div>${col.n}/${col.d}</div>`)
+		const svgContent = svg.caseSvg(100, 100, col.n + "/" + col.d)
+		svgContent.push("<br/>")
+		trows.push(svgContent.join("\n"))
+
+		const An = col.d
+		const Ad = (col.n + 6*col.d) / 5
+		trows.push(`<span>${An}/${Ad}</span>`)
+		trows.push(`<b>${col.n}/${Ad}</b>`)
+		trows.push("</td>")
+		if (row.length > 1)
+			trows.push("<td>...</td>")
+	})
+	trows.push("</tr>")
+})
+trows.push("</table>")
+
+document.getElementById("table").innerHTML = trows.join("\n")
+*/
+</script>
 
 </body>
-<script>
-
-const H60 = function()
-{
-	this.types = [ // 27 types, 14 degenerated [x], 13 groups [x,x+1]
-		// p, q, type                 p, q, type
-		[  0,10, 1] /* D1  */, [  1, 9, "1,2"],  // NS1
-		[  2, 8, 2] /* D2  */, [  3, 7, "2,3"],  // NS2
-		[  4, 6, 3] /* D3  */, [  5, 5, "3,4"],  // Convex {7}
-		[  6, 4, 4] /* D4  */, [  7, 3, "4,5"],  // Concave
-		[  8, 2, 5] /* D5  */, [ 25, 5, "5,6"],  // NS3
-		[ 42, 8, 6] /* D6  */, [ 17, 3, "6,7"],  // NS4 {7/2}
-		[ 26, 4, 7] /* D7  */, [ 35, 5, "7,8"],  // NS5
-		[  9, 1, 8] /* D8  */, [ 37, 3, "8,9"],  // NS6
-		[ 28, 2, 9] /* D9  */, [ 47, 3, "9,10"], // NS7
-		[ 19, 1,10] /* D10 */, [143, 7,"10,11"], // NS8
-		[287,13,11] /* D11 */, [115, 5,"11,12"], // NS9
-		[ 48, 2,12] /* D12 */, [ 29, 1,"12,13"], // NS10 {7/3}
-		[ 49, 1,13] /* D13 */, [ 59, 1,"13,14"], // NS11
-		[ 10, 0,14] // D14
-	]
-
-	this.YB = this.types.filter((f,i)=> { return i%2==0 })
-	this.YG = [
-		{ t:"Non Simple 1",  max:4  }, //  D1- D2
-		{ t:"Non Simple 2",  max:4  }, //  D2- D3
-		{ t:"Convex",        max:5  }, //  D3- D4
-		{ t:"Concave",       max:5  }, //  D4- D5
-		{ t:"Non Simple 3",  max:20 }, //  D5- D6
-		{ t:"Non Simple 4",  max:20 }, //  D6- D7
-		{ t:"Non Simple 5",  max:20 }, //  D7- D8
-		{ t:"Non Simple 6",  max:30 }, //  D8- D9
-		{ t:"Non Simple 7",  max:30 }, //  D9-D10
-		{ t:"Non Simple 8",  max:60 }, // D10-D11
-		{ t:"Non Simple 9",  max:60 }, // D11-D12
-		{ t:"Non Simple 10", max:60 }, // D12-D13
-		{ t:"Non Simple 11", max:60 }, // D13-D14
-	]
-	this.YBreduced = this.YB.filter(f => { return f[0]+f[1] <= 20})
-	this.YGreduced = [
-		[1,9, "NS 1"],     //  D1 -- D2  : 0,10 -  2,8 => 1,9
-		[3,7, "NS 2"],     //  D2 -- D3  : 2,8  -  4,6 => 3,7
-		[5,5, "Convex"],   //  D3 -- D4  : 4,6  -  6,4 => 5,5
-		[7,3, "Concave"],  //  D4 -- D5  : 6,4  -  8,2 => 7,3
-		[17,3,"NS 3-5"],   //  D5 -- D8  : 8,2  -  9,1 => 1,1
-		[37,3,"NS 6-7"],   //  D8 -- D10 : 18,2 - 19,1 => 18.5/1.5
-		[39,1, "NS 8-11"], // D10 -- D14 : 19,1 - 20,0 => 19.5/0.5
-	]
-
-	const S = 2*3*2*5 // 60
-	const array = []
-	const min = 0, max = 10 * S
-	for (let p=min; p <= max; p++) {
-		const q = max - p
-		let f = 1
-		let c = 0
-		if (p % 60 == 0) { c =  1; f = 60; } else
-		if (p % 30 == 0) { c =  2; f = 30; } else
-		if (p % 20 == 0) { c =  3; f = 20; } else
-		if (p % 15 == 0) { c =  4; f = 15; } else
-		if (p % 12 == 0) { c =  5; f = 12; } else
-		if (p % 10 == 0) { c =  6; f = 10; } else
-		if (p %  6 == 0) { c = 10; f =  6; } else
-		if (p %  5 == 0) { c = 12; f =  5; } else
-		if (p %  4 == 0) { c = 15; f =  4; } else
-		if (p %  3 == 0) { c = 20; f =  3; } else
-		if (p %  2 == 0) { c = 30; f =  2; } else
-		if (p %  1 == 0) { c = 60; f =  1; }
-		const P = p/f
-		const Q = q/f
-		const A = { p: Q , q: (P + 6*Q)/5 }
-		const B = { p: P , q: (P + 6*Q)/5 }
-		array.push({ i:p, p:P, q:Q, c:c, A:A, B:B })
-	}
-
-	this.array = ()=> { return array }
-
-	this.single = (p, q)=> {
-		const a = array.filter(d => { return d.p == p && d.q == q })
-		return a.length ? a[0] : {}
-	}
-	this.group = (p1, q1, p2, q2)=> {
-		const first = this.single(p1, q1)
-		const last  = this.single(p2, q2)
-		return array.filter(d => { return d.i > first.i && d.i < last.i })
-	}
-}
-
-const H6 = function()
-{
-	const C = []
-	for (let i=0; i <= 60; i++) {
-		if (i % 6 == 0) { C.push({ r: { c:1, p:i/6, q:10-i/6 }}) } else 
-		if (i % 3 == 0) { C.push({ r: { c:2, p:i/3, q:20-i/3 }}) } else
-		if (i % 2 == 0) { C.push({ r: { c:3, p:i/2, q:30-i/2 }}) } else
-		if (i % 1 == 0) { C.push({ r: { c:6, p:i/1, q:60-i/1 }}) }
-	}
-	const sC = C
-	.sort((a,b)=> { return a.r.p/a.r.q - b.r.p/b.r.q })
-	.map(c => {
-		const i = c.r.p / c.r.q
-		const A = 5*Math.PI / (i + 6)
-		const x1 = Math.cos(1*A)
-		const x2 = Math.cos(2*A - 1*Math.PI)
-		const x3 = Math.cos(3*A)
-		return {
-			r: c.r,
-			A: { p: c.r.q , q: (c.r.p + 6*c.r.q)/5 },
-			B: { p: c.r.p , q: (c.r.p + 6*c.r.q)/5 },
-			t: 2*(x1+x2+x3)
-		}
-	})
-	this.sC = sC
-}
-
-
-
-const h60 = new H60()
-
-const xml = new XML()
-
-const M = 15
-const W1 = 150, W2 = 400, W3 = 30
-const T = 50
-const H = 800
-
-const styleBorder = `
-.border > line { stroke-width:2; stroke:#ff0; }
-.border > text { dominant-baseline: middle; text-anchor: middle; font-size:11px; fill:#123; }`
-const xmlBorder = (YB, YG)=> {
-	xml.g("border", {}, ()=> {
-		YB.forEach(y=> {
-			const yb = M + T + H*(y[0]/(y[0] + y[1]))
-			xml.line(null, { x1:W1, y1:yb, x2:W1+W2+W3, y2:yb })
-		})
-		YG.forEach(g=> {
-			const x = W1+W2+W3
-			const y = M + T + H*(g[0]/(g[0] + g[1]))
-			xml.text("", { x:x, y:y, transform:`rotate(-90, ${x}, ${y})` }, g[2])
-		})
-	})
-}
-
-const styleSegT = `
-.seg-t > text {
-	dominant-baseline: middle; text-anchor: middle; font-family: monospace;
-	font-size:12px; fill:#abc;
-}
-.seg-t > line { stroke:#abc; }`
-const xmlSegT = (TX)=> {
-	xml.g("seg-t", {}, ()=> {
-		const dt = W2 / (TX.length - 1)
-		TX.forEach((t,i) => {
-			const x = W1 + i*dt
-			xml.text(null, { x:x, y:M+T-10 }, `${t[0] || "t=0"}s`)
-			xml.line(null, { x1:x, y1:M+T, x2:x, y2:M+T+H })
-			if (t.length==4) {
-				const y = M + T + H*(t[1]/(t[1] + t[2]))
-				const a = { x:x-8, y:y, transform:`rotate(-90,${x-8},${y})` }
-				xml.text(null, a, `${t[3]}`)
-			}
-		})
-	})
-}
-
-const styleClasses = `
-.cc > text { dominant-baseline: middle; text-anchor:end; font-family: monospace; }
-.cc > line { stroke-width:0.5; }
-
-text.c1, circle.c1 { fill:#800; font-size:12px; }
-text.c2, circle.c2 { fill:#f00; font-size:11px; }
-text.c3, circle.c3 { fill:#f80; font-size:10px; }
-text.c6, circle.c6 { fill:#880; font-size: 9px; }
-text.A { fill:#0a0; font-size:10px; text-anchor:end;}
-text.B { fill:#08f; font-size:10px; text-anchor:start }
-line.c1 { stroke:#800; }
-line.c2 { stroke:#f00; }
-line.c3 { stroke:#f80; }
-line.c6 { stroke:#880; }`
-
-const xmlClasses = (CS, CX, sC)=> {
-	xml.g("cc", {}, ()=> {
-		CS.forEach((c,i)=> {
-			xml.text(`c${c}`, { x:M+CX[c], y:10+i*10 }, `r${c}`)
-		})
-		xml.text(`A`, { x:M+W1+W2/2 - 10, y:20 }, `A/&pi;`)
-		xml.text(`B`, { x:M+W1+W2/2 + 10, y:20 }, `B/&pi;`)
-		sC.forEach(c => {
-			const C = c.r.c
-			const x1 = M + CX[C]
-			const x2 = W1 + M
-			const y = M + T + H*(c.r.p/(c.r.p + c.r.q))
-			const cx = W1 + W2*((c.t)+3)/6
-			xml.text  (`c${C}`, { x:x1, y:y }, `${c.r.p}/${c.r.q}`)
-			xml.line  (`c${C}`, { x1:x1+3, y1:y, x2:cx-50, y2:y })
-			xml.circle(`c${C}`, { cx:cx, cy:y, r:3 })
-			xml.text  ("A",     { x:cx-5, y:y }, `${c.A.p}/${c.A.q}`)
-			xml.text  ("B",     { x:cx+5, y:y }, `${c.B.p}/${c.B.q}`)
-		})
-	})
-}
-
-xml.h2(null, {}, "Side t")
-const sss = { 
-	width :2*M+W1+W2+W3, 
-	height:2*M+T+H, 
-	xmlns :"http://www.w3.org/2000/svg" 
-}
-const h6 = new H6()
-xml.svg("case", sss, ()=> {
-	xml.defs(null, {}, ()=> {
-		xml.style(null, { type:"text/css" }, 
-			`<![CDATA[
-			text { font-family: sans-serif; }
-			${styleBorder}
-			${styleSegT}
-			${styleClasses}
-			]]>`
-		)
-	})
-	xml.g(null, { transform:"translate(0.5, 0.5)"}, ()=> {
-		xmlBorder(h60.YBreduced, h60.YGreduced)
-		const TX = [ // [ t, p, q, text ]
-			[-3], [-2], [-1], 
-			[0,1,9,"Degenerated"], 
-			[1,1,9,"Equilaterals"], 
-			[2,1,9,"Degenerated"], 
-			[3] 
-		]
-		xmlSegT(TX)
-		const CS = [ 1, 2, 3, 6 ]
-		const CX = { "1":20, "2":30, "3":60, "6":90 }
-		xmlClasses(CS, CX, h6.sC)
-	})
-})
-xml.id("svg1")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const $g = new XML()
-
-const pushSvg = (h, wh, t)=> {
-	$g.span("c", {}, ()=> {
-		$g.div("case", {}, ()=> {
-			if (t)   $g.div(null, {}, t);
-			if (h.c) $g.div("r", {}, `r<sub>${h.c}</sub> = ${h.p}/${h.q}`);
-			if (h.A) $g.div("A", {}, `A/&pi; = ${h.A.p}/${h.A.q}`);
-			if (h.B) $g.div("B", {}, `B/&pi; = ${h.B.p}/${h.B.q}`);
-			const svg = new SVG()
-			$g.div(null, {}, svg.caseSvg(wh, wh, `${h.p}/${h.q}`))
-		})
-	})
-}
-
-$g.h2(null, {}, "Types")
-$g.div(null, {}, ()=> {
-	h60.types.forEach((t,i) => {
-		pushSvg({ p:t[0], q:t[1] }, 120, `Type [${t[2]}]`)
-	})
-})
-
-$g.h2(null, {}, "Types details")
-{
-	let t = 1
-	$g.dl(null, {}, ()=> {
-		for (let i=0; i < h60.YB.length; i++) {
-			const yb1 = h60.YB[i]
-			const p = yb1[0]
-			const q = yb1[1]
-			const single = h60.single(p, q)
-			$g.dt(null, {}, ()=> {
-				$g.b(null, {}, `Type [${yb1[2]}].`)
-				$g.span(null, {}, `Single degenerated case:`)
-			})
-			$g.dd(null, {}, ()=> {
-				pushSvg(single, 80)
-			})
-			if (i < h60.YB.length - 1) {
-				const yb2 = h60.YB[i+1]
-				const yg = h60.YG[i]
-				$g.dt(null, {}, ()=> {
-					$g.b(null, {}, `Type [${yb1[2]},${yb2[2]}].`)
-					$g.span(null, {}, `Group ${yg.t}. Examples:`)
-				})
-				$g.dd(null, {}, ()=> {
-					const g = h60.group(yb1[0], yb1[1], yb2[0], yb2[1])
-					$g.span(null, {}, "...")
-					g.forEach(g => {
-						if (yg.max >= g.c) {
-							pushSvg(g, 80)
-							$g.span(null, {}, "...")
-						}
-					})
-				})
-			}
-		}
-	})
-}
-$g.id("groups")
-</script>
 </html>

@@ -201,9 +201,9 @@ const sidesSvg = function(id)
 			})
 
 			// t = 2
-			heptagon(355,  90,  6, 4, 1, "#cc0", 1)
-			heptagon(355, 205,  8, 2, 1, "#cc0", 1)
-			$.g(null, { fill:"#cc0" }, ()=> {
+			heptagon(355,  90,  6, 4, 1, "#840", 2)
+			heptagon(355, 205,  8, 2, 1, "#840", 2)
+			$.g(null, { fill:"#840" }, ()=> {
 				$.circle(null, { cx:T( 6/10), cy:Y( 6/10), r:4 })
 				$.circle(null, { cx:T( 8/10), cy:Y( 8/10), r:4 })
 				$.circle(null, { cx:T(10/10), cy:Y(10/10), r:4 })

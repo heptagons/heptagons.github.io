@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>(As)3B(sA)3t</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<script type="text/javascript" src="SVG.js"></script>
+<script type="text/javascript" src="heptagons.js"></script>
+<style>
+
+body { font-family: sans-serif; }
+
+.right {
+	display: inline-block;
+	float:right;
+	margin:5px;
+	background-color: #fff;
+}
+br { clear:right; }
+
+
+span.c  { display:inline-block; margin:3px; }
+span.c1 { border:3px solid #800; }
+span.c2 { border:3px solid #f00; }
+span.c3 { border:3px solid #f80; }
+span.c6 { border:3px solid #880; }
+
+.case { border:1px solid #abc; }
+.r { text-align: center; font-size:15px; color:#789;}
+.A { text-align: center; color:#0a0; font-size:15px; }
+.B { text-align: center; color:#08f; font-size:15px; }
+
+</style>
+</head>
+
+<body>
+
+<h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
+
+<h2>The two angles</h2>
+<p>
+<div class="right case">
+<div id="angles-svg"></div>
+<script>anglesSvg("angles-svg")</script>
+<div class="r">The three 7-symmetry heptagons</div>
+</div>
+<div>...</div>
+</p>
+<br/>
+
+
+<h2>The two sides</h2>
+<p>
+<div class="right case">
+<div id="sides-svg"></div>
+<script>sidesSvg("sides-svg")</script>
+<div class="r">The three equilateral heptagons</div>
+</div>
+<div>...</div>
+</p>
+<br/>
+
+<div id="svg1"></div>
+<div>
+<p>
+<div id="groups"></div>
+
+
+</body>
+<script>
+
+const H60 = function()
+{
+	this.types = [ // 27 types, 14 degenerated [x], 13 groups [x,x+1]
+		// p, q, type                 p, q, type
+		[  0,10, 1] /* D1  */, [  1, 9, "1,2"],  // NS1
+		[  2, 8, 2] /* D2  */, [  3, 7, "2,3"],  // NS2
+		[  4, 6, 3] /* D3  */, [  5, 5, "3,4"],  // Convex {7}
+		[  6, 4, 4] /* D4  */, [  7, 3, "4,5"],  // Concave
+		[  8, 2, 5] /* D5  */, [ 25, 5, "5,6"],  // NS3
+		[ 42, 8, 6] /* D6  */, [ 17, 3, "6,7"],  // NS4 {7/2}
+		[ 26, 4, 7] /* D7  */, [ 35, 5, "7,8"],  // NS5
+		[  9, 1, 8] /* D8  */, [ 37, 3, "8,9"],  // NS6
+		[ 28, 2, 9] /* D9  */, [ 47, 3, "9,10"], // NS7
+		[ 19, 1,10] /* D10 */, [143, 7,"10,11"], // NS8
+		[287,13,11] /* D11 */, [115, 5,"11,12"], // NS9
+		[ 48, 2,12] /* D12 */, [ 29, 1,"12,13"], // NS10 {7/3}
+		[ 49, 1,13] /* D13 */, [ 59, 1,"13,14"], // NS11
+		[ 10, 0,14] // D14
+	]
+
+	this.YB = this.types.filter((f,i)=> { return i%2==0 })
+	this.YG = [
+		{ t:"Non Simple 1",  max:4  }, //  D1- D2
+		{ t:"Non Simple 2",  max:4  }, //  D2- D3
+		{ t:"Convex",        max:5  }, //  D3- D4
+		{ t:"Concave",       max:5  }, //  D4- D5
+		{ t:"Non Simple 3",  max:20 }, //  D5- D6
+		{ t:"Non Simple 4",  max:20 }, //  D6- D7
+		{ t:"Non Simple 5",  max:20 }, //  D7- D8
+		{ t:"Non Simple 6",  max:30 }, //  D8- D9
+		{ t:"Non Simple 7",  max:30 }, //  D9-D10
+		{ t:"Non Simple 8",  max:60 }, // D10-D11
+		{ t:"Non Simple 9",  max:60 }, // D11-D12
+		{ t:"Non Simple 10", max:60 }, // D12-D13
+		{ t:"Non Simple 11", max:60 }, // D13-D14
+	]
+	this.YBreduced = this.YB.filter(f => { return f[0]+f[1] <= 20})
+	this.YGreduced = [
+		[1,9, "NS 1"],     //  D1 -- D2  : 0,10 -  2,8 => 1,9
+		[3,7, "NS 2"],     //  D2 -- D3  : 2,8  -  4,6 => 3,7
+		[5,5, "Convex"],   //  D3 -- D4  : 4,6  -  6,4 => 5,5
+		[7,3, "Concave"],  //  D4 -- D5  : 6,4  -  8,2 => 7,3
+		[17,3,"NS 3-5"],   //  D5 -- D8  : 8,2  -  9,1 => 1,1
+		[37,3,"NS 6-7"],   //  D8 -- D10 : 18,2 - 19,1 => 18.5/1.5
+		[39,1, "NS 8-11"], // D10 -- D14 : 19,1 - 20,0 => 19.5/0.5
+	]
+
+	const S = 2*3*2*5 // 60
+	const array = []
+	const min = 0, max = 10 * S
+	for (let p=min; p <= max; p++) {
+		const q = max - p
+		let f = 1
+		let c = 0
+		if (p % 60 == 0) { c =  1; f = 60; } else
+		if (p % 30 == 0) { c =  2; f = 30; } else
+		if (p % 20 == 0) { c =  3; f = 20; } else
+		if (p % 15 == 0) { c =  4; f = 15; } else
+		if (p % 12 == 0) { c =  5; f = 12; } else
+		if (p % 10 == 0) { c =  6; f = 10; } else
+		if (p %  6 == 0) { c = 10; f =  6; } else
+		if (p %  5 == 0) { c = 12; f =  5; } else
+		if (p %  4 == 0) { c = 15; f =  4; } else
+		if (p %  3 == 0) { c = 20; f =  3; } else
+		if (p %  2 == 0) { c = 30; f =  2; } else
+		if (p %  1 == 0) { c = 60; f =  1; }
+		const P = p/f
+		const Q = q/f
+		const A = { p: Q , q: (P + 6*Q)/5 }
+		const B = { p: P , q: (P + 6*Q)/5 }
+		array.push({ i:p, p:P, q:Q, c:c, A:A, B:B })
+	}
+
+	this.array = ()=> { return array }
+
+	this.single = (p, q)=> {
+		const a = array.filter(d => { return d.p == p && d.q == q })
+		return a.length ? a[0] : {}
+	}
+	this.group = (p1, q1, p2, q2)=> {
+		const first = this.single(p1, q1)
+		const last  = this.single(p2, q2)
+		return array.filter(d => { return d.i > first.i && d.i < last.i })
+	}
+}
+
+const H6 = function()
+{
+	const C = []
+	for (let i=0; i <= 60; i++) {
+		if (i % 6 == 0) { C.push({ r: { c:1, p:i/6, q:10-i/6 }}) } else 
+		if (i % 3 == 0) { C.push({ r: { c:2, p:i/3, q:20-i/3 }}) } else
+		if (i % 2 == 0) { C.push({ r: { c:3, p:i/2, q:30-i/2 }}) } else
+		if (i % 1 == 0) { C.push({ r: { c:6, p:i/1, q:60-i/1 }}) }
+	}
+	const sC = C
+	.sort((a,b)=> { return a.r.p/a.r.q - b.r.p/b.r.q })
+	.map(c => {
+		const i = c.r.p / c.r.q
+		const A = 5*Math.PI / (i + 6)
+		const x1 = Math.cos(1*A)
+		const x2 = Math.cos(2*A - 1*Math.PI)
+		const x3 = Math.cos(3*A)
+		return {
+			r: c.r,
+			A: { p: c.r.q , q: (c.r.p + 6*c.r.q)/5 },
+			B: { p: c.r.p , q: (c.r.p + 6*c.r.q)/5 },
+			t: 2*(x1+x2+x3)
+		}
+	})
+	this.sC = sC
+}
+
+
+
+const h60 = new H60()
+
+const xml = new XML()
+
+const M = 15
+const W1 = 150, W2 = 400, W3 = 30
+const T = 50
+const H = 800
+
+const styleBorder = `
+.border > line { stroke-width:2; stroke:#ff0; }
+.border > text { dominant-baseline: middle; text-anchor: middle; font-size:11px; fill:#123; }`
+const xmlBorder = (YB, YG)=> {
+	xml.g("border", {}, ()=> {
+		YB.forEach(y=> {
+			const yb = M + T + H*(y[0]/(y[0] + y[1]))
+			xml.line(null, { x1:W1, y1:yb, x2:W1+W2+W3, y2:yb })
+		})
+		YG.forEach(g=> {
+			const x = W1+W2+W3
+			const y = M + T + H*(g[0]/(g[0] + g[1]))
+			xml.text("", { x:x, y:y, transform:`rotate(-90, ${x}, ${y})` }, g[2])
+		})
+	})
+}
+
+const styleSegT = `
+.seg-t > text {
+	dominant-baseline: middle; text-anchor: middle; font-family: monospace;
+	font-size:12px; fill:#abc;
+}
+.seg-t > line { stroke:#abc; }`
+const xmlSegT = (TX)=> {
+	xml.g("seg-t", {}, ()=> {
+		const dt = W2 / (TX.length - 1)
+		TX.forEach((t,i) => {
+			const x = W1 + i*dt
+			xml.text(null, { x:x, y:M+T-10 }, `${t[0] || "t=0"}s`)
+			xml.line(null, { x1:x, y1:M+T, x2:x, y2:M+T+H })
+			if (t.length==4) {
+				const y = M + T + H*(t[1]/(t[1] + t[2]))
+				const a = { x:x-8, y:y, transform:`rotate(-90,${x-8},${y})` }
+				xml.text(null, a, `${t[3]}`)
+			}
+		})
+	})
+}
+
+const styleClasses = `
+.cc > text { dominant-baseline: middle; text-anchor:end; font-family: monospace; }
+.cc > line { stroke-width:0.5; }
+
+text.c1, circle.c1 { fill:#800; font-size:12px; }
+text.c2, circle.c2 { fill:#f00; font-size:11px; }
+text.c3, circle.c3 { fill:#f80; font-size:10px; }
+text.c6, circle.c6 { fill:#880; font-size: 9px; }
+text.A { fill:#0a0; font-size:10px; text-anchor:end;}
+text.B { fill:#08f; font-size:10px; text-anchor:start }
+line.c1 { stroke:#800; }
+line.c2 { stroke:#f00; }
+line.c3 { stroke:#f80; }
+line.c6 { stroke:#880; }`
+
+const xmlClasses = (CS, CX, sC)=> {
+	xml.g("cc", {}, ()=> {
+		CS.forEach((c,i)=> {
+			xml.text(`c${c}`, { x:M+CX[c], y:10+i*10 }, `r${c}`)
+		})
+		xml.text(`A`, { x:M+W1+W2/2 - 10, y:20 }, `A/&pi;`)
+		xml.text(`B`, { x:M+W1+W2/2 + 10, y:20 }, `B/&pi;`)
+		sC.forEach(c => {
+			const C = c.r.c
+			const x1 = M + CX[C]
+			const x2 = W1 + M
+			const y = M + T + H*(c.r.p/(c.r.p + c.r.q))
+			const cx = W1 + W2*((c.t)+3)/6
+			xml.text  (`c${C}`, { x:x1, y:y }, `${c.r.p}/${c.r.q}`)
+			xml.line  (`c${C}`, { x1:x1+3, y1:y, x2:cx-50, y2:y })
+			xml.circle(`c${C}`, { cx:cx, cy:y, r:3 })
+			xml.text  ("A",     { x:cx-5, y:y }, `${c.A.p}/${c.A.q}`)
+			xml.text  ("B",     { x:cx+5, y:y }, `${c.B.p}/${c.B.q}`)
+		})
+	})
+}
+
+xml.h2(null, {}, "Side t")
+const sss = { 
+	width :2*M+W1+W2+W3, 
+	height:2*M+T+H, 
+	xmlns :"http://www.w3.org/2000/svg" 
+}
+const h6 = new H6()
+xml.svg("case", sss, ()=> {
+	xml.defs(null, {}, ()=> {
+		xml.style(null, { type:"text/css" }, 
+			`<![CDATA[
+			text { font-family: sans-serif; }
+			${styleBorder}
+			${styleSegT}
+			${styleClasses}
+			]]>`
+		)
+	})
+	xml.g(null, { transform:"translate(0.5, 0.5)"}, ()=> {
+		xmlBorder(h60.YBreduced, h60.YGreduced)
+		const TX = [ // [ t, p, q, text ]
+			[-3], [-2], [-1], 
+			[0,1,9,"Degenerated"], 
+			[1,1,9,"Equilaterals"], 
+			[2,1,9,"Degenerated"], 
+			[3] 
+		]
+		xmlSegT(TX)
+		const CS = [ 1, 2, 3, 6 ]
+		const CX = { "1":20, "2":30, "3":60, "6":90 }
+		xmlClasses(CS, CX, h6.sC)
+	})
+})
+xml.id("svg1")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const $g = new XML()
+
+const pushSvg = (h, wh, t)=> {
+	$g.span("c", {}, ()=> {
+		$g.div("case", {}, ()=> {
+			if (t)   $g.div(null, {}, t);
+			if (h.c) $g.div("r", {}, `r<sub>${h.c}</sub> = ${h.p}/${h.q}`);
+			if (h.A) $g.div("A", {}, `A/&pi; = ${h.A.p}/${h.A.q}`);
+			if (h.B) $g.div("B", {}, `B/&pi; = ${h.B.p}/${h.B.q}`);
+			const svg = new SVG()
+			$g.div(null, {}, svg.caseSvg(wh, wh, `${h.p}/${h.q}`))
+		})
+	})
+}
+
+$g.h2(null, {}, "Types")
+$g.div(null, {}, ()=> {
+	h60.types.forEach((t,i) => {
+		pushSvg({ p:t[0], q:t[1] }, 120, `Type [${t[2]}]`)
+	})
+})
+
+$g.h2(null, {}, "Types details")
+{
+	let t = 1
+	$g.dl(null, {}, ()=> {
+		for (let i=0; i < h60.YB.length; i++) {
+			const yb1 = h60.YB[i]
+			const p = yb1[0]
+			const q = yb1[1]
+			const single = h60.single(p, q)
+			$g.dt(null, {}, ()=> {
+				$g.b(null, {}, `Type [${yb1[2]}].`)
+				$g.span(null, {}, `Single degenerated case:`)
+			})
+			$g.dd(null, {}, ()=> {
+				pushSvg(single, 80)
+			})
+			if (i < h60.YB.length - 1) {
+				const yb2 = h60.YB[i+1]
+				const yg = h60.YG[i]
+				$g.dt(null, {}, ()=> {
+					$g.b(null, {}, `Type [${yb1[2]},${yb2[2]}].`)
+					$g.span(null, {}, `Group ${yg.t}. Examples:`)
+				})
+				$g.dd(null, {}, ()=> {
+					const g = h60.group(yb1[0], yb1[1], yb2[0], yb2[1])
+					$g.span(null, {}, "...")
+					g.forEach(g => {
+						if (yg.max >= g.c) {
+							pushSvg(g, 80)
+							$g.span(null, {}, "...")
+						}
+					})
+				})
+			}
+		}
+	})
+}
+$g.id("groups")
+</script>
+</html>

@@ -1,10 +1,6 @@
-## Math pages
+## Pentagons
 
-Mostly elementary geometry.
-
-### Pentagons
-
-#### AsAsBsAsAt pentagons family
+### (As)<sub>2</sub>B(sA)<sub>2</sub>t pentagons family
 
 Simple family of pentagons. Each member can be described
 with a *single* positive real number **r**.
@@ -13,14 +9,14 @@ a fifth angle **B** and a fifth side **t**. In all these pentagons:
 
 * r = B / A
 * B = 3&pi; + 4A
-* t = 2s(cos(2A) + cos(2A - &pi;))
+* t = 2s(cos(A) - cos(2A))
 
 Both the *regular* pentagon {5} and the *equilateral* pentagram {5/2} 
 belong to the family.
 
-See [AsAsBsAsAt](AsAsBsAsAt.html).
+See [(As)<sub>2</sub>B(sA)<sub>2</sub>t]((As)2BsAsAt.html).
 
-#### AsBsCsDsEs pentagons family
+### AsBsCsDsEs pentagons family
 
 All the *equilateral* pentagons.
 
@@ -31,11 +27,11 @@ angles **A**, **B**, **C**, **D**, **E** different.
 
 See [AsBsCsDsEs](AsBsCsDsEs.html).
 
-### Hexagons
+## Hexagons
 
-### Heptagons
+## Heptagons
 
-#### AsAsAsBsAsAsAt heptagons family
+### (As)<sub>3</sub>B(sA)<sub>3</sub>t heptagons family
 
 Simple family of heptagons. Each member can be described
 with a *single* positive real number **r**.
@@ -44,12 +40,11 @@ a seventh angle **B** and a seventh side **t**. In all these heptagons
 
 * r = B / A
 * B = 5&pi; + 6A
-* t = 2s(cos(2A) + cos(2A - &pi;) + cos(3A - 2&pi;))
+* t = 2s(cos(A) - cos(2A) + cos(3A))
 
-The *regular* heptagon and the two *equilateral* heptagrams {7/2} and {7/3}
-belong to this family.
+The *regular* heptagon and the two *equilateral* heptagrams {7/2} and {7/3} belong to this family.
 
-See [AsAsAsBsAsAsAt](AsAsAsBsAsAsAt.html).
+See [(As)<sub>3</sub>B(sA)<sub>3</sub>t]((As)3B(sA)3t.html).
 
 
 
