@@ -279,6 +279,10 @@ const XML = function()
 	this.dt     = (c, attrs, C)=> { $$$("dt",   c, attrs, C) }
 	this.dd     = (c, attrs, C)=> { $$$("dd",   c, attrs, C) }
 	this.h2     = (c, attrs, C)=> { $$$("h2",   c, attrs, C) }
+	this.h3     = (c, attrs, C)=> { $$$("h3",   c, attrs, C) }
+	this.table  = (c, attrs, C)=> { $$$("table", c, attrs, C) }
+	this.tr     = (c, attrs, C)=> { $$$("tr",    c, attrs, C) }
+	this.td     = (c, attrs, C)=> { $$$("td",    c, attrs, C) }
 
 	this.Rect   = (x,y,w,h,c,a)=> {	
 		if (!a) a = {};
