@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="SVG.js"></script>
+<script type="text/javascript" src="pentagons.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<link rel="stylesheet" type="text/css" href="(As)nB(sA)nt.css">
+</head>
+
+<body>
+<h1>(As)<sub>2</sub>B(sA)<sub>2</sub>t</h1>
+
+<p>
+The <b>(As)<sub>2</sub>B(sA)<sub>2</sub>t</b> polygon is the pentagon with
+four equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has 
+four equal sides <b class="s">s</b> and 
+a single side <b class="t">t</b>.	
+<div class="right case">
+<img src="inkscape/(As)2B(sA)2t_draft.svg" class="svg draft">
+<div class="r">(As)<sub>2</sub>B(sA)<sub>2</sub>t pentagon</div>
+</div>
+<h3>Angles A,B</h3>
+
+<div>
+ For such an pentagon we have (\( 0 \le A \le 3\pi/4 \)) and 
+ (\( 0 \le B \le 3\pi\)):
+\begin{align*}
+4A + B &= 3\pi
+\end{align*}
+At vertex <span class="P">P<sub>1</sub></span> there is an angle called \( C \).
+At vertex <span class="P">P<sub>2</sub></span> there is an angle called \(D\).
+\begin{align*}
+C &= \pi - A  \\
+D &= A - C \\
+  &= 2A - \pi
+\end{align*}
+</div>
+<h3>Sides</h3>
+Set \(s_{1...6}\) as 1.
+The value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
+\begin{align*}
+s_{1...4} &\equiv 1 \\
+u &= \cos A \\
+  t &= 2(\cos A + \cos D) \\
+    &= 2(\cos A + \cos(2A - \pi)) \\
+    &= 2(\cos A - \cos(2A))) \\
+    &= 2(\cos A - (2\cos^2 A - 1)) \\
+    &= 2(-2u^2 + u + 1) \\
+\end{align*}
+</div>
+<br/>
+
+<h3>Generators</h3>
+<div>
+Define two generators 
+\(r\) = <b class="B">B</b> / <b class="A">A</b>
+and \(y = \frac{r}{r+1} \):
+
+\begin{align*}
+r &\equiv \frac{B}{A}     
+  = \frac{3\pi - 4A}{A}
+  = \frac{y}{1-y}, \quad\quad \text{$ 0 \le r \le \infty $}  \\
+y &\equiv \frac{r}{r+1}
+  = \frac{B}{A + B} = \frac{3\pi - 4A}{3\pi - 3A} 
+  , \quad\quad \text{$ 0 \le y \le 1 $} \\
+A &= \frac{3}{4+r}\pi = \frac{1 + y}{4/3 - y}\pi \\
+\end{align*}
+</div>
+</div>
+
+<h3>Rational generators</h3>
+<p>
+Define rational generators of class \(c\) (1,2,3...) using integers \(p\):
+\begin{align*}
+y_c &\equiv \frac{p}{6c}, \quad\quad \text{where $ 0 \le p \le 6c $} \\
+r_c &= \frac{p}{6c - p} \\
+A_c/\pi &= \frac{3}{r_c+4} = \frac{10c - p}{8c - p} \\
+B_c/\pi &= \frac{3r_c}{r_c+4} = \frac{p}{8c - p} \\
+r &= \frac{3A_q - 4A_p}{ A_p}, \quad \text{ where $ \frac{A_p}{A_q} \equiv A $}
+\end{align*}
+
+Class 1 generators are seven:
+\begin{align}
+r_1 = \frac{0}{6}, \frac{1}{5}, \frac{2}{4}, \frac{3}{3}, \frac{4}{2}, \frac{5}{1},
+\frac{6}{0}
+\end{align}
+
+Class 2 generators are only six (removing values repeated in lower class 1):
+\begin{align}
+r_2 = \frac{1}{11}, \frac{3}{9}, \frac{5}{7}, \frac{7}{5}, \frac{9}{3}, \frac{11}{1}
+\end{align}
+and so on...
+</p>
+
+
+
+<h2>Side graph</h2>
+
+<div class="right case">
+<div class="svg" id="sides-svg"><script>sidesSvg("sides-svg")</script></div>
+<div class="r">
+Two degenerated pentagons in <b class="black">black</b> dots. 
+Two equilateral pentagons in <b class="red">red</b> dots. 
+Two more degenerated pentagons in <b class="brown">brown</b> dots.
+</div>
+</div>
+<div>
+
+Plot <span class="y">y</span> from top (\(y=0\)) to bottom (\(y=1\)).
+Plot <span class="t">t</span> from left (\(t = -3\)) to right (\(t = +3\)) with:
+\begin{align*}
+u &= \cos(\frac{1 + y}{4/3 - y}\pi) \\
+\end{align*}
+</div>
+<p>
+For \(t=0\) we solve \( -4u^2 + 2u + 2 = 0 \) and get 
+\(u= -\frac{1}{2}, 1 \) 
+corresponding to two <b class="style">degenerated</b> pentagons:
+\begin{align}
+\arccos(-1/2) &= 2\pi/3 = A|_{y=x/x} \\
+\arccos(1) &= 0 = A|_{y=6/6} \\
+\end{align}
+</p>
+<p>
+For \( t = 1 \) we solve \( -4u^2 + 2u + 2 = 1 \) 
+and get \(u= \frac{1-\sqrt{5}}{4}, \frac{1+\sqrt{5}}{4}  \) 
+corresponding to two <b class="red">equilateral</b> pentagons known as {5}, {5/2}: 
+\begin{align}
+\arccos((1-\sqrt{5})/4) &= n\pi/d = A|_{y=x/x} \\
+\arccos((1+\sqrt{5})/4) &= n\pi/d = A|_{y=x/x} \\
+\end{align}
+</p>
+<p>
+For \(t = 2\) we solve \( -4u^2 + 2u + 2 = 2 \) and get another two <b class="brown">degenerated</b> pentagons: 
+\begin{align}
+\arccos(0) &= \pi/2 = A|_{y=x/x} \\
+\arccos(1/2) &= \pi/3 = A|_{y=x/x} \\
+\end{align}
+</p>
+
+<br/>
+
+
+
+
+</p>
+</body>
+</html>

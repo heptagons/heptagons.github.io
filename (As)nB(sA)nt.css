@@ -1,0 +1,45 @@
+* { font-family: sans-serif; }
+.P { color:#f00; font-size:14px; }
+.i { color:#888; font-size:12px; }
+.A { color:#0c0; font-size:14px; }
+.B { color:#08f; font-size:14px; font-weight: bold; }
+.s { color:#888; }
+.t { color:#f80; }
+.c1 { border:3px solid #f00; }
+.c2 { border:3px solid #0c0; }
+.c3 { border:3px solid #08f; }
+
+.c > div  { color:#888; font-size:12px; padding-left: 5px; }
+.c > img  { width:140px; display: block; }
+.c > span { color:#0c0; font-size:14px; padding-left: 5px;}
+.c > b    { color:#08f; font-size:14px; font-weight: bold; padding-left:10px; }
+
+.case { border:1px solid #abc; }
+.svg { background-color: #fff; margin:5px; border:1px solid #abc;}
+.r { font-size:15px; color:#000; padding:5px; max-width:480px; }
+.y { color:#888; }
+.red { color:#f00; }
+.brown { color:#840; }
+
+.draft {
+	width: 300px;
+}
+.right {
+	clear:right;
+	float:right;
+	margin:3px 0 5px 5px;
+	background-color: #eee;
+	width: auto;
+}
+br { clear:right; }
+
+dd { padding: 2px 0 10px; }
+pre { font-family: monospace; background-color: #def; }
+i { 
+	margin:0 6px;
+	text-align: right;
+}
+
+span.c  { display:inline-block; margin:3px; }
+
+
