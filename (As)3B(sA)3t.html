@@ -101,10 +101,10 @@ and so on...
 </p>
 
 
-<h2>Side graph</h2>
+<h2>Side t graph</h2>
 
 <div class="right case">
-<div class="svg" id="sides-svg"><script>sidesSvg("sides-svg")</script></div>
+<div class="svg" id="sides-svg"><script>heptagonSidesSvg("sides-svg")</script></div>
 <div class="r">
 Three degenerated heptagons in <b class="black">black</b> dots. 
 Three equilateral heptagons in <b class="red">red</b> dots. 
@@ -114,47 +114,51 @@ Three more degenerated heptagons in <b class="brown">brown</b> dots.
 <div>
 
 Plot <span class="y">y</span> from top (\(y=0\)) to bottom (\(y=1\)).
-Plot <span class="t">t</span> from left (\(t = -3\)) to right (\(t = +3\)) with:
+Plot <span class="t">t</span> from left (\(t = -3\)) to right (\(t = +3\)).
+For a particular value of \(t\) solve equation on \(u\) and get \(y\) using:
 \begin{align*}
-u &= \cos(\frac{1 + y}{6/5 - y}\pi) \\
+\arccos (u) &= \frac{A_p}{A_q}\pi \\
+y &= \frac{5A_q - 6A_p}{5A_q - 5A_p} \\
 \end{align*}
 </div>
 <p>
 For \(t=0\) we solve \( 8u^3 - 4u^2 - 4u + 2 = 0\) and get 
-\(u= \frac{-1}{\sqrt{2}}, \frac{1}{2}, \frac{1}{\sqrt{2}} \) 
+\(u_1= \frac{-1}{\sqrt{2}}, u_2 = \frac{1}{2}, u_3 = \frac{1}{\sqrt{2}} \) 
 corresponding to three <b class="style">degenerated</b> heptagons:
 \begin{align}
-\arccos(-1/\sqrt{2}) &= 3\pi/4 = A|_{y=4/10} \\
-\arccos(1/2) &= \pi/3 = A|_{y=9/10} \\
-\arccos(1/\sqrt{2}) &= \pi/4 = A|_{y=28/30}
+\arccos(-1/\sqrt{2}) = 3\pi/4 &\therefore y = 2/5 \\
+\arccos(1/2) = \pi/3 &\therefore y = 9/10 \\
+\arccos(1/\sqrt{2}) = \pi/4 &\therefore y = 14/15
 \end{align}
 </p>
 <p>
 For \( t = 1 \) we solve \( 8u^3 - 4u^2 - 4u + 2 = 1\) 
 and get three <b class="red">equilateral</b> heptagons known as {7}, {7/2}, {7/3}: 
 \begin{align}
-\arccos(-0.62349) &= 5\pi/7 = A|_{y=5/10} \\
-\arccos(+0.22252) &= 3\pi/7 = A|_{y=17/20} \\
-\arccos(+0.90097) &= \pi/7  = A|_{y=29/30}
+\arccos(-0.62349) = 5\pi/7 &\therefore y = 5/10 \\
+\arccos(+0.22252) = 3\pi/7 &\therefore y = 17/20 \\
+\arccos(+0.90097) = \pi/7  &\therefore y = 29/30
 \end{align}
 </p>
 <p>
-For \(t = 2\) we solve \( 8u^3 - 4u^2 - 4u + 2 = 2\) and get another three <b class="brown">degenerated</b> heptagons: 
+For \(t = 2\) we solve \( 8u^3 - 4u^2 - 4u + 2 = 2\) and get 
+\(u_1= -\frac{1}{2}, u_2 = 0, u_3 = 1 \) 
+corresponding to another three <b class="brown">degenerated</b> heptagons: 
 \begin{align}
-\arccos(-1/2) &= 2\pi/3 = A|_{y=6/10} \\
-\arccos(0) &= \pi/2 = A|_{y=8/10} \\
-\arccos(1) &= 0 = A|_{y=10/10}
+\arccos(-1/2) = 2\pi/3 &\therefore  y = 3/5 \\
+\arccos(0) = \pi/2 &\therefore y = 4/5 \\
+\arccos(1) = 0 &\therefore  y = 5/5
 \end{align}
 </p>
 
 <br/>
 
 
-<h2>Angles graph</h2>
+<h2>Angles A,B graph</h2>
 
 <p>
 <div class="right case">
-<div class="svg" id="angles-svg"><script>anglesSvg("angles-svg")</script></div>
+<div class="svg" id="angles-svg"><script>heptagonAnglesSvg("angles-svg")</script></div>
 <div class="r">The three <span class="red">7-symmetry</span> heptagons</div>
 </div>
 
@@ -175,7 +179,6 @@ At \(r = \frac{29}{1}\) \(B - A = 4\pi \). This is case of heptagon {7/3}. It se
 </p>
 </div>
 </p>
-
 <br/>
 
 <div id="types"></div>

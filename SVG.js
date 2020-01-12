@@ -291,60 +291,41 @@ const XML = function()
 	}
 }
 
-const As3BsA3t = ($g, w, h, p, q)=> {
-	const i = p / (q || 0.001)
-	const A = 5*Math.PI / (i + 6)
-	const A1 = 1*A
-	const A2 = 2*A - 1*Math.PI
-	const A3 = 3*A
-	const a = { x: Math.cos(A1), y: Math.sin(A1) }
-	const b = { x: Math.cos(A2), y: Math.sin(A2) }
-	const c = { x: Math.cos(A3), y: Math.sin(A3) }
-	const P = [
-		{ x:0                    , y:0               },
-		{ x:1*a.x                , y:a.y             },
-		{ x:1*a.x + 1*b.x        , y:a.y + b.y       },
-		{ x:1*a.x + 1*b.x + 1*c.x, y:a.y + b.y + c.y },
-		{ x:1*a.x + 1*b.x + 2*c.x, y:a.y + b.y       },
-		{ x:1*a.x + 2*b.x + 2*c.x, y:a.y             },
-		{ x:2*a.x + 2*b.x + 2*c.x, y:0               }
-	]
-	const X = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
-	const Y = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
-	P.forEach(p => {
-		if (X.min > p.x) X.min = p.x;
-		if (X.max < p.x) X.max = p.x;
-		if (Y.min > p.y) Y.min = p.y;
-		if (Y.max < p.y) Y.max = p.y;
-	})
-	const xm = (X.max + X.min) / 2
-	const ym = (Y.max + Y.min) / 2
-	const diff = Math.max(Math.abs(X.max - X.min), Math.abs(Y.max - Y.min))
-	const S = 0.8 * Math.min(w,h) / diff
-	const g1  = { transform:`translate(${w/2},${h/2})`}
-	const g2  = { transform:`translate(${-S*xm},${+S*ym}) scale(${S} ${-S})` }
-	const g21 = { stroke:"#888", "stroke-opacity":0.5, "stroke-width":0.05 }
-	const g22 = { stroke:"#f80", "stroke-opacity":0.5, "stroke-width":0.05 }
-	const g23 = { fill:"#0d0", "fill-opacity":0.5 }
-	$g.g(null, g1, ()=> {
-		$g.g(null, g2, ()=> {
-			$g.g(null, g21, ()=> {
-				for (let i=0; i < 6; i++)
-					$g.line(null, { x1:P[i].x, y1:P[i].y, x2:P[i+1].x, y2:P[i+1].y })
-			})
-			$g.g(null, g22, ()=> {
-				$g.line(null, { x1:P[6].x, y1:P[6].y, x2:P[0].x, y2:P[0].y })
-			})
-			$g.g(null, g23, ()=> {
-				P.forEach((p,i) => {
-					const attrs = { cx:p.x, cy:p.y, r:0.1 }
-					if (i==3) attrs.fill = "#08f";
-					$g.circle(null, attrs)
-				})
+const SvgPolygon =
+{
+	horizontalLines: ($, N, W, H, G)=> {
+		const gs = (cb)=> {
+			G.forEach(r => { cb(N + H*(r[0]/(r[0] + r[1])), r) })
+		}
+		$.g(null, {}, ()=> {
+			gs(y => $.line("", { x1:N, y1:y, x2:N+W, y2:y }))
+		})
+		$.g(null, { "text-anchor": "end", fill:"#888", stroke:"none" }, ()=> {
+			const x = N-6
+			$.text("", { x:x, y:N-N/2 }, `y`)
+			gs((y,r) => $.text("", { x:x, y:y }, `${r[0]}/${r[0]+r[1]}`))
+		})
+		$.g(null, { "text-anchor": "start", fill:"#000", stroke:"none" }, ()=> {
+			const xr = W+N+8
+			$.text("", { x:xr, y:N-N/2 }, `r`)
+			gs((y,r) => $.text("", { x:xr, y:y }, `${r[0]}/${r[1]}`))
+		})
+	},
+
+	verticalLines: ($, N, W, H, color, A, T)=> {
+		$.g(null, { "text-anchor": "middle", fill:color }, ()=> {
+			A.forEach((x,i) => {
+				const xx = N + W*(x-A[0])/(A.length - 1)
+				$.line("", { x1:xx, y1:N, x2:xx, y2:N+H })
+				$.text("", { x:xx, y:N-8, stroke:"none" }, T[i])
 			})
 		})
-	})
+	}
 }
+
+
+
+
 
 
 
