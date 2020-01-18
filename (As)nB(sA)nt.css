@@ -42,4 +42,8 @@ i {
 
 span.c  { display:inline-block; margin:3px; }
 
+table.relations { display: inline-block; margin:0 20px 20px 0; }
+table.relations caption { color:#08f; }
+table.relations th { padding:0 5px; color:#888;}
+table.relations td { text-align: center; }
 
