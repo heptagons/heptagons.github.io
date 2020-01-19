@@ -1,10 +1,11 @@
 * { font-family: sans-serif; }
-.P { color:#f00; font-size:14px; }
-.i { color:#888; font-size:12px; }
-.A { color:#0c0; font-size:14px; }
-.B { color:#08f; font-size:14px; font-weight: bold; }
-.s { color:#888; }
-.t { color:#f80; }
+.P { padding:0 3px; color:#f00; font-size:14px; }
+.i { padding:0 3px; color:#888; font-size:12px; }
+.A { padding:0 3px; color:#0c0; font-size:14px; font-weight: bold; }
+.B { padding:0 3px; color:#08f; font-size:14px; font-weight: bold; }
+.x { padding:0 3px; color:#840; font-size:14px; font-weight: bold; }
+.s { padding:0 3px; color:#888; }
+.t { padding:0 3px; color:#f80; }
 .c1 { border:3px solid #f00; }
 .c2 { border:3px solid #0c0; }
 .c3 { border:3px solid #08f; }
@@ -42,8 +43,8 @@ i {
 
 span.c  { display:inline-block; margin:3px; }
 
-table.relations { display: inline-block; margin:0 20px 20px 0; }
-table.relations caption { color:#08f; }
-table.relations th { padding:0 5px; color:#888;}
+table.relations { display: inline-block; margin:10px 20px 20px 0; }
+table.relations caption { font-style: italic; background-color: #789; color:#fff;}
+table.relations th { padding:0 5px; border-right: 1px solid gray; border-bottom: 1px solid gray; }
 table.relations td { text-align: center; }
 
