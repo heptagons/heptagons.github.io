@@ -242,30 +242,30 @@ const heptagonAnglesSvg = function(id)
 const H60 = function()
 {
 	this.typesIntersections = {
-		"1":     "P3-P5, s3-s4",
-		"1,2":   "s2-s5",
-		"2":     "P2-P6",
-		"2,3":   "s1-s6",
-		"3":     "P1-P7",
-		"3,4":   "None",
-		"4":     "None",
-		"4,5":   "None",
-		"5":     "P3-P5, s3-s4, P4-t",
-		"5,6":   "s2-s5, (s3,s4)-t",
-		"6":     "s2-s5, (s3,s4)-t, P3-s6, P5-s1",
-		"6,7":   "s2-s5, (s3,s4)-t, (s2,s3)-s6, (s4,s5)-s1",
-		"7":     "P2-P6, P1-s4, P7-s3",
-		"7,8":   "s1-s6",
-		"8":     "P1-P4-P7",
-		"8,9":   "s1-s3, s4-s6",
-		"9":     "s1-s3, s4-s6, P1-P7",
-		"9,10":  "s1-s3, s4-s6, s1-s6",
-		"10":    "s1-s3, s4-s6, s1-s6, P1-s4, P7-s3",
-		"10,11": "s1-s3, s4-s6, s1-s6, (s1,t)-s4, (s6,t)-s3",
-		"11":    "s1-s3, s4-s6, s1-s6, (s1,t)-s4, (s6,t)-s3, P1-s5, P7-s2",
-		"11,12": "s1-s3, s4-s6, s1-s6, (s1,t)-s4, (s6,t)-s3, (s1,t)-s5, (s6,t)-s2",
+		"1":     "d<sub>1</sub> = 0, II<sub>A</sub>",
+		"1,2":   "X<sub>1</sub>",
+		"2":     "d<sub>2</sub> = 0",
+		"2,3":   "X<sub>2</sub>",
+		"3":     "d<sub>3</sub> = t = 0",
+		"3,4":   "B < &pi;",
+		"4":     "d<sub>3</sub> = 2, B = &pi;",
+		"4,5":   "2&pi; > B > &pi;",
+		"5":     "d<sub>1</sub> = 0, II<sub>1</sub>, K<sub>1</sub>",
+		"5,6":   "X<sub>1</sub>, X<sub>3</sub>",
+		"6":     "X<sub>1</sub>, X<sub>3</sub>, K<sub>2</sub>",
+		"6,7":   "X<sub>1</sub>, X<sub>3</sub>, X<sub>4</sub>",
+		"7":     "d<sub>2</sub> = 0, K<sub>3</sub>",
+		"7,8":   "X<sub>2</sub>",
+		"8":     "d<sub>3</sub> = t = 0",
+		"8,9":   "",
+		"9":     "",
+		"9,10":  "",
+		"10":    "",
+		"10,11": "",
+		"11":    "",
+		"11,12": "",
 
-		"14":    "P1-P3, P5-P7, P2-P4-P6, ((s1-s2-s3),(s4-s5-s6))-t"
+		"14":    ""
 	}
 
 	this.types = [ // 27 types, 14 degenerated [x], 13 groups [x,x+1]

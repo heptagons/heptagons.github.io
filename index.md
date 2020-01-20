@@ -14,7 +14,7 @@ a fifth angle **B** and a fifth side **t**. In all these pentagons:
 Both the *regular* pentagon {5} and the *equilateral* pentagram {5/2} 
 belong to the family.
 
-See [(As)<sub>2</sub>B(sA)<sub>2</sub>t]((As)2BsAsAt.html).
+See [(As)<sub>2</sub>B(sA)<sub>2</sub>t]((As)2B(sA)2t.html).
 
 ### AsBsCsDsEs pentagons family
 

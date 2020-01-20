@@ -15,18 +15,22 @@
 <body>
 <h1>(As)<sub>3</sub>B(sA)<sub>3</sub>t</h1>
 
+
+<b>(As)<sub>3</sub>B(sA)<sub>3</sub>t</b> is the class of heptagons with
+<ol>
+<li>Six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>.</li>
+<li>Six equal sides <b class="s">s</b> and a single side <b class="t">t</b>.</li>
+</ol>
+
+
 <p>
-The <b>(As)<sub>3</sub>B(sA)<sub>3</sub>t</b> polygon is the heptagon with
-six equal angles <b class="A">A</b> and a single angle <b class="B">B</b>. Also has 
-six equal sides <b class="s">s</b> and 
-a single side <b class="t">t</b>.	
 <div class="right case">
 <img src="inkscape/(As)3B(sA)3t_draft.svg" class="svg draft">
 <div class="r">(As)<sub>3</sub>B(sA)<sub>3</sub>t heptagon</div>
 </div>
 <h3>Angles A,B</h3>
 <div>
- For such an heptagon we have (\( 0 \le A \le 5\pi/6 \)) and 
+ For such heptagons we have (\( 0 \le A \le 5\pi/6 \)) and 
  (\( 0 \le B \le 5\pi\)):
 \begin{align*}
 6A + B &= 5\pi
@@ -42,10 +46,10 @@ F &= A - E = 3A - 2\pi \\
 \end{align*}
 </div>
 <h3>Sides</h3>
-Set \(s_{1...6}\) as 1.
+Set \(s\) to 1.
 The value of seventh side <b class="t">t</b> can be found as function of angle <b class="A">A</b> and side <b class="s">s</b>:
 \begin{align*}
-s_{1...6} &\equiv 1 \\
+s &\equiv 1 \\
 u &= \cos A \\
   t &= 2(\cos A + \cos D + \cos F) \\
     &= 2(\cos A + \cos(2A - \pi) + \cos(3A - 2\pi)) \\
@@ -55,6 +59,28 @@ u &= \cos A \\
 \end{align*}
 </div>
 <br/>
+
+<hr/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <h3>Generators</h3>
 <div>
@@ -180,6 +206,153 @@ At \(r = \frac{29}{1}\) \(B - A = 4\pi \). This is case of heptagon {7/3}. It se
 </div>
 </p>
 <br/>
+
+<hr/>
+
+<p>
+<div class="right case">
+<img src="inkscape/heptagon_11_9_diagonals.svg" class="svg draft">
+<div class="r">Diagonals</div>
+</div>
+<h3>Objects</h3>
+<div>
+Seven vertices <span class="P">P<sub>1</sub></span>, ... <span class="P">P<sub>7</sub></span> are
+joined with seven edges <span class="s">e<sub>1</sub></span>, ... <span class="s">e<sub>7</sub></span>.
+<div>
+<span>
+<table class="relations">
+  <caption>Vertices</caption>
+<tr><th>&nbsp;</th><th>angle</th></tr>
+<tr><th><span class="P">P<sub>1</sub></span></th><td class="A">A</td></tr>
+<tr><th><span class="P">P<sub>2</sub></span></th><td class="A">A</td></tr>
+<tr><th><span class="P">P<sub>3</sub></span></th><td class="A">A</td></tr>
+<tr><th><span class="P">P<sub>4</sub></span></th><td class="B">B</td></tr>
+<tr><th><span class="P">P<sub>5</sub></span></th><td class="A">A</td></tr>
+<tr><th><span class="P">P<sub>6</sub></span></th><td class="A">A</td></tr>
+<tr><th><span class="P">P<sub>7</sub></span></th><td class="A">A</td></tr>
+</table>
+</span>
+
+<table class="relations">
+<caption>Point-Point distances</caption>
+<tr><th>&nbsp;</th>
+<th class="P">P<sub>1</sub></th>
+<th class="P">P<sub>2</sub></th>
+<th class="P">P<sub>3</sub></th>
+<th class="P">P<sub>4</sub></th>
+<th class="P">P<sub>5</sub></th>
+<th class="P">P<sub>6</sub></th>
+</tr>
+<tr><th class="P">P<sub>2</sub></th>
+<td class="s">1</td></tr>
+<tr><th class="P">P<sub>3</sub></th>
+<td>d<sub>?</sub></td><td class="s">1</td>
+</tr>
+<tr><th class="P">P<sub>4</sub></th>
+<td>d<sub>?</sub></td><td>d<sub>?</sub></td><td class="s">1</td>
+</tr>
+<tr><th class="P">P<sub>5</sub></th>
+<td>d<sub>?</sub></td><td>d<sub>?</sub></td><td>d<sub>1</sub></td><td class="s">1</td>
+</tr>
+<tr><th class="P">P<sub>6</sub></th>
+<td>d<sub>?</sub></td><td>d<sub>2</sub></td><td>d<sub>?</sub></td><td>d<sub>?</sub></td><td class="s">1</td>
+</tr>
+<tr><th class="P">P<sub>7</sub></th>
+<td class="t">d<sub>3</sub></td><td>d<sub>?</sub></td><td>d<sub>?</sub></td><td>d<sub>?</sub></td><td>d<sub>?</sub></td><td class="s">1</td>
+</tr>
+</table>
+
+<table class="relations">
+  <caption>Edge-Edge Intersections</caption>
+<tr><th>&nbsp;</th>
+  <th class="s">e<sub>1</sub></th>
+  <th class="s">e<sub>2</sub></th>
+  <th class="s">e<sub>3</sub></th>
+  <th class="s">e<sub>4</sub></th>
+  <th class="s">e<sub>5</sub></th>
+  <th class="s">e<sub>6</sub></th>
+</tr>
+<tr><th class="s">e<sub>2</sub></th>
+<td>II<sub>?</sub></td>
+</tr>
+<tr><th class="s">e<sub>3</sub></th>
+<td class="P">X<sub>?</sub></td><td>II<sub>?</sub></td>
+</tr>
+<tr><th class="s">e<sub>4</sub></th>
+<td class="P">X<sub>4</sub></td><td class="P">X<sub>?</sub></td><td>II<sub>A</sub></td>
+</tr>
+<tr><th class="s">e<sub>5</sub></th>
+<td class="P">X<sub>4</sub></td><td class="P">X<sub>1</sub></td><td class="P">X<sub>?</sub></td><td>II<sub>?</sub></td>
+</tr>
+<tr><th class="s">e<sub>6</sub></th>
+<td class="P">X<sub>2</sub></td><td class="P">X<sub>4</sub></td><td class="P">X<sub>4</sub></td><td class="P">X<sub>?</sub></td><td>II<sub>?</sub></td>
+</tr>
+<tr><th class="t">e<sub>7</sub></th>
+<td>II<sub>?</sub></td><td class="P">X<sub>?</sub></td><td class="P">X<sub>3</sub></td><td class="P">X<sub>3</sub></td><td class="P">X<sub>?</sub></td><td>II<sub>?</sub></td>
+</tr>
+</table>
+
+
+<table class="relations">
+  <caption>Points-Edges Coincidences</caption>
+<tr><th>&nbsp;</th>
+  <th class="s">e<sub>1</sub></th>
+  <th class="s">e<sub>2</sub></th>
+  <th class="s">e<sub>3</sub></th>
+  <th class="s">e<sub>4</sub></th>
+  <th class="s">e<sub>5</sub></th>
+  <th class="s">e<sub>6</sub></th>
+  <th class="t">e<sub>7</sub></th>
+</tr>
+<tr>
+<th class="P">P<sub>1</sub></th>
+<td>v</td><td>II<sub>?</sub></td><td class="P">K<sub>?</sub></td><td class="P">K<sub>3</sub></td><td class="P">K<sub>?</sub></td><td>II<sub>?</sub></td><td>v</td>
+</tr>
+<tr><th class="P">P<sub>2</sub></th>
+<td>v</td><td>v</td><td>II<sub>?</sub></td><td class="P">K<sub>?</sub></td><td class="P">K<sub>?</sub></td><td class="P">K<sub>?</sub></td><td>II<sub>?</sub></td>
+</tr>
+<tr><th class="P">P<sub>3</sub></th>
+<td>II<sub>?</sub></td><td>v</td><td>v</td><td>II<sub>?</sub></td><td class="P">K<sub>?</sub></td><td class="P">K<sub>2</sub></td><td class="P">K<sub>?</sub></td>
+</tr>
+<tr><th class="P">P<sub>4</sub></th>
+<td class="P">K<sub>?</sub></td><td>II<sub>?</sub></td><td>v</td><td>v</td><td>II<sub>?</sub></td><td class="P">K<sub>?</sub></td><td class="P">K<sub>?</sub></td>
+</tr>
+
+<tr><th class="P">P<sub>5</sub></th><td class="P">K<sub>2</sub></td><td class="P">K<sub>?</sub></td><td>II<sub>?</sub></td><td>v</td><td>v</td><td>II<sub>?</sub><td class="P">K<sub>?</sub></td></tr>
+
+<tr><th class="P">P<sub>6</sub></th><td class="P">K<sub>?</sub></td><td class="P">K<sub>?</sub></td><td class="P">K<sub>?</sub></td><td>II<sub>?</sub></td><td>v</td><td>v</td><td>II<sub>?</sub></td></tr>
+
+<tr><th class="P">P<sub>7</sub></th><td>II<sub>?</sub></td><td class="P">K<sub>?</sub></td><td class="P">K<sub>3</sub></td><td class="P">K<sub>1</sub></td><td>II<sub>?</sub></td><td>v</td><td>v</td></tr>
+</table>
+
+
+</div>
+</p>
+<br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div id="types"></div>
 <script>
