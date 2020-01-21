@@ -253,19 +253,22 @@ const H60 = function()
 		"5":     "d<sub>1</sub> = 0, II<sub>1</sub>, K<sub>1</sub>",
 		"5,6":   "X<sub>1</sub>, X<sub>3</sub>",
 		"6":     "X<sub>1</sub>, X<sub>3</sub>, K<sub>2</sub>",
-		"6,7":   "X<sub>1</sub>, X<sub>3</sub>, X<sub>4</sub>",
+		"6,7":   "X<sub>1</sub>, X<sub>3</sub>, X<sub>4A</sub>, X<sub>4B</sub>",
 		"7":     "d<sub>2</sub> = 0, K<sub>3</sub>",
 		"7,8":   "X<sub>2</sub>",
-		"8":     "d<sub>3</sub> = t = 0",
-		"8,9":   "",
-		"9":     "",
-		"9,10":  "",
-		"10":    "",
-		"10,11": "",
-		"11":    "",
-		"11,12": "",
-
-		"14":    ""
+		"8":     "d<sub>3</sub> = t = 0, d<sub>4</sub> = 4",
+		"8,9":   "X<sub>5</sub>",
+		"9":     "d<sub>3</sub> = t = 0, X<sub>5</sub>",
+		"9,10":  "X<sub>5</sub>, X<sub>2</sub>",
+		"10":    "X<sub>5</sub>, X<sub>2</sub>, K<sub>3</sub>",
+		"10,11": "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>",
+		"11":    "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>, K<sub>5</sub>",
+		"11,12": "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>, X<sub>4B</sub>, X<sub>6</sub>",
+		"12":    "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>, X<sub>4B</sub>, X<sub>6</sub>, II<sub>A</sub>, d<sub>5</sub> = 1",
+		"12,13": "?",
+		"13":    "?",
+		"13,14": "?",
+		"14":    "?"
 	}
 
 	this.types = [ // 27 types, 14 degenerated [x], 13 groups [x,x+1]
