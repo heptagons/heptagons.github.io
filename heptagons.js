@@ -82,17 +82,11 @@ const HeptagonSides = function(xml, N, W1, H1, CT)
 	}
 }
 
-const heptagons_ts_graph = function(id)
+const heptagons_ts_graph = function(id, G, cd1, cd2, cd3)
 {
 	const M = 20, N = 40, W1=400, H1=500;
 	const A = [ -3, -2, -1, 0, 1, 2, 3 ]
-	const AT = [ "", `-2`, `-1`, "t = 0", `+1`, `+2`, "" ]
-
-	const G = [ 
-		[0,10],[2,8],[4,6],[6,4],[8,2],[26,4],
-		[9,1],[28,2],[48,2],[10,0]
-	]
-	const CT = "#f80"
+	const AT = [ "", `-2`, `-1`, "0", `+1`, `+2`, "" ]
 	const Y = (y)=> N + H1*y
 	const T = (y)=> {
 		const A = Math.PI*(1 - y)/(6/5 - y)
@@ -102,7 +96,7 @@ const heptagons_ts_graph = function(id)
 	}
 
 	const xml = new XML()
-	const hs = new HeptagonSides(xml, N, W1, H1, CT)
+	const hs = new HeptagonSides(xml, N, W1, H1, cd3)
 	const d1 = hs.d1_curve(120)
 	const d2 = hs.d2_curve(120)
 	const d3 = hs.d3_curve(120)
@@ -111,19 +105,19 @@ const heptagons_ts_graph = function(id)
 		xml.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
 			hs.lines(G, A, AT)
 
-			const t1 = { stroke:"#f0f", "stroke-width":1, fill:"none"}
+			const t1 = { stroke:cd1, "stroke-width":1, fill:"none"}
 			xml.g(null, t1, ()=> {
 				const p = d1.map(r => `${r.x},${r.y}`)
 				xml.polyline(null, { points:p.join(",") })
 			})
 
-			const t2 = { stroke:"#808", "stroke-width":1, fill:"none"}
+			const t2 = { stroke:cd2, "stroke-width":1, fill:"none"}
 			xml.g(null, t2, ()=> {
 				const p = d2.map(r => `${r.x},${r.y}`)
 				xml.polyline(null, { points:p.join(",") })
 			})
 
-			const t3 = { stroke:CT, "stroke-width":3, fill:"none"}
+			const t3 = { stroke:cd3, "stroke-width":3, fill:"none"}
 			xml.g(null, t3, ()=> {
 				const p = d3.map(r => `${r.x},${r.y}`)
 				xml.polyline(null, { points:p.join(",") })

@@ -9,6 +9,9 @@
 .c1 { border:3px solid #f00; }
 .c2 { border:3px solid #0c0; }
 .c3 { border:3px solid #08f; }
+.d1 { color:#f0f; }
+.d2 { color:#808; }
+.d3 { color:#f80; }
 
 .c > div  { color:#888; font-size:12px; padding-left: 5px; }
 .c > img  { width:140px; display: block; }

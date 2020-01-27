@@ -109,6 +109,32 @@ and so on...
 </p>
 
 
+<h3>Angles A,B graph</h3>
+
+<p>
+<div class="right case">
+<div class="svg" id="angles-svg"><script>heptagonAnglesSvg("angles-svg")</script></div>
+<div class="r">The three <span class="red">7-symmetry</span> heptagons</div>
+</div>
+
+<div>
+<p>
+Plot <span class="y">y</span> from top (\(y=0\)) to bottom (\(y=1\)).
+Plot <span class="A">A</span> from left (\(0\)) to right (\(\frac{5}{6}\pi\)) and
+<span class="B">B</span> from left (\(0\)) to rigth (\( 5\pi \)).
+</p>
+<p>
+At \(r = \frac{5}{5}\)  A and B curves intersects. All angles are equal and represents the regular heptagon {7}. 
+</p>
+<p>
+At \(r = \frac{17}{3}\) \(B - A = 2\pi \). This is the case of heptagon {7/2}. It seems \(B\) equals \(A\) but is not, exceeds \(A \) by a complete turn, so {7/2} is equilateral but not regular.
+</p>
+<p>
+At \(r = \frac{29}{1}\) \(B - A = 4\pi \). This is case of heptagon {7/3}. It seems \(B\) equals \(A\) but is not, \(B\) exceeds \(A\) by two complete turns so {7/3} is equilateral but not regular.
+</p>
+</div>
+</p>
+<br/>
 
 
 <h3>t graph</h3>
@@ -164,39 +190,45 @@ corresponding to another three <b class="brown">degenerated</b> heptagons:
 <br/>
 
 
-<h3>d<sub>1</sub>, d<sub>2</sub>, d<sub>3</sub> graph</h3>
+<h3>Distances graph</h3>
 <div class="right case">
-<div class="svg" id="ts_graph"><script>heptagons_ts_graph("ts_graph")</script></div>
+<div class="svg" id="ts_graph"></div>
+<div class="r">
+Distances graph.
+<b class="d1">d1</b>, 
+<b class="d2">d2</b>,
+<b class="d3">d3</b>.
 </div>
+</div>
+<div id="ts_graph_limits"></div>
+<script>
+const d = (d)=> `<span class='d${d}'>d<sub>${d}</sub></span>`
+const G = [ 
+	[ 0,10,`${d(1)}=0`],
+	[ 2, 8,`${d(2)}=0`],
+	[ 4, 6,`${d(3)}=0, ${d(1)}=${d(2)}`],
+	[ 6, 4,`${d(1)}=2`],
+	[ 8, 2,`${d(1)}=0, ${d(2)}=${d(3)}`],
+	[26, 4,`${d(2)}=0`],
+	[ 9, 1,`${d(3)}=0`],
+	[28, 2,`${d(3)}=0, ${d(1)}=${d(2)}`],
+	[48, 2,`${d(1)}=0`],
+	[10, 0,`${d(2)}=0, ${d(2)}=${d(3)}`]
+]
+heptagons_ts_graph("ts_graph", G, "#f0f","#808","#f80")
+const xml = new XML()
+xml.div(null, {}, "Pseudo-heptagons")
+xml.div(null, {}, ()=> {
+	G.forEach(g => {
+		const top = `r=${g[0]}/${g[1]}` 
+		AsnBsAnt_card(xml, { p:g[0], q:g[1] }, 100, top, g[2], 3)
+	})
+})
+xml.id("ts_graph_limits")
+</script>
 <br/>
 
 
-<h3>Angles A,B graph</h3>
-
-<p>
-<div class="right case">
-<div class="svg" id="angles-svg"><script>heptagonAnglesSvg("angles-svg")</script></div>
-<div class="r">The three <span class="red">7-symmetry</span> heptagons</div>
-</div>
-
-<div>
-<p>
-Plot <span class="y">y</span> from top (\(y=0\)) to bottom (\(y=1\)).
-Plot <span class="A">A</span> from left (\(0\)) to right (\(\frac{5}{6}\pi\)) and
-<span class="B">B</span> from left (\(0\)) to rigth (\( 5\pi \)).
-</p>
-<p>
-At \(r = \frac{5}{5}\)  A and B curves intersects. All angles are equal and represents the regular heptagon {7}. 
-</p>
-<p>
-At \(r = \frac{17}{3}\) \(B - A = 2\pi \). This is the case of heptagon {7/2}. It seems \(B\) equals \(A\) but is not, exceeds \(A \) by a complete turn, so {7/2} is equilateral but not regular.
-</p>
-<p>
-At \(r = \frac{29}{1}\) \(B - A = 4\pi \). This is case of heptagon {7/3}. It seems \(B\) equals \(A\) but is not, \(B\) exceeds \(A\) by two complete turns so {7/3} is equilateral but not regular.
-</p>
-</div>
-</p>
-<br/>
 
 <hr/>
 
@@ -324,78 +356,78 @@ joined with seven edges <span class="s">e<sub>1</sub></span>, ... <span class="s
 <script>
 {
 const h60 = new H60()
-const $g = new XML()
+const xml = new XML()
 
 const pushSvg = (h, wh, t, footer)=> {
-	AsnBsAnt_card($g, h, wh, t, footer, 3)
+	AsnBsAnt_card(xml, h, wh, t, footer, 3)
 }
 
-$g.div(null, {}, ()=> {
+xml.div(null, {}, ()=> {
 	h60.types.forEach((t,i) => {
 		const h = { p:t[0], q:t[1] }
 		const top = `Type <b>[${t[2]}]</b> r=${t[0]}/${t[1]}` 
-		const x = h60.typesIntersections[t[2]]
-		pushSvg(h, 120, top, x)
+		const footer = h60.typesIntersections[t[2]]
+		pushSvg(h, 120, top, footer)
 	})
 })
 
-$g.h3(null, {}, "Types details")
+xml.h3(null, {}, "Types details")
 {
-	const span = (t)=> { $g.span(null, {}, t) }
+	const span = (t)=> { xml.span(null, {}, t) }
 	let t = 1
-	$g.dl(null, {}, ()=> {
+	xml.dl(null, {}, ()=> {
 		for (let i=0; i < h60.YB.length; i++) {
 			const yb1 = h60.YB[i]
 			const p = yb1[0]
 			const q = yb1[1]
 			const t = yb1[2]
 			const single = h60.single(p, q)
-			$g.dt(null, {}, ()=> {
-				$g.table(null, {}, ()=> {
-					$g.tr(null, {}, ()=> {
-						$g.td(null, {}, "Type")
-						$g.td(null, {}, `<b>[${t}]</b>`)
+			xml.dt(null, {}, ()=> {
+				xml.table(null, {}, ()=> {
+					xml.tr(null, {}, ()=> {
+						xml.td(null, {}, "Type")
+						xml.td(null, {}, `<b>[${t}]</b>`)
 					})
-					$g.tr(null, {}, ()=> {
-						$g.td(null, {}, "Intersections")
+					xml.tr(null, {}, ()=> {
+						xml.td(null, {}, "Intersections")
 						const i = h60.typesIntersections[t] || ""
-						$g.td(null, {}, `<b>${i}</b>`)
+						xml.td(null, {}, `<b>${i}</b>`)
 					})
 				})
 			})
-			$g.dd(null, {}, ()=> {
+			xml.dd(null, {}, ()=> {
 				pushSvg(single, 80)
 			})
 			if (i < h60.YB.length - 1) {
 				const yb2 = h60.YB[i+1]
 				const yg = h60.YG[i]
 				const t = `${yb1[2]},${yb2[2]}`
-				$g.dt(null, {}, ()=> {
-					$g.table(null, {}, ()=> {
-						$g.tr(null, {}, ()=> {
-							$g.td(null, {}, "Type")
-							$g.td(null, {}, `<b>[${t}]</b>`)
+				xml.dt(null, {}, ()=> {
+					xml.table(null, {}, ()=> {
+						xml.tr(null, {}, ()=> {
+							xml.td(null, {}, "Type")
+							xml.td(null, {}, `<b>[${t}]</b>`)
 						})
-						$g.tr(null, {}, ()=> {
-							$g.td(null, {}, "Group")
-							$g.td(null, {}, `<b>${yg.t}</b>`)
+						xml.tr(null, {}, ()=> {
+							xml.td(null, {}, "Group")
+							xml.td(null, {}, `<b>${yg.t}</b>`)
 						})
-						$g.tr(null, {}, ()=> {
-							$g.td(null, {}, "Intersections")
+						xml.tr(null, {}, ()=> {
+							xml.td(null, {}, "Intersections")
 							const i = h60.typesIntersections[t] || ""
-							$g.td(null, {}, `<b>${i}</b>`)
+							xml.td(null, {}, `<b>${i}</b>`)
 						})
 					})
 					//const i = h60.typesIntersections[t] || ""
 					//span(`Group <b>${yg.t}</b>. Intersections:<b>${i}</b>. Examples:`)
 				})
-				$g.dd(null, {}, ()=> {
+				xml.dd(null, {}, ()=> {
 					const g = h60.group(yb1[0], yb1[1], yb2[0], yb2[1])
-					$g.span(null, {}, "...")
+					xml.span(null, {}, "...")
 					g.forEach(g => {
 						if (yg.max >= g.c) {
 							pushSvg(g, 80)
-							$g.span(null, {}, "...")
+							xml.span(null, {}, "...")
 						}
 					})
 				})
@@ -403,7 +435,7 @@ $g.h3(null, {}, "Types details")
 		}
 	})
 }
-$g.id("types")
+xml.id("types")
 }
 </script>
 </body>
