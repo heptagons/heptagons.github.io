@@ -1,156 +1,192 @@
-const As3BsA3t = ($g, w, h, p, q)=> {
-	const i = p / (q || 0.001)
-	const A = 5*Math.PI / (i + 6)
-	const A1 = 1*A
-	const A2 = 2*A - 1*Math.PI
-	const A3 = 3*A
-	const a = { x: Math.cos(A1), y: Math.sin(A1) }
-	const b = { x: Math.cos(A2), y: Math.sin(A2) }
-	const c = { x: Math.cos(A3), y: Math.sin(A3) }
-	const P = [
-		{ x:0                    , y:0               },
-		{ x:1*a.x                , y:a.y             },
-		{ x:1*a.x + 1*b.x        , y:a.y + b.y       },
-		{ x:1*a.x + 1*b.x + 1*c.x, y:a.y + b.y + c.y },
-		{ x:1*a.x + 1*b.x + 2*c.x, y:a.y + b.y       },
-		{ x:1*a.x + 2*b.x + 2*c.x, y:a.y             },
-		{ x:2*a.x + 2*b.x + 2*c.x, y:0               }
-	]
-	const X = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
-	const Y = { min:Number.MAX_VALUE, max:-Number.MAX_VALUE }
-	P.forEach(p => {
-		if (X.min > p.x) X.min = p.x;
-		if (X.max < p.x) X.max = p.x;
-		if (Y.min > p.y) Y.min = p.y;
-		if (Y.max < p.y) Y.max = p.y;
-	})
-	const xm = (X.max + X.min) / 2
-	const ym = (Y.max + Y.min) / 2
-	const diff = Math.max(Math.abs(X.max - X.min), Math.abs(Y.max - Y.min))
-	const S = 0.8 * Math.min(w,h) / diff
-	const g1  = { transform:`translate(${w/2},${h/2})`}
-	const g2  = { transform:`translate(${-S*xm},${+S*ym}) scale(${S} ${-S})` }
-	const g21 = { stroke:"#888", "stroke-opacity":0.5, "stroke-width":0.05 }
-	const g22 = { stroke:"#f80", "stroke-opacity":0.5, "stroke-width":0.05 }
-	const g23 = { fill:"#0d0", "fill-opacity":0.5 }
-	$g.g(null, g1, ()=> {
-		$g.g(null, g2, ()=> {
-			$g.g(null, g21, ()=> {
-				for (let i=0; i < 6; i++)
-					$g.line(null, { x1:P[i].x, y1:P[i].y, x2:P[i+1].x, y2:P[i+1].y })
-			})
-			$g.g(null, g22, ()=> {
-				$g.line(null, { x1:P[6].x, y1:P[6].y, x2:P[0].x, y2:P[0].y })
-			})
-			$g.g(null, g23, ()=> {
-				P.forEach((p,i) => {
-					const attrs = { cx:p.x, cy:p.y, r:0.1 }
-					if (i==3) attrs.fill = "#08f";
-					$g.circle(null, attrs)
-				})
+
+const HeptagonSides = function(xml, N, W1, H1, CT)
+{
+	this.lines = (G, A, AT)=> {
+		const lines = { 
+			stroke:"#abc", "stroke-width":1, 
+			"font-size":"12px", 
+			"dominant-baseline": "middle" 
+		}
+		xml.g(null, lines, ()=> {
+			SvgPolygon.horizontalLines(xml, N, W1, H1, G)
+			const u = "s"
+			SvgPolygon.verticalLines(xml, N, W1, H1, CT, A, AT)
+		})
+	}
+
+	this.cards = (stroke, t, polygons)=> {
+		polygons.forEach(p => {
+			card(p.x, p.y, p.p, p.q, p.c, stroke, t)
+		})
+		xml.g(null, { fill:stroke}, ()=> {
+			polygons.forEach(p => {
+				const y = p.p / (p.p + p.q)
+				xml.circle(null, { cx:T3(y), cy:Y(y), r:4 })
 			})
 		})
-	})
+	}
+
+	this.d1_curve = (max)=> {
+		const dots = []
+		for (let p=0;  p <= max; p++)
+			dots.push({ x: T1(p / max), y: Y(p / max) })
+		return dots
+	}
+	this.d2_curve = (max)=> {
+		const dots = []
+		for (let p=0;  p <= max; p++)
+			dots.push({ x: T2(p / max), y: Y(p / max) })
+		return dots
+	}
+	this.d3_curve = (max)=> {
+		const dots = []
+		for (let p=0;  p <= max; p++)
+			dots.push({ x: T3(p / max), y: Y(p / max) })
+		return dots
+	}
+
+	const card = (x, y, p, q, c, stroke, tt)=> {
+		const t = `translate(${x},${y})`
+		const g = { transform:t, "font-size":"12px", "text-anchor":"middle"}
+		const a = 10*c - p
+		const b = p
+		const d = 12*c - p
+		xml.g(null, g, ()=> {
+			xml.Rect(0,0,60,90,null,{ 
+				fill:"#fff", stroke:stroke, "stroke-width":1.5
+			})
+			As3BsA3t(xml, 60, 60, p, q)
+			xml.text(null, { x:30, y:70, fill:"#000" }, `r = ${p}/${q}`)
+			xml.text(null, { x:30, y:82, fill:CT }, `t = ${tt}s`)
+		})
+	}
+
+	const Y = (y)=> N + H1*y
+	const T1 = (y)=> {
+		const A = Math.PI*(1 - y)/(6/5 - y)
+		const u = Math.cos(A)
+		const t = 2*(4*u*u*u - 3*u)
+		return N + W1*(t + 3) / 6
+	}
+	const T2 = (y)=> {
+		const A = Math.PI*(1 - y)/(6/5 - y)
+		const u = Math.cos(A)
+		const t = 2*(4*u*u*u - 2*u*u - 3*u + 1)
+		return N + W1*(t + 3) / 6
+	}
+	const T3 = (y)=> {
+		const A = Math.PI*(1 - y)/(6/5 - y)
+		const u = Math.cos(A)
+		const t = 2*(4*u*u*u - 2*u*u - 2*u + 1)
+		return N + W1*(t + 3) / 6
+	}
 }
 
-const heptagonSidesSvg = function(id)
+const heptagons_ts_graph = function(id)
 {
-	const $ = new XML()
 	const M = 20, N = 40, W1=400, H1=500;
 	const A = [ -3, -2, -1, 0, 1, 2, 3 ]
+	const AT = [ "", `-2`, `-1`, "t = 0", `+1`, `+2`, "" ]
+
 	const G = [ 
-		[0,10],[4,6],[5,5],[6,4],[8,2],
-		[17,3],[9,1],[28,2],[29,1],[10,0]
+		[0,10],[2,8],[4,6],[6,4],[8,2],[26,4],
+		[9,1],[28,2],[48,2],[10,0]
 	]
 	const CT = "#f80"
+	const Y = (y)=> N + H1*y
 	const T = (y)=> {
 		const A = Math.PI*(1 - y)/(6/5 - y)
 		const u = Math.cos(A)
 		const t = 2*(4*u*u*u - 2*u*u - 2*u + 1)
 		return N + W1*(t + 3) / 6
 	}
-	const Y = (y)=> N + H1*y
 
-	const lines = ()=> {
-		const lines = { 
-			stroke:"#abc", "stroke-width":1, 
-			"font-size":"12px", 
-			"dominant-baseline": "middle" 
-		}
-		$.g(null, lines, ()=> {
-			SvgPolygon.horizontalLines($, N, W1, H1, G)
-			sides("s")
-		})
-	}
-	const sides = (u)=> {
-		SvgPolygon.verticalLines($, N, W1, H1, CT, A, 
-			[ "", "-2s", "-1s", "t = 0", "+1s", "+2s", ""]
-		)
-	}
-	const heptagon = (x, y, p, q, c, stroke, T)=> {
-		const t = `translate(${x},${y})`
-		const g = { transform:t, "font-size":"12px", "text-anchor":"middle"}
-		const a = 10*c - p
-		const b = p
-		const d = 12*c - p
-		$.g(null, g, ()=> {
-			$.Rect(0,0,80,110,null,{ 
-				fill:"#fff", stroke:stroke, "stroke-width":1.5
-			})
-			As3BsA3t($, 80, 80, p, q)
-			$.text(null, { x:40, y: 90, fill:"#000" }, `r = ${p}/${q}`)
-			$.text(null, { x:40, y:102, fill:CT }, `t = ${T}s`)
-		})
-	}
-	const dots = []
-	for (let p=0;  p <= 120; p++) {
-		dots.push({ 
-			x: T(p / 120), 
-			y: Y(p / 120)
-		})
-	}
+	const xml = new XML()
+	const hs = new HeptagonSides(xml, N, W1, H1, CT)
+	const d1 = hs.d1_curve(120)
+	const d2 = hs.d2_curve(120)
+	const d3 = hs.d3_curve(120)
 	const sss = { width:4*M+W1, height:3*M+H1, xmlns:"http://w3.org/2000/svg" }
-	$.svg(null, sss, ()=> {
-		const t = { stroke:CT, "stroke-width":3, fill:"none"}
-		$.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
-			lines()
-			$.g(null, t, ()=> {
-				const p = dots.map(r => `${r.x},${r.y}`)
-				$.polyline(null, { points:p.join(",") })
-			})
-			// t = 0
-			heptagon(185,  60,  4, 6, 1, "#000", "0")
-			heptagon(185, 305,  9, 1, 1, "#000", "0")
-			heptagon( 55, 410, 28, 2, 2, "#000", "0")
-			$.g(null, { fill:"#000"}, ()=> {
-				$.circle(null, { cx:T( 4/10), cy:Y( 4/10), r:4 })
-				$.circle(null, { cx:T( 9/10), cy:Y( 9/10), r:4 })
-				$.circle(null, { cx:T(28/30), cy:Y(28/30), r:4 })
+	xml.svg(null, sss, ()=> {
+		xml.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
+			hs.lines(G, A, AT)
+
+			const t1 = { stroke:"#f0f", "stroke-width":1, fill:"none"}
+			xml.g(null, t1, ()=> {
+				const p = d1.map(r => `${r.x},${r.y}`)
+				xml.polyline(null, { points:p.join(",") })
 			})
 
-			// t = 1
-			heptagon(270, 100,  5, 5, 1, "#f00", 1)
-			heptagon(270, 330, 17, 3, 2, "#f00", 1)
-			heptagon(140, 420, 29, 1, 3, "#f00", 1)
-			$.g(null, { fill:"#f00" }, ()=> {
-				$.circle(null, { cx:T( 5/10), cy:Y( 5/10), r:4 })
-				$.circle(null, { cx:T(17/20), cy:Y(17/20), r:4 })
-				$.circle(null, { cx:T(29/30), cy:Y(29/30), r:4 })
+			const t2 = { stroke:"#808", "stroke-width":1, fill:"none"}
+			xml.g(null, t2, ()=> {
+				const p = d2.map(r => `${r.x},${r.y}`)
+				xml.polyline(null, { points:p.join(",") })
 			})
 
-			// t = 2
-			heptagon(355,  90,  6, 4, 1, "#840", 2)
-			heptagon(355, 205,  8, 2, 1, "#840", 2)
-			$.g(null, { fill:"#840" }, ()=> {
-				$.circle(null, { cx:T( 6/10), cy:Y( 6/10), r:4 })
-				$.circle(null, { cx:T( 8/10), cy:Y( 8/10), r:4 })
-				$.circle(null, { cx:T(10/10), cy:Y(10/10), r:4 })
+			const t3 = { stroke:CT, "stroke-width":3, fill:"none"}
+			xml.g(null, t3, ()=> {
+				const p = d3.map(r => `${r.x},${r.y}`)
+				xml.polyline(null, { points:p.join(",") })
 			})
-
 		})
 	})
-	$.id(id)
+	xml.id(id)
 }
+
+const heptagons_t_graph = function(id)
+{
+	const M = 20, N = 40, W1=400, H1=500;
+	const A = [ -3, -2, -1, 0, 1, 2, 3 ]
+	const AT = [ "", `-2`, `-1`, "t = 0", `+1`, `+2`, "" ]
+
+	const G = [ 
+		[0,10],[4,6],[5,5],[6,4],[8,2],
+		[17,3],[9,1],[28,2],[29,1],[10,0]
+	]
+	const CT = "#f80"
+	const Y = (y)=> N + H1*y
+	const T = (y)=> {
+		const A = Math.PI*(1 - y)/(6/5 - y)
+		const u = Math.cos(A)
+		const t = 2*(4*u*u*u - 2*u*u - 2*u + 1)
+		return N + W1*(t + 3) / 6
+	}
+
+	const xml = new XML()
+	const hs = new HeptagonSides(xml, N, W1, H1, CT)
+	const sss = { width:4*M+W1, height:3*M+H1, xmlns:"http://w3.org/2000/svg" }
+	xml.svg(null, sss, ()=> {
+		xml.g(null, { transform:"translate(0.5 0.5)" }, ()=> {
+			hs.lines(G, A, AT)
+			const t = { stroke:CT, "stroke-width":3, fill:"none"}
+			xml.g(null, t, ()=> {
+				const d3 = hs.d3_curve(120)
+				const p = d3.map(r => `${r.x},${r.y}`)
+				xml.polyline(null, { points:p.join(",") })
+			})
+			// t = 0
+			hs.cards("#000", "0", [
+				{ x:185, y:60,  p: 4, q:6, c:1 },
+				{ x:185, y:305, p: 9, q:1, c:1 },
+				{ x:55,  y:430, p:28, q:2, c:2 }
+			])
+			// t = 1
+			hs.cards("#f00", 1, [
+				{ x:278, y:160, p: 5, q:5, c:1 },
+				{ x:278, y:355, p:17, q:3, c:2 },
+				{ x:160, y:440, p:29, q:1, c:3 },
+			])
+			// t = 2
+			hs.cards("#840", 2, [
+				{ x:377, y:125, p: 6, q:4, c:1 },
+				{ x:377, y:240, p: 8, q:2, c:1 },
+				{ x:377, y:445, p:10, q:0, c:1 }
+			])
+		})
+	})
+	xml.id(id)
+}
+
 
 
 
@@ -238,34 +274,37 @@ const heptagonAnglesSvg = function(id)
 }
 
 
+const subD = (n)=> `d<sub>${n}</sub>`
+const subX = (n)=> `X<sub>${n}</sub>`
+
 
 const H60 = function()
 {
 	this.typesIntersections = {
-		"1":     "d<sub>1</sub> = 0, II<sub>A</sub>",
-		"1,2":   "X<sub>1</sub>",
-		"2":     "d<sub>2</sub> = 0",
-		"2,3":   "X<sub>2</sub>",
-		"3":     "d<sub>3</sub> = t = 0",
-		"3,4":   "B < &pi;",
-		"4":     "d<sub>3</sub> = 2, B = &pi;",
-		"4,5":   "2&pi; > B > &pi;",
-		"5":     "d<sub>1</sub> = 0, II<sub>1</sub>, K<sub>1</sub>",
-		"5,6":   "X<sub>1</sub>, X<sub>3</sub>",
-		"6":     "X<sub>1</sub>, X<sub>3</sub>, K<sub>2</sub>",
-		"6,7":   "X<sub>1</sub>, X<sub>3</sub>, X<sub>4A</sub>, X<sub>4B</sub>",
-		"7":     "d<sub>2</sub> = 0, K<sub>3</sub>",
-		"7,8":   "X<sub>2</sub>",
-		"8":     "d<sub>3</sub> = t = 0, d<sub>4</sub> = 4",
-		"8,9":   "X<sub>5</sub>",
-		"9":     "d<sub>3</sub> = t = 0, X<sub>5</sub>",
-		"9,10":  "X<sub>5</sub>, X<sub>2</sub>",
-		"10":    "X<sub>5</sub>, X<sub>2</sub>, K<sub>3</sub>",
-		"10,11": "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>",
-		"11":    "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>, K<sub>5</sub>",
-		"11,12": "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>, X<sub>4B</sub>, X<sub>6</sub>",
-		"12":    "X<sub>5</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4A</sub>, X<sub>4B</sub>, X<sub>6</sub>, II<sub>A</sub>, d<sub>5</sub> = 1",
-		"12,13": "?",
+		"1":     `${subD(1)} = 0, II<sub>1</sub>`,
+		"1,2":   `${subX(1)}`,
+		"2":     `d<sub>2</sub> = 0`,
+		"2,3":   `${subX(2)}`,
+		"3":     `d<sub>3</sub> = 0`,
+		"3,4":   `0 < d<sub>3</sub> < 2, B < &pi;`,
+		"4":     `d<sub>3</sub> = 2, B = &pi;`,
+		"4,5":   `2&pi; > B > &pi;`,
+		"5":     `${subD(1)} = 0, II<sub>1</sub>, K<sub>1</sub>`,
+		"5,6":   `${subX(1)}, ${subX(3)}`,
+		"6":     `${subX(1)}, ${subX(3)}, K<sub>2</sub>`,
+		"6,7":   `${subX(1)}, ${subX(3)}, ${subX(4)}, ${subX(5)}`,
+		"7":     `d<sub>2</sub> = 0, K<sub>3</sub>`,
+		"7,8":   `${subX(2)}`,
+		"8":     `d<sub>3</sub> = 0, d<sub>4</sub> = 0, ${subD(1)} = 2`,
+		"8,9":   `d<sub>3</sub> < 0, ${subX(6)}`,
+		"9":     `d<sub>3</sub> = 0, ${subX(6)}`,
+		"9,10":  `${subX(6)}, ${subX(2)}`,
+		"10":    `${subX(6)}, ${subX(2)}, K<sub>3</sub>`,
+		"10,11": `${subX(6)}, ${subX(2)}, ${subX(3)}, ${subX(4)}`,
+		"11":    `${subX(6)}, ${subX(2)}, ${subX(3)}, ${subX(4)}, K<sub>5</sub>`,
+		"11,12": `${subX(6)}, ${subX(2)}, ${subX(3)}, ${subX(4)}, ${subX(5)}, ${subX(7)}`,
+		"12":    `${subX(6)}, ${subX(2)}, ${subX(3)}, ${subX(4)}, ${subX(5)}, ${subX(7)}, ${subD(1)} = 0, II<sub>1</sub>`,
+		"12,13": `${subX(6)}, ${subX(2)}, ${subX(3)}, ${subX(4)}, ${subX(5)}, ${subX(7)}, ${subX(8)}, ${subX(1)}`,
 		"13":    "?",
 		"13,14": "?",
 		"14":    "?"

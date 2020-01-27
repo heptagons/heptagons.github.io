@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="SVG.js"></script>
+<script type="text/javascript" src="(As)nB(sA)nt.js"></script>
 <script type="text/javascript" src="heptagons.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<script id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 <link rel="stylesheet" type="text/css" href="(As)nB(sA)nt.css">
 </head>
@@ -62,27 +62,8 @@ u &= \cos A \\
 
 <hr/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <h3>Generators</h3>
+
 <div>
 Define two generators 
 \(r\) = <b class="B">B</b> / <b class="A">A</b>
@@ -102,6 +83,7 @@ A &= \frac{5}{6+r}\pi = \frac{1 + y}{6/5 - y}\pi \\
 </p>
 
 <h3>Rational generators</h3>
+
 <p>
 Define rational generators of class \(c\) (1,2,3...) using integers \(p\):
 \begin{align*}
@@ -127,10 +109,12 @@ and so on...
 </p>
 
 
-<h2>Side t graph</h2>
+
+
+<h3>t graph</h3>
 
 <div class="right case">
-<div class="svg" id="sides-svg"><script>heptagonSidesSvg("sides-svg")</script></div>
+<div class="svg" id="t_graph"><script>heptagons_t_graph("t_graph")</script></div>
 <div class="r">
 Three degenerated heptagons in <b class="black">black</b> dots. 
 Three equilateral heptagons in <b class="red">red</b> dots. 
@@ -180,7 +164,14 @@ corresponding to another three <b class="brown">degenerated</b> heptagons:
 <br/>
 
 
-<h2>Angles A,B graph</h2>
+<h3>d<sub>1</sub>, d<sub>2</sub>, d<sub>3</sub> graph</h3>
+<div class="right case">
+<div class="svg" id="ts_graph"><script>heptagons_ts_graph("ts_graph")</script></div>
+</div>
+<br/>
+
+
+<h3>Angles A,B graph</h3>
 
 <p>
 <div class="right case">
@@ -214,7 +205,7 @@ At \(r = \frac{29}{1}\) \(B - A = 4\pi \). This is case of heptagon {7/3}. It se
 <img src="inkscape/heptagon_11_9_diagonals.svg" class="svg draft">
 <div class="r">Diagonals</div>
 </div>
-<h3>Objects</h3>
+<h3>Types</h3>
 <div>
 Seven vertices <span class="P">P<sub>1</sub></span>, ... <span class="P">P<sub>7</sub></span> are
 joined with seven edges <span class="s">e<sub>1</sub></span>, ... <span class="s">e<sub>7</sub></span>.
@@ -276,19 +267,19 @@ joined with seven edges <span class="s">e<sub>1</sub></span>, ... <span class="s
 <td>II<sub>?</sub></td>
 </tr>
 <tr><th class="s">e<sub>3</sub></th>
-<td class="P">X<sub>5</sub></td><td>II<sub>?</sub></td>
+<td class="P">X<sub>6</sub></td><td>II<sub>?</sub></td>
 </tr>
 <tr><th class="s">e<sub>4</sub></th>
-<td class="P">X<sub>4A</sub></td><td class="P">X<sub>?</sub></td><td>II<sub>A</sub></td>
+<td class="P">X<sub>4</sub></td><td class="P">X<sub>8</sub></td><td>II<sub>1</sub></td>
 </tr>
 <tr><th class="s">e<sub>5</sub></th>
-<td class="P">X<sub>4B</sub></td><td class="P">X<sub>1</sub></td><td class="P">X<sub>?</sub></td><td>II<sub>?</sub></td>
+<td class="P">X<sub>5</sub></td><td class="P">X<sub>1</sub></td><td class="P">X<sub>8</sub></td><td>II<sub>?</sub></td>
 </tr>
 <tr><th class="s">e<sub>6</sub></th>
-<td class="P">X<sub>2</sub></td><td class="P">X<sub>4B</sub></td><td class="P">X<sub>4A</sub></td><td class="P">X<sub>5</sub></td><td>II<sub>?</sub></td>
+<td class="P">X<sub>2</sub></td><td class="P">X<sub>5</sub></td><td class="P">X<sub>4</sub></td><td class="P">X<sub>6</sub></td><td>II<sub>?</sub></td>
 </tr>
 <tr><th class="t">e<sub>7</sub></th>
-<td>II<sub>?</sub></td><td class="P">X<sub>6</sub></td><td class="P">X<sub>3</sub></td><td class="P">X<sub>3</sub></td><td class="P">X<sub>6</sub></td><td>II<sub>?</sub></td>
+<td>II<sub>?</sub></td><td class="P">X<sub>7</sub></td><td class="P">X<sub>3A</sub></td><td class="P">X<sub>3B</sub></td><td class="P">X<sub>7</sub></td><td>II<sub>?</sub></td>
 </tr>
 </table>
 
@@ -325,57 +316,20 @@ joined with seven edges <span class="s">e<sub>1</sub></span>, ... <span class="s
 <tr><th class="P">P<sub>7</sub></th><td>II<sub>?</sub></td><td class="P">K<sub>5</sub></td><td class="P">K<sub>3</sub></td><td class="P">K<sub>1</sub></td><td>II<sub>?</sub></td><td>v</td><td>v</td></tr>
 </table>
 
-
 </div>
+<div id="types"></div>
 </p>
 <br/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="types"></div>
 <script>
 {
 const h60 = new H60()
 const $g = new XML()
 
 const pushSvg = (h, wh, t, footer)=> {
-	$g.span("c", {}, ()=> {
-		$g.div("case", {}, ()=> {
-			if (t)   $g.div(null, {}, t);
-			if (h.c) $g.div("r", {}, `r<sub>${h.c}</sub> = ${h.p}/${h.q}`);
-			if (h.A) $g.div("A", {}, `A/&pi; = ${h.A.p}/${h.A.q}`);
-			if (h.B) $g.div("B", {}, `B/&pi; = ${h.B.p}/${h.B.q}`);
-			const svg = new SVG()
-			$g.div(null, {}, svg.caseSvg(wh, wh, `${h.p}/${h.q}`))
-			if (footer)
-				$g.div(null, { style:`max-width:${wh}px` }, footer)
-		})
-	})
+	AsnBsAnt_card($g, h, wh, t, footer, 3)
 }
 
-$g.h2(null, {}, "Types")
 $g.div(null, {}, ()=> {
 	h60.types.forEach((t,i) => {
 		const h = { p:t[0], q:t[1] }

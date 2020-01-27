@@ -1,5 +1,78 @@
 "use strict";
 
+const XML = function()
+{
+	const r = []
+
+	const E = (e, clazz, attrs, end, text, o)=> {
+		const cols = []
+		cols.push(e)
+		if (clazz)
+			cols.push(`class="${clazz}"`)
+		if (attrs)
+			Object.keys(attrs).forEach(k => { 
+				cols.push(`${k}="${attrs[k]}"`) 
+			})
+		const tail = (!end) ? ">" : (!text) ? "/>" : `>${text}</${e}>`
+		r.push(`<${cols.join(" ")}${tail}`)
+	}
+	
+	const EE = (e, c, attrs, C) => { 
+		E(e, c, attrs)
+		C()
+		E(`/${e}`) 
+	}
+
+	const EEE = (e, c, attrs, C)=> {  
+		if (typeof C === "function") 
+			return EE(e, c, attrs, C);
+		E(e, c, attrs, true, C) 
+	}
+
+	this.append = (xml)=> {
+		if (!xml || !xml.get) return;
+		xml.get().forEach(r0 => { r.push(r0) })
+	}
+
+	this.get = ()=> { 
+		return r
+	}
+
+	this.id = (id)=> {
+		document.getElementById(id).innerHTML = r.join("\n")
+	}
+	this.circle   = (c, a)   => { E("circle",   c, a, true)    }
+	this.text     = (c, a, t)=> { E("text",     c, a, true, t) }
+	this.line     = (c, a)   => { E("line",     c, a, true)    }
+	this.polyline = (c, a)   => { E("polyline", c, a, true)    }
+	this.style    = (c, a, t)=> { E("style",    c, a, true, t) }
+
+	this.g      = (c, a, C)=> { EE("g",      c, a, C) }
+	this.svg    = (c, a, C)=> { EE("svg",    c, a, C) }
+	this.defs   = (c, a, C)=> { EE("defs",   c, a, C) }
+
+	this.div    = (c, a, C)=> { EEE("div",   c, a, C) }
+	this.b      = (c, a, C)=> { EEE("b",     c, a, C) }
+	this.span   = (c, a, C)=> { EEE("span",  c, a, C) }
+	this.dl     = (c, a, C)=> { EEE("dl",    c, a, C) }
+	this.dt     = (c, a, C)=> { EEE("dt",    c, a, C) }
+	this.dd     = (c, a, C)=> { EEE("dd",    c, a, C) }
+	this.h2     = (c, a, C)=> { EEE("h2",    c, a, C) }
+	this.h3     = (c, a, C)=> { EEE("h3",    c, a, C) }
+	this.table  = (c, a, C)=> { EEE("table", c, a, C) }
+	this.tr     = (c, a, C)=> { EEE("tr",    c, a, C) }
+	this.td     = (c, a, C)=> { EEE("td",    c, a, C) }
+
+
+	this.Rect   = (x,y,w,h,c,a)=> {	
+		if (!a) a = {};
+		a.x = x; a.y = y; a.width = w; a.height = h
+		E("rect", c, a, true)
+	}
+}
+
+
+
 const SVG = function()
 {
 	const r = []
@@ -108,8 +181,8 @@ const SVG = function()
 		xml("g", { fill:"#0d0", "fill-opacity":0.5 })
 		P.forEach((p,i) => {
 			const attrs = { cx:p.x, cy:p.y, r:0.1 }
-			if (i==3)
-				attrs.fill = "#08f"
+			if (i==0) attrs.fill = "#080";
+			if (i==3) attrs.fill = "#08f";
 			xml("circle", attrs, true)
 		})
 		xml("/g")
@@ -235,61 +308,6 @@ if (typeof exports !== 'undefined') {
     exports.SVG = SVG
 }
 
-const XML = function()
-{
-	const r = []
-	const $ = (e, clazz, attrs, end, text)=> {
-		const cols = []
-		cols.push(e)
-		if (clazz)
-			cols.push(`class="${clazz}"`)
-		if (attrs)
-			Object.keys(attrs).forEach(k => { 
-				cols.push(`${k}="${attrs[k]}"`) 
-			})
-		const tail = (!end) ? ">" : (!text) ? "/>" : `>${text}</${e}>`
-		r.push(`<${cols.join(" ")}${tail}`)
-	}
-	const $$ = (e, c, attrs, C) => { 
-		$(e, c, attrs)
-		C()
-		$(`/${e}`) 
-	}
-	const $$$ = (e, c, attrs, C)=> {  
-		if (typeof C === "function") return $$(e, c, attrs, C);
-		$ (e, c, attrs, true, C) 
-	}
-	this.id = (id)=> {
-		document.getElementById(id).innerHTML = r.join("\n")
-	}
-	this.circle   = (c, a)   => {  $("circle",   c, a, true)    }
-	this.text     = (c, a, t)=> {  $("text",     c, a, true, t) }
-	this.line     = (c, a)   => {  $("line",     c, a, true)    }
-	this.polyline = (c, a)   => {  $("polyline", c, a, true)    }
-	this.style    = (c, a, t)=> {  $("style",    c, a, true, t) }
-
-	this.g      = (c, attrs, C)=> { $$("g",      c, attrs, C) }
-	this.svg    = (c, attrs, C)=> { $$("svg",    c, attrs, C) }
-	this.defs   = (c, attrs, C)=> { $$("defs",   c, attrs, C) }
-
-	this.b      = (c, attrs, C)=> { $$$("b",    c, attrs, C) }
-	this.span   = (c, attrs, C)=> { $$$("span", c, attrs, C) }
-	this.div    = (c, attrs, C)=> { $$$("div",  c, attrs, C) }
-	this.dl     = (c, attrs, C)=> { $$$("dl",   c, attrs, C) }
-	this.dt     = (c, attrs, C)=> { $$$("dt",   c, attrs, C) }
-	this.dd     = (c, attrs, C)=> { $$$("dd",   c, attrs, C) }
-	this.h2     = (c, attrs, C)=> { $$$("h2",   c, attrs, C) }
-	this.h3     = (c, attrs, C)=> { $$$("h3",   c, attrs, C) }
-	this.table  = (c, attrs, C)=> { $$$("table", c, attrs, C) }
-	this.tr     = (c, attrs, C)=> { $$$("tr",    c, attrs, C) }
-	this.td     = (c, attrs, C)=> { $$$("td",    c, attrs, C) }
-
-	this.Rect   = (x,y,w,h,c,a)=> {	
-		if (!a) a = {};
-		a.x = x; a.y = y; a.width = w; a.height = h
-		$("rect", c, a, true)
-	}
-}
 
 const SvgPolygon =
 {
