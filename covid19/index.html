@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<style type="text/css">
+th { padding: 0 10px; }
+.num { text-align: right; }	
+svg { border:1px solid gray; }
+</style>
+</head>
+<body>
+<div>
+<input type="file" id="file-input" />
+<button id="read-button">Read File</button>
+<span id="resp"></span>
+</div>
+<div>
+	<svg id="svg"></svg>
+</div>
+<div id="table">
+</div>
+</body>
+
+<script>
+const $ = (b)=> document.getElementById(b)
+
+const elem = (p, b, attrs, text)=> { 
+	var c = document.createElement(b) 
+	if (text) c.appendChild(document.createTextNode(text))
+	if (attrs) { 
+		for (attr in attrs) {
+			if (attrs[attr])
+				c.setAttribute(attr, attrs[attr]) 
+		}
+	}
+	if (p) { p.appendChild(c) }
+	return c
+}
+const table = ($p,c)=> elem($p, "table", { class:c })
+const tr    = ($p,c)=> elem($p, "tr",    { class:c })
+const th    = ($p,c,t)=> elem($p, "th",  { class:c }, t)
+const td    = ($p,c,t)=> elem($p, "td",  { class:c }, t)
+
+
+const $resp = $("resp")
+const $svg = $("svg")
+const $table = $("table")
+
+const g = (transform)=> {
+	const e = document.createElementNS("http://www.w3.org/2000/svg", 'g')
+	e.setAttribute("transform", transform)
+	return e
+}
+
+const line = (x1, y1, x2, y2)=> {
+	const e = document.createElementNS("http://www.w3.org/2000/svg", 'line')
+	e.setAttribute("x1", x1)
+	e.setAttribute("y1", y1)
+	e.setAttribute("x2", x2)
+	e.setAttribute("y2", y2)
+	e.style.stroke = "#abc"
+	e.style.strokeWidth = "1px"
+	return e
+}
+const polyline = (points, color)=> {
+	const e = document.createElementNS("http://www.w3.org/2000/svg", 'polyline')
+	e.setAttribute("points", points)
+	e.style.stroke = color
+	e.style.strokeWidth = "1px"
+	e.style.fill = "none"
+	return e
+}
+
+let $g = null
+
+const head = [ "Municipality", "State", "Deaths", "Population", "Incidence" ]
+const graph = (data) => {
+	if (!data) {
+		$svg.innerHTML = "";
+		$table.innerHTML = "";
+		const $tr = tr($("table"))
+		head.forEach(h => { th($tr,"",h) })
+	} else if (data.svg) {
+		const X = data.svg.x
+		const Y = data.svg.y
+		$svg.setAttribute("width", (X * 10) + "px")
+		$svg.setAttribute("height", (data.svg.y) + "px")
+		$g = g(`scale (1 -1) translate(0 ${-Y})`)
+		$svg.appendChild($g)
+		for (let x=0; x < X; x++)
+			$g.appendChild(line(10*x, 0, 10*x, Y))
+		for (let y=0; y < Y; y += 100)
+			$g.appendChild(line(0, y, X*10, y))
+	} else {
+		const $tr = tr($("table"))
+		const c = data.c ? ` (${data.c})` : ""
+		td($tr, "", `${data.m}${c}`)
+		td($tr, "", data.s || "")
+		td($tr, "num", data.sum || "0")
+		td($tr, "num", data.p || "0")
+		td($tr, "num", (data.i) ? (1000*data.i).toFixed(3) : "")
+		if (data.d) {
+			let y=0
+			const points = []
+			for (let i=0; i < data.d.length; i++) {
+				y += data.d[i]
+				points.push(`${10*i},${y}`)
+			}
+			$g.appendChild(polyline(points.join(" "), "#f00"))
+		}
+	}
+}
+
+document.querySelector("#read-button").addEventListener('click', ()=> {
+	if (document.querySelector("#file-input").files.length == 0) {
+		$resp.innerHTML = 'Error : No file selected'
+		return
+	}
+	const file = document.querySelector("#file-input").files[0]
+	const reader = new FileReader()
+	reader.addEventListener('loadstart', ( )=> { $resp.innerHTML = 'File reading started' })
+	reader.addEventListener('load',      (e)=> { 
+		$table.innerHTML = ""
+		table($table)
+		array(e.target.result, false) 
+	})
+	reader.addEventListener('error',     ( )=> { $resp.innerHTML = 'Error : Failed to read file' })
+	reader.addEventListener('progress', (e)=> {
+	    if(e.lengthComputable == true) {
+	    	var percent_read = Math.floor((e.loaded/e.total)*100)
+	    	$resp.innerHTML = percent_read + '% read'
+	    }
+	})
+	reader.readAsText(file)
+})
+
+const states =
+{
+	 1:"1",     2:"BC",  3:"3",   4:"4",    5:"Coah",   6:"6",   7:"7",      8:"Chih",
+	 9:"CDMX", 10:"10", 11:"11",  12:"12", 13:"13",    14:"14",  15:"Mex",  16:"16",
+	17:"Mor",  18:"18", 19:"19",  20:"20", 21:"Pue",   22:"22",  23:"QRoo", 24:"24",
+	25:"Sin",  26:"26", 27:"Tab", 28:"28", 29:"29",    30:"Ver", 31:"31",   32:"32"
+}
+
+const array = (string, avg)=> {
+	graph()
+	const A = string.split("\n")
+    if (!A || !A.length) {
+    	return console.log("Error : No rows")
+    }
+    const H = { d:[] }
+    const M = []
+    A.forEach((a,i) => { 
+    	const cols = a.split(",")
+    	if (i==0) {
+    		cols.forEach((col,j) => {
+		    	if (col=="cve_ent")   H.s = j; else
+		    	if (col=="poblacion") H.p = parseInt(j); else
+		    	if (col=="nombre")    H.m = j; else 
+		    	H.d.push(j);
+    		})
+    	} else {
+    		const m = { d:[] }
+    		let sum = 0
+    		cols.forEach((col,j) => {
+    			if (j == H.s) m.s = parseInt((col.replace(/['"]+/g, '').substring(0,2))); else
+    			if (j == H.p) m.p = parseInt(col); else
+    			if (j == H.m) m.m = col.replace(/['"]+/g, ''); else {
+    				const day_count = parseInt(col)
+    				m.d.push(day_count)
+    				sum += day_count
+    			}
+    		})
+    		m.sum = sum
+    		M.push(m)
+    	}
+    })
+	const S = (avg) 
+		? M.sort((a,b)=> { return (b.sum/b.p - a.sum/a.p) })
+		: M.sort((a,b)=> { return (b.sum - a.sum) })
+
+	const rows = []
+	const lower = { m:"Lower", c:0, s:"...", sum:0, p:0 }
+	const clean = { m:"Clean", c:0, s:"...", sum:0, p:0 }
+	const all   = { m:"All",   c:0, s:"...", sum:0, p:0 }
+
+	for (let i=0; i < S.length; i++) {
+		const m = S[i]
+		all.c++
+		all.sum += m.sum
+		all.p += (m.p || 0)
+		if (i < 20) {
+			rows.push({
+				i:   m.sum / m.p,
+				sum: m.sum,
+				p: m.p,
+				s:   states[m.s],
+				m:   m.m,
+				d:   m.d
+			})
+		} else {
+			if (m.sum) {
+				lower.c++
+				lower.sum += m.sum
+				lower.p += (m.p || 0)
+			} else {
+				clean.c++
+				clean.p += (m.p || 0)
+			}
+		}
+	}
+	graph({
+		svg: {
+			x: rows[0].d.length,
+			y: rows[0].sum
+		}
+	})
+	console.log("lower", JSON.stringify(lower))
+	console.log("clean", JSON.stringify(clean))
+	console.log("all", JSON.stringify(all))
+
+
+	lower.i = lower.sum / lower.p
+	clean.i = clean.sum / clean.p
+	all.i   = all.sum / all.p
+	rows.forEach(r => { graph(r) })
+	graph(lower)
+	graph(clean)
+	graph(all)
+}
+</script>
+
+</html>
